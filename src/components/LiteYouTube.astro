@@ -1,0 +1,59 @@
+---
+interface Props {
+  videoId: string;
+  title: string;
+}
+const { videoId, title } = Astro.props;
+const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<lite-youtube data-id={videoId} data-title={title}>
+  <button
+    type="button"
+    aria-label={`Play: ${title}`}
+    class="group relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface"
+  >
+    <img
+      src={thumb}
+      alt={title}
+      loading="lazy"
+      class="h-full w-full object-cover opacity-80 transition group-hover:opacity-100"
+    />
+    <span
+      class="absolute inset-0 flex items-center justify-center bg-black/20 transition group-hover:bg-black/10"
+    >
+      <span class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-ink shadow-lg">
+        <svg viewBox="0 0 24 24" class="h-7 w-7 translate-x-0.5" fill="currentColor">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </span>
+    </span>
+  </button>
+</lite-youtube>
+
+<script>
+  class LiteYouTube extends HTMLElement {
+    connectedCallback() {
+      const button = this.querySelector('button');
+      button?.addEventListener(
+        'click',
+        () => {
+          const id = this.dataset.id;
+          const title = this.dataset.title ?? 'YouTube video';
+          const iframe = document.createElement('iframe');
+          iframe.setAttribute('src', `https://www.youtube.com/embed/${id}?autoplay=1`);
+          iframe.setAttribute('title', title);
+          iframe.setAttribute(
+            'allow',
+            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+          );
+          iframe.setAttribute('allowfullscreen', '');
+          iframe.className = 'aspect-video w-full rounded-xl border border-white/10';
+          this.replaceChildren(iframe);
+        },
+        { once: true }
+      );
+    }
+  }
+  customElements.define('lite-youtube', LiteYouTube);
+</script>

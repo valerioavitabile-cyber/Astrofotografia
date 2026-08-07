@@ -1,0 +1,31 @@
+---
+import { mainNav } from '../data/site';
+import MobileNav from './MobileNav';
+
+const currentPath = new URL(Astro.request.url).pathname;
+---
+
+<header class="fixed inset-x-0 top-0 z-30 border-b border-white/5 bg-ink/80 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="text-lg font-semibold tracking-wide">
+      Valerio Avitabile
+      <span class="ml-2 text-xs font-normal uppercase tracking-[0.2em] text-accent">Astrophotography</span>
+    </a>
+
+    <nav class="hidden gap-8 text-sm font-medium uppercase tracking-wide md:flex">
+      {mainNav.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'transition hover:text-accent',
+            currentPath === item.href ? 'text-accent' : 'text-white/80',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <MobileNav client:load items={mainNav} currentPath={currentPath} />
+  </div>
+</header>

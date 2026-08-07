@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Astronomy Tools" description="Astronomy.tools calculators for CCD suitability and field of view planning.">
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <a href="/utility/" class="text-sm text-white/50 hover:text-accent">&larr; Back to Utility</a>
+    <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">Astronomy Tools</h1>
+
+    <div class="prose-astro mt-10">
+      <p>
+        <strong>Astronomy.tools</strong> is an online platform designed to help amateur and professional
+        astronomers plan their observations, choose the right equipment, and analyze the performance of
+        optical systems in astrophotography. The site offers <strong>interactive calculators</strong> and
+        tools to simulate field of view, resolution, and image quality for different telescopes and cameras.
+      </p>
+
+      <p><strong>Main Features of Astronomy Tools</strong></p>
+      <p>
+        <strong>1️⃣ CCD Suitability Calculator</strong><br />
+        - Calculates <strong>image sampling</strong> in arcsec/pixel based on:<br />
+        - <strong>Pixel size of the sensor</strong> (in µm)<br />
+        - <strong>Telescope focal length</strong> (in mm)<br />
+        - <strong>Atmospheric seeing</strong> (in arcseconds)<br />
+        - Provides an image quality assessment:<br />
+        - <strong>Oversampling</strong> (too much detail, loss of light)<br />
+        - <strong>Undersampling</strong> (pixelated image, loss of detail)<br />
+        - <strong>Good Quality</strong> (optimal balance between pixels and seeing)
+      </p>
+      <p>
+        <strong>Useful for:</strong><br />
+        ✅ Determining if a <strong>CCD camera is suitable</strong> for a given telescope.<br />
+        ✅ Optimizing settings for <strong>planetary or deep-sky imaging</strong>.
+      </p>
+      <p>
+        🔗 <strong>Calculator link:</strong>
+        <a href="https://astronomy.tools/calculators/ccd_suitability" target="_blank" rel="noopener">CCD Suitability Calculator</a>
+      </p>
+
+      <p>
+        <strong>2️⃣ Field of View (FOV) Calculator</strong><br />
+        - Simulates the <strong>field of view</strong> of a telescope + camera combination.<br />
+        - Shows <strong>how a celestial object will appear</strong> (e.g., Moon, Orion Nebula, Andromeda Galaxy).<br />
+        - Allows comparison of multiple configurations to find the <strong>ideal magnification</strong>.
+      </p>
+      <p>
+        <strong>Useful for:</strong><br />
+        ✅ Planning astrophotography and selecting the right <strong>sensor/telescope</strong>.<br />
+        ✅ Avoiding incorrect framing (field too wide or too narrow).
+      </p>
+      <p>
+        🔗 <strong>Calculator link:</strong>
+        <a href="https://astronomy.tools/calculators/field_of_view" target="_blank" rel="noopener">FOV Calculator</a>
+      </p>
+
+      <p>
+        <strong>Why Use Astronomy Tools?</strong><br />
+        ✔️ <strong>Free</strong> and accessible from any device.<br />
+        ✔️ <strong>Interactive</strong>: test different configurations in real-time.<br />
+        ✔️ <strong>For everyone</strong>: useful for <strong>amateurs</strong> and <strong>professional
+        deep-sky photographers</strong>.<br />
+        ✔️ <strong>Easy to use</strong>: no installation required, everything is online.
+      </p>
+      <p>
+        <strong>Want to optimize your gear?</strong> Try the calculators at
+        <a href="https://astronomy.tools/" target="_blank" rel="noopener">Astronomy Tools</a> or use the window
+        below.
+      </p>
+    </div>
+
+    <div class="mt-10 overflow-hidden rounded-2xl border border-white/10">
+      <iframe src="https://astronomy.tools/" width="100%" height="600" loading="lazy" title="Astronomy Tools"></iframe>
+    </div>
+  </article>
+</Layout>

@@ -1,0 +1,29 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/5 bg-surface/60">
+  <div class="mx-auto max-w-6xl px-6 py-14 text-center">
+    <p class="mx-auto max-w-xl text-lg italic text-white/70">
+      Thank you for exploring the cosmos through my eyes.
+      <br />
+      Never stop looking beyond, the next dream is already among the stars.
+    </p>
+
+    <p class="mt-6 eyebrow">Get in touch</p>
+
+    <div class="mt-4 flex justify-center gap-6 text-sm font-medium">
+      <a href="/" class="text-white/70 hover:text-accent">Home</a>
+      <a href={`mailto:${site.email}`} class="text-white/70 hover:text-accent">Email</a>
+      <a href={site.social.facebook} target="_blank" rel="noopener" class="text-white/70 hover:text-accent">Facebook</a>
+      <a href={site.social.youtube} target="_blank" rel="noopener" class="text-white/70 hover:text-accent">YouTube</a>
+      <a href={site.social.instagram} target="_blank" rel="noopener" class="text-white/70 hover:text-accent">Instagram</a>
+    </div>
+
+    <p class="mt-10 text-xs text-white/40">
+      &copy; {year} Valerio Avitabile &middot; <a href="/privacy/" class="underline hover:text-accent">Privacy Policy</a>
+    </p>
+  </div>
+</footer>

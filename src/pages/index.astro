@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSlideshow from '../components/HeroSlideshow';
+import { Image } from 'astro:assets';
+import b150 from '../assets/home/b150.jpg';
+import hargb from '../assets/home/hargb.jpg';
+import ic443 from '../assets/home/ic443-sho.jpg';
+import m44 from '../assets/home/m44.jpg';
+import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
+import wr134 from '../assets/home/wr134.jpg';
+import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
+import { site } from '../data/site';
+
+const featured = [
+  { img: hargb, alt: 'Wide-field HaRGB astrophotography shot' },
+  { img: ic443, alt: 'IC 443, the Jellyfish Nebula, in SHO palette' },
+  { img: ngc6914, alt: 'NGC 6914 nebula in HaLRGB' },
+  { img: wr134, alt: 'WR 134, Wolf-Rayet nebula' },
+  { img: b150, alt: 'B150 dark nebula' },
+  { img: m44, alt: 'M44, the Beehive Cluster' },
+];
+
+const slides = featured.map(({ img, alt }) => ({ src: img.src, alt }));
+---
+
+<Layout title={site.title}>
+  <section class="relative flex min-h-[85vh] items-end overflow-hidden">
+    <HeroSlideshow client:load slides={slides} />
+    <div class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-20">
+      <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">Valerio Avitabile</h1>
+      <p class="mt-3 text-xl text-accent">Astrophotography</p>
+    </div>
+  </section>
+
+  <section class="border-t border-white/5">
+    <div class="mx-auto grid max-w-6xl items-end gap-10 px-6 py-24 md:grid-cols-[3fr_2fr]">
+      <div class="reveal text-left">
+        <p class="eyebrow">Portfolio</p>
+        <h2 class="mt-4 text-5xl font-semibold leading-[1.05] sm:text-6xl">The universe<br /> in your eyes</h2>
+      </div>
+      <div class="reveal flex flex-col items-end gap-8 text-right" style="--reveal-delay: 120ms">
+        <p class="max-w-xs text-lg leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
+        <a href="/portfolio/" class="btn-accent text-base">
+          <span>More</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 gap-6 px-6 py-4 sm:grid-cols-3">
+    {featured.slice(0, 3).map(({ img, alt }, i) => (
+      <div class="reveal overflow-hidden rounded-2xl" style={`--reveal-delay: ${i * 100}ms`}>
+        <Image
+          src={img}
+          alt={alt}
+          class="h-48 w-full object-cover sm:h-72"
+        />
+      </div>
+    ))}
+  </section>
+
+  <section class="border-t border-white/5">
+    <div class="mx-auto grid max-w-6xl items-end gap-10 px-6 py-24 md:grid-cols-[3fr_2fr]">
+      <div class="reveal text-left">
+        <p class="eyebrow">How can I help you?</p>
+        <h2 class="mt-4 text-5xl font-semibold leading-[1.05] sm:text-6xl">Customised<br /> online courses</h2>
+      </div>
+      <div class="reveal flex flex-col items-end gap-8 text-right" style="--reveal-delay: 120ms">
+        <p class="max-w-xs text-lg leading-relaxed text-white/70">Stacking, photo editing, software, and other tips</p>
+        <a href="/courses/" class="btn-accent text-base">
+          <span>More</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-6xl px-6 pb-24">
+      <div class="reveal aspect-video w-full overflow-hidden rounded-2xl">
+        <video
+          class="h-full w-full object-cover"
+          src={coursesVideo}
+          autoplay
+          loop
+          muted
+          playsinline
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-white/5 bg-surface/40">
+    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
+      <div class="reveal">
+        <p class="eyebrow">Video &amp; Utilities</p>
+        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
+          Discover my videos and tools for astronomical calculations
+        </h2>
+      </div>
+      <div class="reveal flex flex-col items-start justify-center gap-6" style="--reveal-delay: 120ms">
+        <div data-parallax="-0.03">
+          <p class="text-lg text-white/70">Video &amp; tutorial</p>
+          <a href="/videos/" class="btn-accent mt-4">
+            <span>More</span>
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <p class="text-lg text-white/70">Plate solve and other</p>
+          <a href="/utility/" class="btn-accent mt-4">
+            <span>More</span>
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-white/5">
+    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
+      <div class="reveal">
+        <p class="eyebrow">About me</p>
+        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
+          Astrophotography is a lifestyle, a community, a way of being&hellip;
+        </h2>
+        <a href="/about/" class="btn-accent mt-6">
+          <span>More</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+      <div class="reveal flex flex-col items-start justify-center gap-6" style="--reveal-delay: 120ms">
+        <p class="text-lg text-white/70" data-parallax="-0.03">
+          Do you have any questions?<br /> Feel free to write to me, I will be happy to answer you. Select
+          your favorite channels.
+        </p>
+        <a href="/contact/" class="btn-accent">
+          <span>Contact me</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

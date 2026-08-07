@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import plateSolving from '../../assets/articles/plate-solving.jpg';
+import tutorialCover from '../../assets/articles/tutorial/step-01.jpg';
+
+const articles = [
+  {
+    href: '/utility/plate-solving/',
+    title: 'Plate Solving and Metadata',
+    image: plateSolving,
+  },
+  {
+    href: '/utility/astronomy-tools/',
+    title: 'Astronomy Tools',
+    image: null,
+  },
+  {
+    href: '/utility/polar-alignment/',
+    title: 'Polar Alignment with Synscan',
+    image: tutorialCover,
+  },
+];
+---
+
+<Layout title="Utility" description="Astronomy utilities: plate solving, metadata, calculators and polar alignment tutorial.">
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="eyebrow text-center">Utility</p>
+    <h1 class="mt-3 text-center text-4xl font-semibold sm:text-5xl">Tools &amp; guides</h1>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-3">
+      {articles.map((a) => (
+        <a href={a.href} class="group overflow-hidden rounded-2xl border border-white/10 bg-surface/40 transition duration-500 hover:border-accent/60">
+          {a.image ? (
+            <Image src={a.image} alt={a.title} width={480} height={320} class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:brightness-110" />
+          ) : (
+            <div class="flex aspect-[3/2] w-full items-center justify-center bg-surface text-4xl text-accent">
+              ✦
+            </div>
+          )}
+          <p class="p-4 font-semibold">{a.title}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,39 @@
+---
+---
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const items = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
+
+  if (items.length && !reduceMotion) {
+    const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+    const speeds = items.map((el) => parseFloat(el.dataset.parallax || '0'));
+    let ticking = false;
+
+    const update = () => {
+      const viewportCenter = window.innerHeight / 2;
+      // Read every element's position first, then write all transforms in a
+      // second pass — interleaving read/write forces a layout recalc per
+      // element and is what made scrolling feel janky.
+      const distances = items.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return clamp(rect.top + rect.height / 2 - viewportCenter, -300, 300);
+      });
+      items.forEach((el, i) => {
+        el.style.transform = `translateY(${distances[i] * speeds[i]}px)`;
+      });
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+</script>

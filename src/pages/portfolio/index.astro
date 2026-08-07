@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { categories } from '../../data/site';
+
+const entries = await getCollection('portfolio');
+
+const covers: Record<string, (typeof entries)[number]> = {};
+for (const entry of entries) {
+  if (!covers[entry.data.category]) covers[entry.data.category] = entry;
+}
+---
+
+<Layout
+  title="Portfolio"
+  description="Deep-sky astrophotography portfolio: galaxies, nebulae, star clusters and more, captured from a home terrace in Italy."
+>
+  <section class="mx-auto max-w-6xl px-6 py-20">
+    <p class="eyebrow text-center">Portfolio</p>
+    <h1 class="mt-3 text-center text-4xl font-semibold sm:text-5xl">The universe in your eyes</h1>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {Object.entries(categories).map(([id, cat]) => {
+        const cover = covers[id];
+        return (
+          <a
+            href={`/portfolio/${cat.slug}/`}
+            class="group relative overflow-hidden rounded-2xl border border-white/10 transition duration-500 hover:border-accent/60"
+          >
+            {cover && (
+              <Image
+                src={cover.data.image}
+                alt={cat.title}
+                width={480}
+                height={480}
+                class="aspect-square w-full object-cover transition duration-500 group-hover:brightness-110"
+              />
+            )}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            <div class="absolute inset-x-0 bottom-0 p-5">
+              <p class="text-lg font-semibold text-white">{cat.title}</p>
+              <p class="mt-1 text-sm text-white/60">{cat.blurb}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</Layout>

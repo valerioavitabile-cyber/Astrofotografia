@@ -1,0 +1,7 @@
+---
+title: "IC 1318 & Sadr region"
+category: "nebuloseluminose"
+image: "../../assets/portfolio/sadr.jpg"
+astrobinLink: "https://www.astrobin.com/vwmmxp/0/"
+---
+Located in the heart of the constellation Cygnus, Gamma Cygni, more commonly known as Sadr, is one of the brightest stars in the summer sky. It is a yellow supergiant that lies at the center of the "Northern Cross," a star formation in the constellation Cygnus. With an apparent magnitude of around 2.2, it is easily visible to the naked eye. Surrounding it, and in perspective, there are extensive clusters of ionized hydrogen, particularly IC 1318, or the "Butterfly Nebula." This is an emission nebula that shines due to the radiation emitted by the young stars within it. The nebula is divided into several parts by dark nebulas, creating complex and fascinating patterns of light. Near Sadr, there is also NGC 6910, an open star cluster often called the "Rock Cluster" due to the particular arrangement of its stars. In this area, there is intense star formation activity, where young massive stars ionize the surrounding gas, causing the nebulas to shine and creating splendid celestial landscapes. It is easily identifiable in the Northern Hemisphere, especially during the summer, by looking straight up above us.
