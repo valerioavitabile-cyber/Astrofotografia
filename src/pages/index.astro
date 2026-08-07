@@ -9,6 +9,8 @@ import m44 from '../assets/home/m44.jpg';
 import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
 import wr134 from '../assets/home/wr134.jpg';
 import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
+import videoTutorial from '../assets/home/video tutorial.jpg';
+import astronomyTool from '../assets/home/astronomy tool.png';
 import { site } from '../data/site';
 
 const featured = [
@@ -107,27 +109,41 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   <section class="border-t border-white/5 bg-surface/40">
     <div class="reveal-left mx-auto max-w-6xl px-6 py-20 text-left">
       <p class="eyebrow">Video &amp; Utilities</p>
-      <h2 class="mt-3 whitespace-nowrap text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
-        Discover my videos and tools for astronomical calculations
+      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl" data-parallax="0.04">
+        Videos and astronomical calculation tools
       </h2>
-      <div class="mt-6 flex flex-col gap-6">
-        <div data-parallax="-0.03">
-          <p class="text-lg text-white/70">Video &amp; tutorial</p>
-          <a href="/videos/" class="btn-accent mt-4">
-            <span>More</span>
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </a>
+    </div>
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-4 sm:grid-cols-2">
+      <div data-parallax="-0.03">
+        <p class="text-xl text-white/70">Video &amp; tutorial</p>
+        <a href="/videos/" class="btn-accent mt-4">
+          <span>More</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <div class="mt-6 aspect-video w-full overflow-hidden rounded-2xl">
+          <Image
+            src={videoTutorial}
+            alt="Video tutorial and astronomical calculation tools"
+            class="h-full w-full object-cover"
+          />
         </div>
-        <div>
-          <p class="text-lg text-white/70">Plate solve and other</p>
-          <a href="/utility/" class="btn-accent mt-4">
-            <span>More</span>
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </a>
+      </div>
+      <div>
+        <p class="text-xl text-white/70">Plate solve and other</p>
+        <a href="/utility/" class="btn-accent mt-4">
+          <span>More</span>
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <div class="mt-6 aspect-video w-full overflow-hidden rounded-2xl">
+          <Image
+            src={astronomyTool}
+            alt="Astronomy tools for plate solving and calculations"
+            class="h-full w-full object-cover"
+          />
         </div>
       </div>
     </div>
