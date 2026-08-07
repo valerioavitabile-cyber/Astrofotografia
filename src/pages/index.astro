@@ -33,29 +33,27 @@ const flyOffsets = featured.slice(0, 3).map(() => {
 ---
 
 <Layout title={site.title}>
-  <section class="relative flex min-h-[85vh] items-end overflow-hidden">
+  <section id="hero" class="relative flex min-h-dvh items-end overflow-hidden">
     <HeroSlideshow client:load slides={slides} />
-    <div class="relative z-10 mx-auto w-full max-w-6xl px-6 pb-20">
+    <!-- Reserves the layout space for the animated title, which is rendered
+         once in Header.astro and morphs into the corner brand on scroll. -->
+    <div id="hero-placeholder" class="invisible relative z-10 mx-auto w-full max-w-6xl px-6 pb-20">
       <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">Valerio Avitabile</h1>
       <p class="mt-3 text-xl text-accent">Astrophotography</p>
     </div>
   </section>
 
   <section class="border-t border-white/5">
-    <div class="mx-auto grid max-w-6xl items-end gap-10 px-6 py-24 md:grid-cols-[3fr_2fr]">
-      <div class="reveal-left text-left">
-        <p class="eyebrow">Portfolio</p>
-        <h2 class="mt-4 text-5xl font-semibold leading-[1.05] sm:text-6xl">The universe<br /> in your eyes</h2>
-      </div>
-      <div class="reveal-right flex flex-col items-end gap-8 text-right" style="--reveal-delay: 120ms">
-        <p class="max-w-xs text-lg leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
-        <a href="/portfolio/" class="btn-accent text-base">
-          <span>More</span>
-          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
-      </div>
+    <div class="reveal-left mx-auto max-w-6xl px-6 py-24 text-left">
+      <p class="eyebrow">Portfolio</p>
+      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">The universe in your eyes</h2>
+      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
+      <a href="/portfolio/" class="btn-accent mt-6 text-base">
+        <span>More</span>
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
     </div>
   </section>
 
@@ -75,20 +73,16 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   </section>
 
   <section class="border-t border-white/5">
-    <div class="mx-auto grid max-w-6xl items-end gap-10 px-6 py-24 md:grid-cols-[3fr_2fr]">
-      <div class="reveal-left text-left">
-        <p class="eyebrow">How can I help you?</p>
-        <h2 class="mt-4 text-5xl font-semibold leading-[1.05] sm:text-6xl">Customised<br /> online courses</h2>
-      </div>
-      <div class="reveal-right flex flex-col items-end gap-8 text-right" style="--reveal-delay: 120ms">
-        <p class="max-w-xs text-lg leading-relaxed text-white/70">Stacking, photo editing, software, and other tips</p>
-        <a href="/courses/" class="btn-accent text-base">
-          <span>More</span>
-          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
-      </div>
+    <div class="reveal-left mx-auto max-w-6xl px-6 py-24 text-left">
+      <p class="eyebrow">How can I help you?</p>
+      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">Customised online courses</h2>
+      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Stacking, photo editing, software, and other tips</p>
+      <a href="/courses/" class="btn-accent mt-6 text-base">
+        <span>More</span>
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
     </div>
 
     <div class="mx-auto max-w-6xl px-6 pb-24">
@@ -111,14 +105,12 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   </section>
 
   <section class="border-t border-white/5 bg-surface/40">
-    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
-      <div class="reveal-left">
-        <p class="eyebrow">Video &amp; Utilities</p>
-        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
-          Discover my videos and tools for astronomical calculations
-        </h2>
-      </div>
-      <div class="reveal-left flex flex-col items-start justify-center gap-6" style="--reveal-delay: 120ms">
+    <div class="reveal-left mx-auto max-w-6xl px-6 py-20 text-left">
+      <p class="eyebrow">Video &amp; Utilities</p>
+      <h2 class="mt-3 whitespace-nowrap text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
+        Discover my videos and tools for astronomical calculations
+      </h2>
+      <div class="mt-6 flex flex-col gap-6">
         <div data-parallax="-0.03">
           <p class="text-lg text-white/70">Video &amp; tutorial</p>
           <a href="/videos/" class="btn-accent mt-4">
@@ -142,25 +134,23 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   </section>
 
   <section class="border-t border-white/5">
-    <div class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2">
-      <div class="reveal-left">
-        <p class="eyebrow">About me</p>
-        <h2 class="mt-3 text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
-          Astrophotography is a lifestyle, a community, a way of being&hellip;
-        </h2>
-        <a href="/about/" class="btn-accent mt-6">
-          <span>More</span>
-          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
-      </div>
-      <div class="reveal-left flex flex-col items-start justify-center gap-6" style="--reveal-delay: 120ms">
+    <div class="reveal-left mx-auto max-w-6xl px-6 py-20 text-left">
+      <p class="eyebrow">About me</p>
+      <h2 class="mt-3 whitespace-nowrap text-3xl font-semibold sm:text-4xl" data-parallax="0.04">
+        Astrophotography is a lifestyle, a community, a way of being&hellip;
+      </h2>
+      <a href="/about/" class="btn-accent mt-6">
+        <span>More</span>
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <div class="mt-10">
         <p class="text-lg text-white/70" data-parallax="-0.03">
           Do you have any questions?<br /> Feel free to write to me, I will be happy to answer you. Select
           your favorite channels.
         </p>
-        <a href="/contact/" class="btn-accent">
+        <a href="/contact/" class="btn-accent mt-4">
           <span>Contact me</span>
           <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />

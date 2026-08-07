@@ -33,3 +33,21 @@ Cambiato:
 **Perché:** l'utente voleva l'effetto a mosaico più lento e scroll-driven (ripetibile ogni volta che si scrolla via e si torna sulla sezione), non più un reveal one-shot.
 
 **Come si applica:** per altre sezioni con `.mosaic-reveal`, questo comportamento (replay ad ogni ingresso in viewport) è ora lo standard; se in futuro serve un reveal one-shot altrove, va gestito con una variante dedicata invece di modificare questo meccanismo condiviso.
+
+## 2026-08-07 — Fix: colonna destra delle sezioni "Video & Utilities" e "About me" non entrava più da destra
+
+Nelle due sezioni finali di `src/pages/index.astro` (Video & Utilities, About me) entrambe le colonne del grid a due colonne usavano `reveal-left`, quindi la colonna di destra scorreva da sinistra invece che da destra (a differenza delle sezioni Portfolio/Corsi più in alto, che usano correttamente `reveal-left` + `reveal-right`). L'utente se n'è accorto perché l'animazione a scorrimento laterale (sx→dx per i testi a sinistra, dx→sx per quelli a destra) sembrava sparita.
+
+**Perché:** probabile refuso in fase di scrittura del markup: le colonne destre di quelle due sezioni non hanno `text-right`/`items-end` come le prime due (layout diverso, testo comunque allineato a sinistra), il che ha reso più facile copiare `reveal-left` per errore invece di `reveal-right`.
+
+**Come si applica:** la direzione di `reveal-left`/`reveal-right` dipende da dove si trova la colonna nel grid (sinistra/destra), non dall'allineamento del testo al suo interno — non vanno confusi. Se in futuro l'animazione sembra "sparita" solo su alcune sezioni, controllare prima quale classe reveal è applicata a ciascuna colonna in `index.astro`.
+
+## 2026-08-07 — `.reveal`/`.reveal-left`/`.reveal-right` resi ripetibili (replay ad ogni ingresso in viewport)
+
+L'observer in `ScrollReveal.astro` faceva `unobserve` dopo il primo reveal (one-shot): una volta apparso, il testo restava visibile per sempre, anche scrollando via e tornando indietro. L'utente vuole invece che, scrollando verso l'alto (via dalla sezione), il testo si nasconda di nuovo (tornando alla posizione traslata sx/dx con opacity 0) e rianimi da capo quando si rientra nella sezione scrollando in basso.
+
+Cambiato l'observer da "aggiungi `is-visible` una volta e unobserve" a un toggle: `entry.target.classList.toggle('is-visible', entry.isIntersecting)`, senza mai fare unobserve. Stesso pattern già usato per `.mosaic-reveal` (vedi voce sopra). Verificato con test Playwright headless (scroll giù → nascondi scroll su → rianima scroll giù) che il replay funziona.
+
+**Perché:** richiesta esplicita dell'utente di comportamento ripetibile/scroll-driven, non one-shot, per `reveal-left`/`reveal-right` (e di conseguenza anche `.reveal`, condividono lo stesso observer e nessuna pagina usa ancora `.reveal` da sola).
+
+**Come si applica:** questo è ora lo standard per tutte le classi `.reveal*` (tranne `.reveal-hero`, che resta one-shot al primo scroll perché gestisce la hero già visibile al load). Nuovi blocchi con `reveal-left`/`reveal-right` erediteranno automaticamente il comportamento ripetibile.

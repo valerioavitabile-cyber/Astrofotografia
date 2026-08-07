@@ -1,31 +1,417 @@
 ---
-import { mainNav } from '../data/site';
-import MobileNav from './MobileNav';
+import { site, mainNav } from '../data/site';
 
 const currentPath = new URL(Astro.request.url).pathname;
+const isHome = currentPath === '/';
 ---
 
-<header class="fixed inset-x-0 top-0 z-30 border-b border-white/5 bg-ink/80 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href="/" class="text-lg font-semibold tracking-wide">
-      Valerio Avitabile
-      <span class="ml-2 text-xs font-normal uppercase tracking-[0.2em] text-accent">Astrophotography</span>
-    </a>
+<div id="menus-container">
+  {
+    isHome ? (
+      <div class="hero-clone notranslate">
+        <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">{site.title}</h1>
+        <p class="mt-3 text-xl text-accent">{site.tagline}</p>
+      </div>
+    ) : (
+      <a href="/" class="site-brand">
+        <span class="notranslate">{site.title}</span>
+        <span class="site-brand-tag">{site.tagline}</span>
+      </a>
+    )
+  }
 
-    <nav class="hidden gap-8 text-sm font-medium uppercase tracking-wide md:flex">
-      {mainNav.map((item) => (
-        <a
-          href={item.href}
-          class:list={[
-            'transition hover:text-accent',
-            currentPath === item.href ? 'text-accent' : 'text-white/80',
-          ]}
-        >
-          {item.label}
-        </a>
-      ))}
-    </nav>
+  <nav id="primary-menu">
+    <div class="nav-links">
+      {
+        mainNav.map((item) => (
+          <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
 
-    <MobileNav client:load items={mainNav} currentPath={currentPath} />
+  <div class="hamburger-menu">
+    <input id="menu-toggle" type="checkbox" />
+    <label class="menu-button" for="menu-toggle"><span></span></label>
+    <div class="menu-container">
+      <div class="menu-background"></div>
+      <ul class="menu-box">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <label class="menu-overlay" for="menu-toggle"></label>
   </div>
-</header>
+</div>
+
+<style>
+  .site-brand {
+    position: fixed;
+    top: 22px;
+    left: 25px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .site-brand-tag {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent);
+  }
+
+  /* The home-page title starts exactly where the hero placeholder sits
+     (--hero-x0/--hero-y0/scale 1, measured by ScrollReveal.astro) and morphs
+     into the corner brand position (--hero-x1/--hero-y1/--hero-scale1) as
+     --hero-progress goes 0 -> 1 on scroll. Same element throughout: no
+     second element fading in underneath it. */
+  .hero-clone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    line-height: 1.1;
+    color: #fff;
+    transform-origin: top left;
+    transform: translate3d(
+        calc(var(--hero-x0, 0px) + (var(--hero-x1, 25px) - var(--hero-x0, 0px)) * var(--hero-progress, 0)),
+        calc(var(--hero-y0, 0px) + (var(--hero-y1, 22px) - var(--hero-y0, 0px)) * var(--hero-progress, 0)),
+        0
+      )
+      scale(calc(1 + (var(--hero-scale1, 0.33) - 1) * var(--hero-progress, 0)));
+    will-change: transform;
+    /* Hidden until JS measures its exact start position, so it never
+       flashes pinned at the viewport's top-left corner for a frame. */
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .hero-clone.is-ready {
+    opacity: 1;
+  }
+
+  .hero-clone p {
+    color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-clone {
+      position: fixed;
+      top: 22px;
+      left: 25px;
+      transform: none;
+      opacity: 1;
+    }
+
+    .hero-clone h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-clone p {
+      margin-top: 0;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+  }
+
+  #primary-menu {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    padding: 1px 0;
+    z-index: 998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease,
+      background-color 0.3s ease,
+      backdrop-filter 0.3s ease,
+      top 0.3s ease;
+  }
+
+  #primary-menu.menu-scrolled {
+    background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  #primary-menu .nav-links {
+    display: flex;
+    gap: 8px;
+  }
+
+  #primary-menu .nav-links a {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: -0.5px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    padding: 16px 8px 1px 8px;
+    margin: 0 4px;
+    border-radius: 5px;
+    transition:
+      color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  #primary-menu .nav-links a:hover {
+    color: #fff;
+    background-color: var(--color-surface-2);
+  }
+
+  #primary-menu .nav-links a.is-active {
+    color: var(--color-accent);
+  }
+
+  .menu-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .hamburger-menu {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 1001;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease,
+      top 0.3s ease;
+  }
+
+  #menu-toggle {
+    display: none;
+  }
+
+  .menu-button {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 1002;
+  }
+
+  .menu-button > span,
+  .menu-button > span::before,
+  .menu-button > span::after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .menu-button > span::before {
+    content: '';
+    top: -8px;
+  }
+
+  .menu-button > span::after {
+    content: '';
+    top: 8px;
+  }
+
+  #menu-toggle:checked ~ .menu-button > span {
+    transform: rotate(45deg);
+    background-color: #fff;
+  }
+
+  #menu-toggle:checked ~ .menu-button > span::before {
+    top: 0;
+    transform: rotate(0);
+  }
+
+  #menu-toggle:checked ~ .menu-button > span::after {
+    top: 0;
+    transform: rotate(90deg);
+  }
+
+  .menu-container {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100%;
+    transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1001;
+  }
+
+  #menu-toggle:checked ~ .menu-container {
+    right: 0;
+  }
+
+  .menu-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .menu-box {
+    position: relative;
+    z-index: 1002;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 80px 25px 20px 25px;
+    list-style: none;
+    text-align: left;
+  }
+
+  .menu-box li a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s ease;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding: 15px 0;
+  }
+
+  .menu-box li a:hover,
+  .menu-box li a.is-active {
+    color: var(--color-accent);
+  }
+
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+    z-index: 1000;
+  }
+
+  #menu-toggle:checked ~ .menu-overlay {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media (max-width: 1200px) {
+    #primary-menu {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .site-brand {
+      top: 12px;
+      font-size: 14px;
+    }
+
+    .hamburger-menu {
+      top: 15px;
+    }
+  }
+</style>
+
+<script>
+  function setupMenu() {
+    const primaryMenu = document.getElementById('primary-menu');
+    const hamburgerMenu = document.querySelector<HTMLElement>('.hamburger-menu');
+    const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement | null;
+    const menuLinks = document.querySelectorAll<HTMLAnchorElement>('.menu-box a, #primary-menu a');
+
+    if (!primaryMenu || !hamburgerMenu || !menuToggle) return;
+
+    function setMenuState() {
+      const isDesktop = window.matchMedia('(min-width: 1201px)').matches;
+      if (isDesktop) {
+        if (window.scrollY > 5) {
+          primaryMenu.classList.add('menu-scrolled');
+        } else {
+          primaryMenu.classList.remove('menu-scrolled');
+        }
+        if (window.scrollY > 40) {
+          primaryMenu.classList.add('menu-hidden');
+          hamburgerMenu.classList.remove('menu-hidden');
+        } else {
+          primaryMenu.classList.remove('menu-hidden');
+          hamburgerMenu.classList.add('menu-hidden');
+        }
+      } else {
+        primaryMenu.classList.add('menu-hidden');
+        hamburgerMenu.classList.remove('menu-hidden');
+      }
+    }
+
+    setMenuState();
+    window.addEventListener('scroll', setMenuState, { passive: true });
+    window.addEventListener('resize', setMenuState);
+
+    function closeMenu() {
+      if (menuToggle.checked) {
+        menuToggle.checked = false;
+      }
+    }
+
+    menuLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+        if (window.matchMedia('(min-width: 1201px)').matches) {
+          primaryMenu.classList.add('menu-hidden');
+          hamburgerMenu.classList.remove('menu-hidden');
+        }
+      });
+    });
+
+    const menuTriggers = document.querySelectorAll<HTMLElement>('.menu-button, .menu-overlay');
+    menuTriggers.forEach((trigger) => {
+      trigger.addEventListener('mousedown', (event) => event.preventDefault());
+    });
+  }
+
+  setupMenu();
+  document.addEventListener('astro:page-load', setupMenu);
+</script>
