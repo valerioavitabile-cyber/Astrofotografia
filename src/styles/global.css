@@ -48,11 +48,93 @@
     transform: translateY(0);
   }
 
+  .reveal-left,
+  .reveal-right {
+    opacity: 0;
+    transition:
+      opacity 1.4s ease-out,
+      transform 1.4s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal-left {
+    transform: translateX(-3rem);
+  }
+
+  .reveal-right {
+    transform: translateX(3rem);
+  }
+
+  .reveal-left.is-visible,
+  .reveal-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .reveal {
+    .reveal,
+    .reveal-left,
+    .reveal-right {
       opacity: 1;
       transform: none;
       transition: none;
+    }
+  }
+
+  /* Mosaic reveal: a grid of tiles covers the media and peels away tile
+     by tile (random per-tile delay set via JS) before playback starts. */
+  .mosaic-reveal {
+    position: relative;
+  }
+
+  .mosaic-tiles {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    pointer-events: none;
+  }
+
+  .mosaic-tile {
+    background: var(--color-ink);
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 1.2s ease-out,
+      transform 1.2s ease-out;
+  }
+
+  .mosaic-reveal.is-visible .mosaic-tile {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mosaic-tile {
+      transition: none;
+    }
+  }
+
+  /* Scroll-driven "fly in": --fly-progress (0 -> 1) is written by JS on
+     every scroll frame, so opacity/position track scroll directly and
+     reverse naturally when scrolling back up. Defaults to fully visible
+     so the section still renders correctly without JS. */
+  .scroll-fly {
+    opacity: var(--fly-progress, 1);
+    transform: translate(
+        calc(var(--fly-x, 0px) * (1 - var(--fly-progress, 1))),
+        calc(var(--fly-y, 0px) * (1 - var(--fly-progress, 1)))
+      )
+      scale(calc(0.8 + 0.2 * var(--fly-progress, 1)));
+    will-change: opacity, transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-fly {
+      opacity: 1;
+      transform: none;
     }
   }
 
@@ -74,5 +156,30 @@
 
   .prose-astro a {
     @apply text-accent underline underline-offset-2 hover:text-white;
+  }
+
+  /* Hero slideshow blur-in: replayed by React whenever the hero re-enters
+     the viewport (fresh page load or scrolling back to the top). */
+  .hero-blur-in {
+    animation: hero-blur-in 1.6s ease-out both;
+  }
+
+  @keyframes hero-blur-in {
+    from {
+      opacity: 0;
+      filter: blur(24px);
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-blur-in {
+      animation: none;
+    }
   }
 }

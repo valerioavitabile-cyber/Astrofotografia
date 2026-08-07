@@ -15,9 +15,122 @@
   );
 
   const observe = () => {
-    document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)').forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll<HTMLElement>(
+        '.reveal:not(.is-visible), .reveal-left:not(.is-visible):not(.reveal-hero), .reveal-right:not(.is-visible):not(.reveal-hero)',
+      )
+      .forEach((el) => observer.observe(el));
   };
 
-  observe();
-  document.addEventListener('astro:page-load', observe);
+  const revealHero = () => {
+    document.querySelectorAll<HTMLElement>('.reveal-hero:not(.is-visible)').forEach((el) => {
+      el.classList.add('is-visible');
+    });
+    window.removeEventListener('scroll', revealHero);
+  };
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let flyTicking = false;
+  const updateFly = () => {
+    flyTicking = false;
+    const vh = window.innerHeight;
+    const start = vh; // element bottom-of-viewport: progress 0
+    const end = vh * 0.45; // finishes higher up the viewport: progress 1, slower feel
+    document.querySelectorAll<HTMLElement>('.scroll-fly').forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (start - rect.top) / (start - end)));
+      el.style.setProperty('--fly-progress', progress.toFixed(3));
+    });
+  };
+
+  const onFlyScroll = () => {
+    if (!flyTicking) {
+      flyTicking = true;
+      requestAnimationFrame(updateFly);
+    }
+  };
+
+  let flyListenersBound = false;
+  const setupFly = () => {
+    if (reduceMotion || !document.querySelector('.scroll-fly')) return;
+    updateFly();
+    if (!flyListenersBound) {
+      window.addEventListener('scroll', onFlyScroll, { passive: true });
+      window.addEventListener('resize', onFlyScroll);
+      flyListenersBound = true;
+    }
+  };
+
+  const setupMosaic = () => {
+    document.querySelectorAll<HTMLElement>('.mosaic-reveal:not(.mosaic-ready)').forEach((container) => {
+      container.classList.add('mosaic-ready');
+
+      const tileTransition = 1200; // matches .mosaic-tile transition duration (ms)
+      const maxDelay = 900;
+      const tiles = Array.from(container.querySelectorAll<HTMLElement>('.mosaic-tile'));
+      const randomizeDelays = () => {
+        tiles.forEach((tile) => {
+          tile.style.transitionDelay = `${Math.round(Math.random() * maxDelay)}ms`;
+        });
+      };
+      randomizeDelays();
+
+      const video = container.querySelector<HTMLVideoElement>('[data-mosaic-video]');
+      let revealTimeout: number | undefined;
+
+      const reveal = () => {
+        container.classList.add('is-visible');
+        if (video) {
+          revealTimeout = window.setTimeout(() => {
+            video.play().catch(() => {});
+          }, maxDelay + tileTransition);
+        }
+      };
+
+      const hide = () => {
+        window.clearTimeout(revealTimeout);
+        container.classList.remove('is-visible');
+        randomizeDelays();
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
+      };
+
+      if (reduceMotion) {
+        reveal();
+        return;
+      }
+
+      // Re-triggers on every entry: scrolling the section out of view (in
+      // either direction) resets the tiles so it replays from scratch
+      // the next time it scrolls back into the viewport.
+      const mosaicObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              reveal();
+            } else {
+              hide();
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+      );
+      mosaicObserver.observe(container);
+    });
+  };
+
+  const setup = () => {
+    observe();
+    setupFly();
+    setupMosaic();
+    if (document.querySelector('.reveal-hero:not(.is-visible)')) {
+      window.addEventListener('scroll', revealHero, { passive: true });
+    }
+  };
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
 </script>

@@ -16,6 +16,7 @@ interface Props {
 const { title, description = site.description } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} · ${site.title}`;
 const canonicalURL = new URL(Astro.url.pathname, site.url);
+const isHome = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
@@ -34,6 +35,14 @@ const canonicalURL = new URL(Astro.url.pathname, site.url);
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(socialCard.src, site.url)} />
     <meta name="twitter:card" content="summary_large_image" />
+    {isHome && (
+      <script is:inline>
+        if ('scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+      </script>
+    )}
   </head>
   <body>
     <Header />

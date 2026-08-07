@@ -1,3 +1,9 @@
+## Second Brain (memoria persistente del progetto)
+
+All'inizio di ogni nuova chat, leggi `second-brain/index.md` e i file collegati rilevanti per capire il contesto del lavoro fatto finora su questo progetto.
+
+Alla fine di ogni chat, aggiorna i file pertinenti in `second-brain/` (nuove decisioni, preferenze emerse, stato del progetto) e aggiungi una riga di sintesi in `second-brain/log.md`.
+
 ## Development
 
 When starting the dev server, use background mode:
