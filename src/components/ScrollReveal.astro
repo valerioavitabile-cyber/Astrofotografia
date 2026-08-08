@@ -17,7 +17,7 @@
   const observe = () => {
     document
       .querySelectorAll<HTMLElement>(
-        '.reveal, .reveal-left:not(.reveal-hero), .reveal-right:not(.reveal-hero), .reveal-blur, .reveal-fade',
+        '.reveal, .reveal-left:not(.reveal-hero), .reveal-right:not(.reveal-hero), .reveal-blur, .reveal-fade, .barn-door-reveal',
       )
       .forEach((el) => observer.observe(el));
   };
@@ -172,7 +172,7 @@
     document.querySelectorAll<HTMLElement>('.mosaic-reveal').forEach((container) => {
       mosaicObservers.get(container)?.disconnect();
 
-      const maxDelay = 900;
+      const maxDelay = 1800;
       const tiles = Array.from(container.querySelectorAll<HTMLElement>('.mosaic-tile'));
       const randomizeDelays = () => {
         tiles.forEach((tile) => {

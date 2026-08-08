@@ -84,6 +84,53 @@
     }
   }
 
+  /* Barn door reveal: two panels cover the media and swing open to the
+     sides like a pair of barn doors, unveiling the photo underneath. */
+  .barn-door-reveal {
+    position: relative;
+  }
+
+  .barn-door {
+    position: absolute;
+    inset-block: 0;
+    width: 50%;
+    z-index: 10;
+    background: var(--color-ink);
+    transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+  }
+
+  .barn-door-left {
+    left: 0;
+    transform: translateX(0);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .barn-door-right {
+    right: 0;
+    transform: translateX(0);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .barn-door-reveal.is-visible .barn-door-left {
+    transform: translateX(-100%);
+  }
+
+  .barn-door-reveal.is-visible .barn-door-right {
+    transform: translateX(100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .barn-door {
+      transition: none;
+      transform: translateX(-100%);
+    }
+
+    .barn-door-right {
+      transform: translateX(100%);
+    }
+  }
+
   /* Mosaic reveal: a grid of tiles covers the media and peels away tile
      by tile (random per-tile delay set via JS) before playback starts. */
   .mosaic-reveal {
@@ -95,8 +142,8 @@
     inset: 0;
     z-index: 10;
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(13, 1fr);
     pointer-events: none;
   }
 
@@ -105,8 +152,8 @@
     opacity: 1;
     transform: scale(1);
     transition:
-      opacity 1.2s ease-out,
-      transform 1.2s ease-out;
+      opacity 2.4s ease-out,
+      transform 2.4s ease-out;
   }
 
   .mosaic-reveal.is-visible .mosaic-tile {

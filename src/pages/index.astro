@@ -8,6 +8,9 @@ import ic443 from '../assets/home/ic443-sho.jpg';
 import m44 from '../assets/home/m44.jpg';
 import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
 import wr134 from '../assets/home/wr134.jpg';
+import m33 from '../assets/home/the universe in your eyes/m33HaO3LRGB.jpg';
+import ngc1333 from '../assets/home/the universe in your eyes/NGC1333LRGB.jpg';
+import m45 from '../assets/home/the universe in your eyes/m45LRGB.jpg';
 import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
 import videoTutorial from '../assets/home/video tutorial 2.png';
 import astronomyTool from '../assets/home/astronomy tool.png';
@@ -25,7 +28,13 @@ const featured = [
 
 const slides = featured.map(({ img, alt }) => ({ src: img.src, alt }));
 
-const flyOffsets = featured.slice(0, 3).map(() => {
+const portfolioGrid = [
+  { img: m33, alt: 'M33, the Triangulum Galaxy' },
+  { img: ngc1333, alt: 'NGC 1333 reflection nebula complex' },
+  { img: m45, alt: 'M45, the Pleiades' },
+];
+
+const flyOffsets = portfolioGrid.map(() => {
   const angle = Math.random() * Math.PI * 2;
   const distance = 260 + Math.random() * 260;
   return {
@@ -55,7 +64,7 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   </section>
 
   <section class="grid grid-cols-1 gap-6 px-6 pb-24 sm:grid-cols-3 sm:pb-32">
-    {featured.slice(0, 3).map(({ img, alt }, i) => (
+    {portfolioGrid.map(({ img, alt }, i) => (
       <a
         href="/portfolio/"
         class="scroll-fly media-card group block"
@@ -95,7 +104,7 @@ const flyOffsets = featured.slice(0, 3).map(() => {
           data-mosaic-video
         />
         <div class="mosaic-tiles" aria-hidden="true">
-          {Array.from({ length: 160 }).map(() => (
+          {Array.from({ length: 260 }).map(() => (
             <span class="mosaic-tile"></span>
           ))}
         </div>
@@ -153,7 +162,7 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   <section class="border-t border-white/5">
     <div class="mx-auto max-w-6xl px-6 py-20">
       <div class="grid gap-12 md:grid-cols-2 md:items-center">
-        <a href="/about/" data-portrait-link class="reveal-left media-card group block aspect-[4/5] w-full max-w-md">
+        <a href="/about/" data-portrait-link class="barn-door-reveal media-card group block aspect-[4/5] w-full max-w-md">
           <Image
             quality={90}
             src={portrait}
@@ -161,6 +170,8 @@ const flyOffsets = featured.slice(0, 3).map(() => {
             class="h-full rounded-2xl"
             transition:name="about-portrait"
           />
+          <span class="barn-door barn-door-left" aria-hidden="true"></span>
+          <span class="barn-door barn-door-right" aria-hidden="true"></span>
           <span class="media-card-overlay">
             <span class="media-card-label">
               <span>Read my story</span>

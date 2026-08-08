@@ -65,7 +65,14 @@ const isHome = Astro.url.pathname === '/';
         if ('scrollRestoration' in history) {
           history.scrollRestoration = 'manual';
         }
+        // A single early scrollTo isn't enough: the browser can re-apply its
+        // own scroll restoration after this script runs (notably on
+        // 'pageshow', which also fires when the page is served from the
+        // bfcache on refresh/back-forward), so it's forced back to the top
+        // again at each of these later points too.
         window.scrollTo(0, 0);
+        window.addEventListener('load', () => window.scrollTo(0, 0));
+        window.addEventListener('pageshow', () => window.scrollTo(0, 0));
       </script>
     )}
   </head>
