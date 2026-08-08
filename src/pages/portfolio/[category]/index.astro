@@ -35,11 +35,11 @@ const entries = (await getCollection('portfolio')).filter((e) => e.id.split('/')
       </p>
     )}
 
-    <div class="fan-gallery mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="stack-gallery mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map((entry) => (
         <a
           href={`/portfolio/${cat.slug}/${entry.id.split('/').pop()}/`}
-          class="fan-card group relative overflow-hidden rounded-2xl border border-white/10 hover:border-accent/60"
+          class="stack-card group relative overflow-hidden rounded-2xl border border-white/10 hover:border-accent/60"
         >
           <Image
             quality={90}

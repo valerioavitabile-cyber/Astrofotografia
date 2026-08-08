@@ -241,7 +241,7 @@
               },
               { once: true },
             );
-          }, i * 500),
+          }, i * 250),
         );
         irisTimers.set(gallery, timers);
       };
@@ -271,30 +271,102 @@
     });
   };
 
-  // Fan gallery: each card's "closed" stacked rotation is a fixed nth-child
-  // CSS rule (see global.css), not JS-measured geometry — the pile is the
-  // very first thing painted, with no dependency on script timing, so it
-  // can't race with the reveal and get skipped. JS only toggles
-  // .is-visible, but — unlike the other reveal-* observers — not the
-  // instant the gallery crosses the intersection threshold: it arms itself
-  // on intersection and waits for the visitor's next vertical scroll before
-  // fanning out, so the pile sits stacked until they actually scroll the
-  // section rather than fanning out passively as it scrolls into view.
-  const fanObservers = new WeakMap<HTMLElement, IntersectionObserver>();
+  // Stack gallery: cards start piled at the grid's center (rotated, scaled
+  // down) and unfurl into their natural grid position with a stagger. This
+  // is a FLIP: the grid is laid out normally by CSS, then for each card we
+  // measure its real position and compute the offset that would carry it
+  // back to the gallery's center — that offset is applied as an instant,
+  // untransitioned transform the moment the gallery is set up, so the pile
+  // is what's visible on first paint rather than the settled grid flashing
+  // first. As with the old fan gallery, it arms itself on intersection and
+  // waits for the visitor's next vertical scroll before unfurling, so the
+  // pile sits put until they actually scroll the section.
+  const stackObservers = new WeakMap<HTMLElement, IntersectionObserver>();
 
-  const setupFan = () => {
-    document.querySelectorAll<HTMLElement>('.fan-gallery').forEach((gallery) => {
-      fanObservers.get(gallery)?.disconnect();
-      const cards = Array.from(gallery.querySelectorAll<HTMLElement>('.fan-card'));
+  const setupStack = () => {
+    document.querySelectorAll<HTMLElement>('.stack-gallery').forEach((gallery) => {
+      stackObservers.get(gallery)?.disconnect();
+      const cards = Array.from(gallery.querySelectorAll<HTMLElement>('.stack-card'));
       if (!cards.length) return;
 
       if (reduceMotion) {
-        cards.forEach((card) => card.classList.add('is-visible'));
+        gallery.classList.add('is-settled');
+        cards.forEach((card) => card.classList.add('is-placed'));
         return;
       }
 
-      const reveal = () => cards.forEach((card) => card.classList.add('is-visible'));
-      const hide = () => cards.forEach((card) => card.classList.remove('is-visible'));
+      const DURATION = 2200;
+      const STAGGER = 140;
+      let settleTimer: number | null = null;
+
+      // Reads each card's laid-out position and returns the translate/
+      // rotate needed to carry it from there back to the pile's start
+      // point. Assumes cards are currently untransformed — callers reset
+      // transform to none first so a stale pile doesn't get measured and
+      // compounded.
+      const computeOffsets = () => {
+        const galleryRect = gallery.getBoundingClientRect();
+        const centerX = galleryRect.width / 2;
+        // Vertically the pile sits just below the first row rather than at
+        // the whole grid's center — anchoring to the first card (instead of
+        // galleryRect.height / 2) keeps the start point near the top
+        // regardless of how many rows the gallery has, rather than drifting
+        // down as more rows are added. The added 0.85 card-heights nudges
+        // it down from dead-center-of-row-1 to just under it.
+        const firstCardRect = cards[0].getBoundingClientRect();
+        const centerY = firstCardRect.top - galleryRect.top + firstCardRect.height * 0.85;
+        return cards.map((card, i) => {
+          const r = card.getBoundingClientRect();
+          const cardCenterX = r.left - galleryRect.left + r.width / 2;
+          const cardCenterY = r.top - galleryRect.top + r.height / 2;
+          const dx = centerX - cardCenterX;
+          const dy = centerY - cardCenterY;
+          const rot = (i % 2 === 0 ? -1 : 1) * (4 + ((i * 3) % 9));
+          return { dx, dy, rot };
+        });
+      };
+
+      const pile = () => {
+        if (settleTimer !== null) window.clearTimeout(settleTimer);
+        gallery.classList.remove('is-settled');
+        // pile() can be re-entered while cards are still mid-pile (e.g. a
+        // late image-load layout shift re-crosses the intersection
+        // threshold) — reset to the natural layout first so computeOffsets
+        // never measures an already-transformed (and therefore wrong)
+        // position. This resolves synchronously with no yield back to the
+        // renderer, so the untransformed frame is never actually painted.
+        cards.forEach((card) => {
+          card.style.transition = 'none';
+          card.style.transform = 'none';
+        });
+        const offsets = computeOffsets();
+        cards.forEach((card, i) => {
+          card.style.zIndex = String(cards.length - i);
+          card.style.transform = `translate(${offsets[i].dx}px, ${offsets[i].dy}px) rotate(${offsets[i].rot}deg) scale(0.7)`;
+          card.classList.add('is-placed');
+        });
+      };
+
+      const unfurl = () => {
+        if (settleTimer !== null) window.clearTimeout(settleTimer);
+        cards.forEach((card, i) => {
+          card.style.transition = `transform ${DURATION}ms cubic-bezier(0.22, 1, 0.36, 1) ${i * STAGGER}ms`;
+          card.style.transform = 'translate(0, 0) rotate(0deg) scale(1)';
+        });
+        settleTimer = window.setTimeout(
+          () => gallery.classList.add('is-settled'),
+          DURATION + cards.length * STAGGER,
+        );
+      };
+
+      // Cards start at opacity:0 (see global.css) and only turn visible
+      // once .is-placed lands alongside the pile transform, so nothing is
+      // ever painted in its untransformed grid slot. The double rAF waits
+      // for a real layout/paint cycle first — measuring on the same tick
+      // the script runs can catch the grid mid-CSS-load (e.g. Tailwind's
+      // column classes not yet applied in dev), which produced near-zero
+      // offsets and piled every card on top of itself.
+      requestAnimationFrame(() => requestAnimationFrame(pile));
 
       let armed = false;
       let lastScrollY = window.scrollY;
@@ -303,10 +375,10 @@
         if (!armed || window.scrollY === lastScrollY) return;
         armed = false;
         window.removeEventListener('scroll', onArmedScroll);
-        reveal();
+        unfurl();
       };
 
-      const fanObserver = new IntersectionObserver(
+      const stackObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
@@ -316,14 +388,14 @@
             } else {
               armed = false;
               window.removeEventListener('scroll', onArmedScroll);
-              hide();
+              pile();
             }
           }
         },
         { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
       );
-      fanObserver.observe(gallery);
-      fanObservers.set(gallery, fanObserver);
+      stackObserver.observe(gallery);
+      stackObservers.set(gallery, stackObserver);
     });
   };
 
@@ -332,7 +404,7 @@
     setupHeroProgress();
     setupMosaic();
     setupIris();
-    setupFan();
+    setupStack();
     if (document.querySelector('.reveal-hero:not(.is-visible)')) {
       window.addEventListener('scroll', revealHero, { passive: true });
     }

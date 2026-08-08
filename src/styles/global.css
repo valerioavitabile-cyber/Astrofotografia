@@ -89,74 +89,43 @@
     transform: translateX(0);
   }
 
-  /* Fan gallery: portfolio grid images start stacked directly on top of one
-     another like a deck of photos (each card's closed state is a fixed
-     nth-child rotation only, no offset — plain CSS rather than JS-measured
-     geometry, so the closed state is the very first thing painted and
-     there's no race with the reveal script) and fan out to their real grid
-     position once the visitor scrolls the section (see setupFan in
-     ScrollReveal.astro — it arms on intersection but only reveals on the
-     next scroll event, not immediately on entering view). */
-  .fan-card {
+  /* Stack gallery: portfolio grid images start piled at the grid's center
+     (rotated, scaled down) and unfurl into their real grid position once
+     the visitor scrolls the section. Unlike the old fan-card's fixed
+     nth-child rotations, the pile geometry here is measured in JS from the
+     actual laid-out grid — a FLIP: setupStack (ScrollReveal.astro) reads
+     each card's final position, computes the offset back to center, and
+     applies it as an instant (untransitioned) transform before first
+     paint, so the pile is what's visible on load with no flash of the
+     settled grid. It arms on intersection but only unfurls on the next
+     scroll event, same trigger as the old fan gallery. The drop shadow
+     here stands in for the closed deck's "stacked photos" look. */
+  .stack-card {
+    position: relative;
+    overflow: hidden;
     opacity: 0;
-    transform: rotate(-6deg);
-    transition:
-      transform 1.8s cubic-bezier(0.65, 0, 0.35, 1),
-      opacity 1.3s ease-out,
-      border-color 0.5s ease;
+    will-change: transform;
   }
 
-  .fan-gallery .fan-card:nth-child(1) {
-    transform: rotate(-8deg);
-    z-index: 9;
-    transition-delay: 0ms;
-  }
-  .fan-gallery .fan-card:nth-child(2) {
-    transform: rotate(6deg);
-    z-index: 8;
-    transition-delay: 122ms;
-  }
-  .fan-gallery .fan-card:nth-child(3) {
-    transform: rotate(-4deg);
-    z-index: 7;
-    transition-delay: 245ms;
-  }
-  .fan-gallery .fan-card:nth-child(4) {
-    transform: rotate(9deg);
-    z-index: 6;
-    transition-delay: 367ms;
-  }
-  .fan-gallery .fan-card:nth-child(5) {
-    transform: rotate(-10deg);
-    z-index: 5;
-    transition-delay: 490ms;
-  }
-  .fan-gallery .fan-card:nth-child(6) {
-    transform: rotate(5deg);
-    z-index: 4;
-    transition-delay: 612ms;
-  }
-  .fan-gallery .fan-card:nth-child(7) {
-    transform: rotate(-7deg);
-    z-index: 3;
-    transition-delay: 735ms;
-  }
-  .fan-gallery .fan-card:nth-child(8) {
-    transform: rotate(8deg);
-    z-index: 2;
-    transition-delay: 857ms;
-  }
-  .fan-gallery .fan-card:nth-child(9) {
-    transform: rotate(-5deg);
-    z-index: 1;
-    transition-delay: 980ms;
+  /* JS flips this to 1 the instant it has computed and applied the pile
+     transform (see setupStack), so the card only ever becomes visible
+     already in its stacked position — never in its untransformed grid
+     slot for even a frame. */
+  .stack-card.is-placed {
+    opacity: 1;
   }
 
-  /* Matches the nth-child rules' specificity (.fan-gallery + .fan-card +
-     one more selector) so the open state reliably wins over the closed
-     one instead of losing the cascade tie. */
-  .fan-gallery .fan-card.is-visible {
-    transform: translate(0, 0) rotate(0deg);
+  .stack-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  .stack-gallery:not(.is-settled) .stack-card::after {
     opacity: 1;
   }
 
@@ -166,7 +135,7 @@
     .reveal-right,
     .reveal-blur,
     .reveal-fade,
-    .fan-card {
+    .stack-card {
       opacity: 1;
       transform: none;
       filter: none;
