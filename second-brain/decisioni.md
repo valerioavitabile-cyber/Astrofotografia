@@ -108,4 +108,21 @@ Implementazione (nessun URL dedicato, stessa pagina per entrambe le lingue):
 
 **Perché:** l'utente vuole che il sito sia fruibile sia in italiano che in inglese, senza dover mantenere pagine duplicate per lingua (routing `/it/`/`/en/` scartato per semplicità di manutenzione su un sito di queste dimensioni).
 
-**Come si applica:** per nuove pagine o nuovo testo statico, seguire lo stesso pattern — span `data-lang-en`/`data-lang-it` per testo breve inline, div per blocchi lunghi/paragrafi, `data-tr` per attributi HTML, nuovo file `.md` gemello in una collection `*It` per contenuto markdown lungo. Non serve toccare `LangSwitcher.astro` o il CSS per aggiungere nuovo testo bilingue: il meccanismo è generico e si applica automaticamente a qualunque elemento marcato con quegli attributi.
+**Come si applica:** per nuove pagine o nuovo testo statico, seguire lo stesso pattern — span `data-lang-en`/`data-lang-it` per testo breve inline, div per blocchi lunghi/paragrafi, `data-tr` per attributi HTML. **Superato per il markdown lungo (portfolio/about) dalla voce successiva**, che consolida le collection gemelle `*It` in un unico file per entry.
+
+## 2026-08-08 — Consolidate collection `portfolioIt`/`aboutIt` in un unico file bilingue per entry
+
+Le collection gemelle `portfolioIt` (38 file in `src/content/portfolio-it/`) e `aboutIt` (`src/content/about-it/bio.md`), introdotte nella voce precedente, duplicavano un intero file `.md` per ogni entry solo per il testo italiano — stesso `id`/filename, frontmatter quasi identico, spesso senza `image` (con fallback all'inglese) o altri campi. Questo aveva già causato un bug reale: `portfolio-it/andromeda.md` aveva `image` copiato per errore da `b150.jpg` invece di ereditare quello inglese.
+
+L'utente ha chiesto di gestire le due lingue con **un solo file per entry** invece di due file in cartelle separate, con una sola immagine condivisa.
+
+Cambiato:
+- `src/content.config.ts`: rimosse le collection `portfolioIt`/`aboutIt`. `portfolio` e `about` hanno ora un campo frontmatter `bodyIt: z.string()` (markdown italiano grezzo, YAML block scalar `|`) accanto al body markdown esistente (che resta il testo inglese, invariato). `about` ha anche `titleIt: z.string()` (i titoli portfolio non necessitavano un `titleIt`: verificato che sono identici in tutte le 38 coppie, es. "M31 Andromeda").
+- Aggiunta dipendenza `marked` (package.json) per convertire `bodyIt` (stringa markdown) in HTML a build time, dato che `render()` di Astro funziona solo su entry di collection vere, non su stringhe di frontmatter.
+- `src/pages/portfolio/[category]/[object].astro` e `src/pages/about/index.astro`: non fanno più `getEntry('portfolioIt'/'aboutIt', ...)`; usano `entry.data.image` direttamente (una sola immagine, niente più `entryIt?.data.image ?? entry.data.image`) e `<div data-lang-it set:html={await marked.parse(entry.data.bodyIt)} />` al posto del secondo `<Content />`.
+- 38 file `src/content/portfolio/*.md` migrati con uno script Node una tantum (merge frontmatter + `bodyIt` indentato), poi cancellate le cartelle `portfolio-it/` e `about-it/`.
+- Build verificata (`npx astro build`, 58 pagine, nessun errore); controllato l'HTML generato per `/portfolio/galaxies/andromeda/` (ora usa `andromeda.jpg` per entrambe le lingue, bug corretto) e `/about/`.
+
+**Perché:** meno file da mantenere in sync (1 invece di 2 per entry), impossibile che le due lingue divergano su campi condivisi come `image`/`category`/`astrobinLink` (la classe di bug vista su andromeda diventa strutturalmente impossibile), workflow di editing più snello come richiesto dall'utente.
+
+**Come si applica:** per aggiungere/modificare una scheda portfolio o la bio, editare **un solo file** (`src/content/portfolio/<slug>.md` o `src/content/about/bio.md`): body markdown = inglese, campo frontmatter `bodyIt: |` (indentato di 2 spazi) = italiano. Se in futuro serve un altro campo che può differire per lingua (oltre a `bodyIt`/`titleIt`), aggiungerlo come `<campo>It` nello schema Zod della collection, non come collection/file separato.

@@ -3,12 +3,12 @@ import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import { slide } from 'astro:transitions';
+import { marked } from 'marked';
 import portrait from '../../assets/about/portrait.jpg';
 
 const entry = await getEntry('about', 'bio');
 const { Content } = await render(entry);
-const entryIt = await getEntry('aboutIt', 'bio');
-const { Content: ContentIt } = await render(entryIt);
+const contentItHtml = await marked.parse(entry.data.bodyIt);
 ---
 
 <Layout
@@ -37,9 +37,7 @@ const { Content: ContentIt } = await render(entryIt);
           <div data-lang-en>
             <Content />
           </div>
-          <div data-lang-it>
-            <ContentIt />
-          </div>
+          <div data-lang-it set:html={contentItHtml} />
         </div>
       </div>
     </div>

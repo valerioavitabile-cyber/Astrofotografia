@@ -8,7 +8,8 @@ const entries = await getCollection('portfolio');
 
 const covers: Record<string, (typeof entries)[number]> = {};
 for (const entry of entries) {
-  if (!covers[entry.data.category]) covers[entry.data.category] = entry;
+  const categoryId = entry.id.split('/')[0];
+  if (!covers[categoryId]) covers[categoryId] = entry;
 }
 ---
 

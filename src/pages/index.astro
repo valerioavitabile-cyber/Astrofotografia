@@ -34,7 +34,8 @@ const slides = await Promise.all(
 const portfolioEntries = await getCollection('portfolio');
 const portfolioCovers: Record<string, (typeof portfolioEntries)[number]> = {};
 for (const entry of portfolioEntries) {
-  if (!portfolioCovers[entry.data.category]) portfolioCovers[entry.data.category] = entry;
+  const categoryId = entry.id.split('/')[0];
+  if (!portfolioCovers[categoryId]) portfolioCovers[categoryId] = entry;
 }
 const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
   id,

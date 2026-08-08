@@ -1,16 +1,18 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { getImage } from 'astro:assets';
+import { marked } from 'marked';
 import Lightbox from '../../../components/Lightbox';
 import { categories } from '../../../data/site';
 
 export async function getStaticPaths() {
   const entries = await getCollection('portfolio');
   return entries.map((entry) => {
-    const cat = categories[entry.data.category];
+    const [categoryId, objectSlug] = entry.id.split('/');
+    const cat = categories[categoryId as keyof typeof categories];
     return {
-      params: { category: cat.slug, object: entry.id },
+      params: { category: cat.slug, object: objectSlug },
       props: { entry },
     };
   });
@@ -18,10 +20,13 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const entryIt = await getEntry('portfolioIt', entry.id);
-const ContentIt = entryIt ? (await render(entryIt)).Content : null;
-const cat = categories[entry.data.category];
-const optimized = await getImage({ src: entry.data.image, width: 1600, quality: 90 });
+const contentItHtml = await marked.parse(entry.data.bodyIt);
+const cat = categories[entry.id.split('/')[0] as keyof typeof categories];
+const optimized = await getImage({
+  src: entry.data.image,
+  width: 1600,
+  quality: 90,
+});
 ---
 
 <Layout
@@ -51,9 +56,7 @@ const optimized = await getImage({ src: entry.data.image, width: 1600, quality: 
       <div data-lang-en>
         <Content />
       </div>
-      <div data-lang-it>
-        {ContentIt ? <ContentIt /> : <Content />}
-      </div>
+      <div data-lang-it set:html={contentItHtml} />
     </div>
 
     {entry.data.astrobinLink && (

@@ -1,4 +1,0 @@
----
-title: "Cygnus wall"
----
-Il Muro del Cigno (Cygnus Wall), ripreso in palette SHO (Hubble Palette), mostra con dettaglio straordinario la regione di formazione stellare all'interno della Nebulosa Nord America (NGC 7000). In questa palette, lo zolfo-II (SII) viene mappato sul rosso, l'idrogeno-alfa (Hα) sul verde e l'ossigeno-III (OIII) sul blu, enfatizzando la distribuzione dei gas ionizzati. Il Muro appare come una cresta luminosa di gas e polvere con strutture intricate come pilastri, filamenti e bande scure, modellate dai venti stellari e dalla radiazione ultravioletta delle vicine stelle massicce. La tecnica SHO amplifica i contrasti tra i gas, rivelando i processi dinamici e la composizione della nebulosa, offrendo al contempo una vista vivace ed esteticamente affascinante di questa nursery stellare.

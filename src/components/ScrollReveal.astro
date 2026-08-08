@@ -271,11 +271,15 @@
     });
   };
 
-  // Fan gallery: each card's "closed" stacked position/rotation is a fixed
-  // nth-child CSS rule (see global.css), not JS-measured geometry — the
-  // pile is the very first thing painted, with no dependency on script
-  // timing, so it can't race with the reveal and get skipped. JS only
-  // toggles .is-visible, same as the other reveal-* observers below.
+  // Fan gallery: each card's "closed" stacked rotation is a fixed nth-child
+  // CSS rule (see global.css), not JS-measured geometry — the pile is the
+  // very first thing painted, with no dependency on script timing, so it
+  // can't race with the reveal and get skipped. JS only toggles
+  // .is-visible, but — unlike the other reveal-* observers — not the
+  // instant the gallery crosses the intersection threshold: it arms itself
+  // on intersection and waits for the visitor's next vertical scroll before
+  // fanning out, so the pile sits stacked until they actually scroll the
+  // section rather than fanning out passively as it scrolls into view.
   const fanObservers = new WeakMap<HTMLElement, IntersectionObserver>();
 
   const setupFan = () => {
@@ -292,12 +296,26 @@
       const reveal = () => cards.forEach((card) => card.classList.add('is-visible'));
       const hide = () => cards.forEach((card) => card.classList.remove('is-visible'));
 
+      let armed = false;
+      let lastScrollY = window.scrollY;
+
+      const onArmedScroll = () => {
+        if (!armed || window.scrollY === lastScrollY) return;
+        armed = false;
+        window.removeEventListener('scroll', onArmedScroll);
+        reveal();
+      };
+
       const fanObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
-              reveal();
+              armed = true;
+              lastScrollY = window.scrollY;
+              window.addEventListener('scroll', onArmedScroll, { passive: true });
             } else {
+              armed = false;
+              window.removeEventListener('scroll', onArmedScroll);
               hide();
             }
           }
