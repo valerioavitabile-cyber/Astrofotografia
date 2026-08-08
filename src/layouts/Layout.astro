@@ -12,9 +12,10 @@ import socialCard from '../assets/social-card.jpg';
 interface Props {
   title: string;
   description?: string;
+  preloadImage?: string;
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, preloadImage } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} · ${site.title}`;
 const canonicalURL = new URL(Astro.url.pathname, site.url);
 const isHome = Astro.url.pathname === '/';
@@ -29,6 +30,7 @@ const isHome = Astro.url.pathname === '/';
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {preloadImage && <link rel="preload" as="image" fetchpriority="high" href={preloadImage} />}
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />

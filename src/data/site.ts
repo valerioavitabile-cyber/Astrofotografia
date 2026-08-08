@@ -39,7 +39,7 @@ export const categoryBySlug = Object.fromEntries(
 
 export const mainNav = [
   { label: 'Home', href: '/' },
-  { label: 'Portfolio', href: '/portfolio/' },
+  { label: 'Portfolio', href: '/#portfolio' },
   { label: 'Courses', href: '/courses/' },
   { label: 'Videos & Tutorials', href: '/videos/' },
   { label: 'Utility', href: '/utility/' },

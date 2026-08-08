@@ -1,21 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HeroSlideshow from '../components/HeroSlideshow';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import b150 from '../assets/home/b150.jpg';
 import hargb from '../assets/home/hargb.jpg';
 import ic443 from '../assets/home/ic443-sho.jpg';
 import m44 from '../assets/home/m44.jpg';
 import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
 import wr134 from '../assets/home/wr134.jpg';
-import m33 from '../assets/home/the universe in your eyes/m33HaO3LRGB.jpg';
-import ngc1333 from '../assets/home/the universe in your eyes/NGC1333LRGB.jpg';
-import m45 from '../assets/home/the universe in your eyes/m45LRGB.jpg';
 import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
 import videoTutorial from '../assets/home/video tutorial 2.png';
 import astronomyTool from '../assets/home/astronomy tool.png';
 import portrait from '../assets/about/portrait.jpg';
-import { site } from '../data/site';
+import { site, categories } from '../data/site';
 
 const featured = [
   { img: hargb, alt: 'Wide-field HaRGB astrophotography shot' },
@@ -26,17 +24,27 @@ const featured = [
   { img: m44, alt: 'M44, the Beehive Cluster' },
 ];
 
-const slides = featured.map(({ img, alt }) => ({ src: img.src, alt }));
+const slides = await Promise.all(
+  featured.map(async ({ img, alt }) => {
+    const optimized = await getImage({ src: img, width: 1920, format: 'webp', quality: 80 });
+    return { src: optimized.src, alt };
+  }),
+);
 
-const portfolioGrid = [
-  { img: m33, alt: 'M33, the Triangulum Galaxy' },
-  { img: ngc1333, alt: 'NGC 1333 reflection nebula complex' },
-  { img: m45, alt: 'M45, the Pleiades' },
-];
+const portfolioEntries = await getCollection('portfolio');
+const portfolioCovers: Record<string, (typeof portfolioEntries)[number]> = {};
+for (const entry of portfolioEntries) {
+  if (!portfolioCovers[entry.data.category]) portfolioCovers[entry.data.category] = entry;
+}
+const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
+  id,
+  cat,
+  cover: portfolioCovers[id],
+}));
 
 ---
 
-<Layout title={site.title}>
+<Layout title={site.title} preloadImage={slides[0].src}>
   <section id="hero" class="relative flex min-h-dvh items-end overflow-hidden">
     <HeroSlideshow client:load slides={slides} />
     <!-- Reserves the layout space for the animated title, which is rendered
@@ -47,37 +55,39 @@ const portfolioGrid = [
     </div>
   </section>
 
-  <section class="border-t border-white/5">
-    <div class="reveal-left mx-auto max-w-6xl px-6 pt-24 pb-8 text-left">
+  <section id="portfolio" class="border-t border-white/5 scroll-mt-20">
+    <div class="reveal-left mx-auto max-w-6xl px-6 pt-8 pb-4 text-left">
       <p class="eyebrow">Portfolio</p>
       <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">The universe in your eyes</h2>
       <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
     </div>
   </section>
 
-  <section class="iris-gallery grid grid-cols-1 gap-6 px-6 pb-24 sm:grid-cols-3 sm:pb-32">
-    {portfolioGrid.map(({ img, alt }, i) => (
+  <section class="iris-gallery grid grid-cols-2 gap-4 px-6 pb-6 sm:grid-cols-4 sm:gap-6 sm:pb-10">
+    {portfolioGrid.map(({ cat, cover }) => (
       <a
-        href="/portfolio/"
+        href={`/portfolio/${cat.slug}/`}
         class="iris-card media-card group block"
       >
-        <span class="iris-stage relative block h-48 sm:h-72">
-          <span class="iris-reveal block h-48 sm:h-72">
-            <Image quality={90}
-              src={img}
-              alt={alt}
-              class="h-48 sm:h-72"
-            />
-          </span>
+        <span class="iris-stage relative block aspect-[16/9]">
+          {cover && (
+            <span class="iris-reveal block h-full w-full">
+              <Image
+                quality={90}
+                src={cover.data.image}
+                alt={cat.title}
+                width={480}
+                height={480}
+                class="h-full w-full object-cover"
+              />
+            </span>
+          )}
         </span>
-        <span class="media-card-overlay">
-          <span class="media-card-label">
-            <span>View portfolio</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
-        </span>
+        <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div class="absolute inset-x-0 bottom-0 z-10 p-5">
+          <p class="text-lg font-semibold text-white">{cat.title}</p>
+          <p class="mt-1 text-sm text-white/60">{cat.blurb}</p>
+        </div>
       </a>
     ))}
   </section>

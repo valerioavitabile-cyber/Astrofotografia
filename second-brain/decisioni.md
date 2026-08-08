@@ -75,3 +75,18 @@ Cambiato l'observer da "aggiungi `is-visible` una volta e unobserve" a un toggle
 **Perché:** richiesta esplicita dell'utente di comportamento ripetibile/scroll-driven, non one-shot, per `reveal-left`/`reveal-right` (e di conseguenza anche `.reveal`, condividono lo stesso observer e nessuna pagina usa ancora `.reveal` da sola).
 
 **Come si applica:** questo è ora lo standard per tutte le classi `.reveal*` (tranne `.reveal-hero`, che resta one-shot al primo scroll perché gestisce la hero già visibile al load). Nuovi blocchi con `reveal-left`/`reveal-right` erediteranno automaticamente il comportamento ripetibile.
+
+## 2026-08-08 — Fix latenza immagini hero all'apertura del sito
+
+L'utente segnalava latenza nel caricamento di alcune immagini all'apertura. Causa trovata: le foto delle hero slideshow (`src/assets/home/*.jpg`, usate in `HeroSlideshow.tsx` via `src/pages/index.astro`) venivano importate come asset Astro ma usate con `img.src` "grezzo" invece di passare da `Image`/`getImage`, quindi servite **non ottimizzate, a piena risoluzione originale** — fino a 25MB per singolo file (`wr134.jpg`), altre tra 4 e 15MB.
+
+Fix in `src/pages/index.astro`: gli slide ora passano da `getImage({ src: img, width: 1920, format: 'webp', quality: 80 })` prima di essere passati a `HeroSlideshow`. Risultato dopo build: da 3.7–25MB per immagine a 78–374KB (webp), riduzione ~70-100x.
+
+Aggiunto anche:
+- `src/layouts/Layout.astro`: nuova prop opzionale `preloadImage`, emette `<link rel="preload" as="image" fetchpriority="high">` nell'head; passata da `index.astro` con `preloadImage={slides[0].src}` per far scaricare la prima immagine hero il prima possibile, in parallelo al parsing HTML.
+- `src/components/HeroSlideshow.tsx`: aggiunti `fetchPriority` (`high` per la prima slide, `low` per le altre) e `decoding` (`sync`/`async`) sugli `<img>`, coerenti con `loading="eager"/"lazy"` già presente.
+- Fix bug minore non collegato: `src/pages/portfolio/[category]/index.astro` aveva l'attributo `quality={90}` duplicato sul componente `Image` della griglia categoria.
+
+**Perché:** le altre immagini del sito (portfolio, about, video/utility) passano già correttamente da `<Image>` di `astro:assets` (ottimizzate/responsive), solo la hero slideshow usava l'import grezzo perché passa i `src` come stringhe a un componente React (`HeroSlideshow.tsx`), bypassando l'ottimizzazione automatica.
+
+**Come si applica:** se in futuro si aggiungono altre immagini passate a componenti React (non `.astro`) come stringa `src`, usare sempre `getImage()` in frontmatter per generare la versione ottimizzata invece di passare `import.src` direttamente — l'ottimizzazione di Astro non è automatica fuori dal componente `<Image>`.
