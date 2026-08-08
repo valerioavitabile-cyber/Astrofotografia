@@ -26,7 +26,15 @@ export type CategorySlug =
 
 export const categories: Record<
   CategorySlug,
-  { title: string; titleIt: string; slug: string; blurb: string; blurbIt: string }
+  {
+    title: string;
+    titleIt: string;
+    slug: string;
+    blurb: string;
+    blurbIt: string;
+    description?: string;
+    descriptionIt?: string;
+  }
 > = {
   galassie: {
     title: 'Galaxies',
@@ -34,6 +42,10 @@ export const categories: Record<
     slug: 'galaxies',
     blurb: 'Distant island universes of stars, gas and dust.',
     blurbIt: 'Lontani universi isola di stelle, gas e polvere.',
+    description:
+      "Galaxies are immense structures of stars, gas, dust and dark matter held together by gravity: they can contain from millions to trillions of them, along with planetary systems, nebulae and black holes. They are the fundamental building blocks of the observable universe and come in very different shapes and sizes (spiral, elliptical, irregular). Our galaxy, the Milky Way, is a barred spiral: besides the classic spiral arms, it has a central bar of stars — mostly ancient — crossing the nucleus. This bar acts as a \"channel\" funnelling gas and dust toward the galactic centre, fuelling both the formation of new stars and the activity of the supermassive black hole that resides there.",
+    descriptionIt:
+      "Le galassie sono immense strutture di stelle, gas, polvere e materia oscura tenute insieme dalla gravità: possono contenerne da milioni a migliaia di miliardi, insieme a sistemi planetari, nebulose e buchi neri. Sono i mattoni fondamentali dell'universo osservabile e si presentano in forme e dimensioni molto diverse tra loro (spirali, ellittiche, irregolari). La nostra galassia, la Via Lattea, è una spirale barrata: oltre ai classici bracci a spirale, possiede una barra centrale di stelle — perlopiù antiche — che attraversa il nucleo. Questa barra funge da \"canale\" che convoglia gas e polveri verso il centro galattico, alimentando sia la formazione di nuove stelle sia l'attività del buco nero supermassiccio che vi risiede.",
   },
   nebuloseluminose: {
     title: 'Bright Nebulae',

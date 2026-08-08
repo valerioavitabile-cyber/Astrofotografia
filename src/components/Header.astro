@@ -177,10 +177,11 @@ const isHome = currentPath === '/';
 
   #primary-menu .nav-links {
     display: flex;
-    gap: 8px;
+    gap: 24px;
   }
 
   #primary-menu .nav-links a {
+    display: inline-block;
     font-family: var(--font-sans);
     font-weight: 500;
     text-transform: uppercase;
@@ -191,14 +192,16 @@ const isHome = currentPath === '/';
     padding: 16px 8px 1px 8px;
     margin: 0 4px;
     border-radius: 5px;
+    transform: scale(1);
+    transform-origin: center bottom;
     transition:
       color 0.3s ease,
-      background-color 0.3s ease;
+      transform 0.25s ease;
   }
 
   #primary-menu .nav-links a:hover {
     color: #fff;
-    background-color: var(--color-surface-2);
+    transform: scale(1.12);
   }
 
   #primary-menu .nav-links a.is-active {

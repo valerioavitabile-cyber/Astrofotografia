@@ -89,12 +89,81 @@
     transform: translateX(0);
   }
 
+  /* Fan gallery: portfolio grid images start stacked in a diagonal pile
+     (each card offset/rotated by a fixed, nth-child-based amount — plain
+     CSS rather than JS-measured geometry, so the closed state is the very
+     first thing painted and there's no race with the reveal script) and
+     fan out to their real grid position on reveal. */
+  .fan-card {
+    opacity: 0;
+    transform: translate(-16%, -12%) rotate(-8deg);
+    transition:
+      transform 1.4s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 1s ease-out,
+      border-color 0.5s ease;
+  }
+
+  .fan-gallery .fan-card:nth-child(1) {
+    transform: translate(-4%, -14%) rotate(-10deg);
+    z-index: 9;
+    transition-delay: 0ms;
+  }
+  .fan-gallery .fan-card:nth-child(2) {
+    transform: translate(-24%, -6%) rotate(-6deg);
+    z-index: 8;
+    transition-delay: 110ms;
+  }
+  .fan-gallery .fan-card:nth-child(3) {
+    transform: translate(-34%, 4%) rotate(-2deg);
+    z-index: 7;
+    transition-delay: 220ms;
+  }
+  .fan-gallery .fan-card:nth-child(4) {
+    transform: translate(6%, -20%) rotate(2deg);
+    z-index: 6;
+    transition-delay: 330ms;
+  }
+  .fan-gallery .fan-card:nth-child(5) {
+    transform: translate(-14%, -24%) rotate(6deg);
+    z-index: 5;
+    transition-delay: 440ms;
+  }
+  .fan-gallery .fan-card:nth-child(6) {
+    transform: translate(-30%, -16%) rotate(10deg);
+    z-index: 4;
+    transition-delay: 550ms;
+  }
+  .fan-gallery .fan-card:nth-child(7) {
+    transform: translate(10%, -30%) rotate(14deg);
+    z-index: 3;
+    transition-delay: 660ms;
+  }
+  .fan-gallery .fan-card:nth-child(8) {
+    transform: translate(-10%, -34%) rotate(18deg);
+    z-index: 2;
+    transition-delay: 770ms;
+  }
+  .fan-gallery .fan-card:nth-child(9) {
+    transform: translate(-28%, -26%) rotate(22deg);
+    z-index: 1;
+    transition-delay: 880ms;
+  }
+
+  /* Matches the nth-child rules' specificity (.fan-gallery + .fan-card +
+     one more selector) so the open state reliably wins over the closed
+     one instead of losing the cascade tie. */
+  .fan-gallery .fan-card.is-visible {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal,
     .reveal-left,
     .reveal-right,
     .reveal-blur,
-    .reveal-fade {
+    .reveal-fade,
+    .fan-card {
       opacity: 1;
       transform: none;
       filter: none;
