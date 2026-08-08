@@ -29,7 +29,7 @@ for (const entry of entries) {
             class="group relative overflow-hidden rounded-2xl border border-white/10 transition duration-500 hover:border-accent/60"
           >
             {cover && (
-              <Image
+              <Image quality={90} quality={90}
                 src={cover.data.image}
                 alt={cat.title}
                 width={480}

@@ -32,7 +32,7 @@ const articles = [
       {articles.map((a) => (
         <a href={a.href} class="group overflow-hidden rounded-2xl border border-white/10 bg-surface/40 transition duration-500 hover:border-accent/60">
           {a.image ? (
-            <Image src={a.image} alt={a.title} width={480} height={320} class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:brightness-110" />
+            <Image quality={90} src={a.image} alt={a.title} width={480} height={320} class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:brightness-110" />
           ) : (
             <div class="flex aspect-[3/2] w-full items-center justify-center bg-surface text-4xl text-accent">
               ✦

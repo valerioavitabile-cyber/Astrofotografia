@@ -16,7 +16,9 @@
 
   const observe = () => {
     document
-      .querySelectorAll<HTMLElement>('.reveal, .reveal-left:not(.reveal-hero), .reveal-right:not(.reveal-hero)')
+      .querySelectorAll<HTMLElement>(
+        '.reveal, .reveal-left:not(.reveal-hero), .reveal-right:not(.reveal-hero), .reveal-blur, .reveal-fade',
+      )
       .forEach((el) => observer.observe(el));
   };
 
@@ -100,6 +102,7 @@
     const placeholder = document.getElementById('hero-placeholder');
     const clone = document.querySelector<HTMLElement>('.hero-clone');
     const cloneHeading = clone?.querySelector('h1');
+    const cloneTagline = clone?.querySelector<HTMLElement>('p.hero-tagline');
     if (!placeholder || !clone || !cloneHeading) return;
 
     const root = document.documentElement;
@@ -110,6 +113,23 @@
     const startFontSize = parseFloat(getComputedStyle(cloneHeading).fontSize);
     const endFontSize = 16; // matches .site-brand font-size
     const scale1 = endFontSize / startFontSize;
+
+    // Splits the tagline into one <span> per letter (once) and stretches it
+    // to the title's exact width via flexbox space-between, which lines up
+    // the first and last letters with the title's edges precisely — unlike
+    // letter-spacing, whose trailing space is handled inconsistently across
+    // browsers and undershoots the target width.
+    if (cloneTagline) {
+      const text = cloneTagline.textContent ?? '';
+      if (!cloneTagline.dataset.split) {
+        cloneTagline.innerHTML = Array.from(text)
+          .map((ch) => `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`)
+          .join('');
+        cloneTagline.dataset.split = 'true';
+      }
+      const titleWidth = cloneHeading.getBoundingClientRect().width;
+      cloneTagline.style.width = `${titleWidth}px`;
+    }
 
     root.style.setProperty('--hero-x0', `${x0}px`);
     root.style.setProperty('--hero-y0', `${y0}px`);

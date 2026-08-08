@@ -9,7 +9,7 @@ import m44 from '../assets/home/m44.jpg';
 import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
 import wr134 from '../assets/home/wr134.jpg';
 import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
-import videoTutorial from '../assets/home/video tutorial.jpg';
+import videoTutorial from '../assets/home/video tutorial 2.png';
 import astronomyTool from '../assets/home/astronomy tool.png';
 import { site } from '../data/site';
 
@@ -41,7 +41,7 @@ const flyOffsets = featured.slice(0, 3).map(() => {
          once in Header.astro and morphs into the corner brand on scroll. -->
     <div id="hero-placeholder" class="invisible relative z-10 mx-auto w-full max-w-6xl px-6 pb-20">
       <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">Valerio Avitabile</h1>
-      <p class="mt-3 text-xl text-accent">Astrophotography</p>
+      <p class="mt-3 text-[2.75rem] tracking-[0.08em] text-accent">Astrophotography</p>
     </div>
   </section>
 
@@ -60,7 +60,7 @@ const flyOffsets = featured.slice(0, 3).map(() => {
         class="scroll-fly media-card group block"
         style={`--fly-x: ${flyOffsets[i].x}px; --fly-y: ${flyOffsets[i].y}px;`}
       >
-        <Image
+        <Image quality={90} quality={90}
           src={img}
           alt={alt}
           class="h-48 sm:h-72"
@@ -120,8 +120,8 @@ const flyOffsets = featured.slice(0, 3).map(() => {
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-4 sm:grid-cols-2">
       <div data-parallax="-0.03">
         <p class="text-xl text-white/70">Video &amp; tutorial</p>
-        <a href="/videos/" class="media-card group mt-4 block aspect-video w-full">
-          <Image src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
+        <a href="/videos/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
+          <Image quality={90} src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
           <span class="media-card-overlay">
             <span class="media-card-label">
               <span>Watch tutorials</span>
@@ -134,8 +134,8 @@ const flyOffsets = featured.slice(0, 3).map(() => {
       </div>
       <div>
         <p class="text-xl text-white/70">Plate solve and other</p>
-        <a href="/utility/" class="media-card group mt-4 block aspect-video w-full">
-          <Image src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
+        <a href="/utility/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
+          <Image quality={90} src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
           <span class="media-card-overlay">
             <span class="media-card-label">
               <span>Explore tools</span>

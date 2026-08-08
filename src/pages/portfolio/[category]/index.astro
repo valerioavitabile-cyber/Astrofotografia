@@ -29,7 +29,7 @@ const entries = (await getCollection('portfolio')).filter((e) => e.data.category
           href={`/portfolio/${cat.slug}/${entry.id}/`}
           class="group relative overflow-hidden rounded-2xl border border-white/10 transition duration-500 hover:border-accent/60"
         >
-          <Image
+          <Image quality={90} quality={90}
             src={entry.data.image}
             alt={entry.data.title}
             width={480}

@@ -10,7 +10,7 @@ const isHome = currentPath === '/';
     isHome ? (
       <div class="hero-clone notranslate">
         <h1 class="text-5xl font-bold tracking-tight sm:text-7xl">{site.title}</h1>
-        <p class="mt-3 text-xl text-accent">{site.tagline}</p>
+        <p class="hero-tagline mt-3 text-[2.4rem] text-accent">{site.tagline}</p>
       </div>
     ) : (
       <a href="/" class="site-brand">
@@ -111,6 +111,17 @@ const isHome = currentPath === '/';
 
   .hero-clone p {
     color: var(--color-accent);
+  }
+
+  /* Split into one <span> per letter and stretched with flexbox so the
+     word's rendered width matches the title's exactly, edge to edge (see
+     measureHeroClone in ScrollReveal.astro, which sets the width). Flexbox
+     space-between is exact, unlike letter-spacing, whose last-character
+     trailing space is handled inconsistently across browsers. */
+  .hero-clone p.hero-tagline {
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: normal;
   }
 
   @media (prefers-reduced-motion: reduce) {
