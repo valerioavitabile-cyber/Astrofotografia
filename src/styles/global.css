@@ -167,24 +167,52 @@
     }
   }
 
-  /* Scroll-driven "fly in": --fly-progress (0 -> 1) is written by JS on
-     every scroll frame, so opacity/position track scroll directly and
-     reverse naturally when scrolling back up. Defaults to fully visible
-     so the section still renders correctly without JS. */
-  .scroll-fly {
-    opacity: var(--fly-progress, 1);
-    transform: translate(
-        calc(var(--fly-x, 0px) * (1 - var(--fly-progress, 1))),
-        calc(var(--fly-y, 0px) * (1 - var(--fly-progress, 1)))
-      )
-      scale(calc(0.8 + 0.2 * var(--fly-progress, 1)));
-    will-change: opacity, transform;
+
+  /* Iris reveal: the photo itself starts clipped down to a small circle
+     (an orange glow standing in for the "dot", via drop-shadow rather than
+     a separate flat overlay) and that circle blooms outward until the full
+     rectangular frame is revealed. JS staggers .is-visible across a
+     .iris-gallery's cards so they open one at a time instead of all at
+     once, and toggles it on scroll like the other reveal-* effects so it
+     replays on re-entry (both directions, since the observer fires again
+     whenever the card re-enters the viewport). */
+  .iris-reveal {
+    display: block;
+    clip-path: circle(0% at 50% 50%);
+    filter: drop-shadow(0 0 22px var(--color-accent));
+    transition: clip-path 3.4s cubic-bezier(0.22, 1, 0.36, 1), filter 3.4s ease-out;
+  }
+
+  .iris-stage.is-visible .iris-reveal {
+    clip-path: circle(75% at 50% 50%);
+    filter: drop-shadow(0 0 0 transparent);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .scroll-fly {
-      opacity: 1;
-      transform: none;
+    .iris-reveal {
+      transition: none;
+      clip-path: circle(75% at 50% 50%);
+      filter: none;
+    }
+  }
+
+  /* The card's ring "frame" only fades in once the iris finishes opening
+     (JS adds .is-framed on the clip-path transitionend), rather than
+     sitting there the whole time the photo is still blooming out. Hiding
+     it via the ring's own color (instead of box-shadow: none) keeps it
+     riding the existing transition-shadow on .media-card, so it still
+     fades smoothly, and leaves the hover ring-accent behavior untouched. */
+  .iris-card {
+    --tw-ring-color: transparent;
+  }
+
+  .iris-card.is-framed {
+    --tw-ring-color: rgb(255 255 255 / 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .iris-card {
+      --tw-ring-color: rgb(255 255 255 / 0.1);
     }
   }
 
@@ -194,6 +222,10 @@
 
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+
+  .footer-link {
+    @apply inline-block rounded text-sm text-white/60 transition-colors duration-200 hover:text-accent focus-visible:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
   }
 
   .footer-icon {

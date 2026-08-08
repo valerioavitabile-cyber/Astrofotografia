@@ -78,10 +78,13 @@ const isHome = Astro.url.pathname === '/';
   </head>
   <body>
     <Header />
-    <main transition:animate={fade({ duration: '2.8s' })}>
+    <main
+      class:list={[isHome && 'relative z-[1] -mb-px overflow-hidden rounded-b-[2rem] bg-ink']}
+      transition:animate={fade({ duration: '2.8s' })}
+    >
       <slot />
     </main>
-    <Footer />
+    {isHome && <Footer />}
     <ScrollReveal />
     <Parallax />
   </body>

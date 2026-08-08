@@ -34,14 +34,6 @@ const portfolioGrid = [
   { img: m45, alt: 'M45, the Pleiades' },
 ];
 
-const flyOffsets = portfolioGrid.map(() => {
-  const angle = Math.random() * Math.PI * 2;
-  const distance = 260 + Math.random() * 260;
-  return {
-    x: Math.round(Math.cos(angle) * distance),
-    y: Math.round(Math.sin(angle) * distance),
-  };
-});
 ---
 
 <Layout title={site.title}>
@@ -63,18 +55,21 @@ const flyOffsets = portfolioGrid.map(() => {
     </div>
   </section>
 
-  <section class="grid grid-cols-1 gap-6 px-6 pb-24 sm:grid-cols-3 sm:pb-32">
+  <section class="iris-gallery grid grid-cols-1 gap-6 px-6 pb-24 sm:grid-cols-3 sm:pb-32">
     {portfolioGrid.map(({ img, alt }, i) => (
       <a
         href="/portfolio/"
-        class="scroll-fly media-card group block"
-        style={`--fly-x: ${flyOffsets[i].x}px; --fly-y: ${flyOffsets[i].y}px;`}
+        class="iris-card media-card group block"
       >
-        <Image quality={90} quality={90}
-          src={img}
-          alt={alt}
-          class="h-48 sm:h-72"
-        />
+        <span class="iris-stage relative block h-48 sm:h-72">
+          <span class="iris-reveal block h-48 sm:h-72">
+            <Image quality={90}
+              src={img}
+              alt={alt}
+              class="h-48 sm:h-72"
+            />
+          </span>
+        </span>
         <span class="media-card-overlay">
           <span class="media-card-label">
             <span>View portfolio</span>

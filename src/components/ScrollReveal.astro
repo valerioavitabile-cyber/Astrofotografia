@@ -31,37 +31,6 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let flyTicking = false;
-  const updateFly = () => {
-    flyTicking = false;
-    const vh = window.innerHeight;
-    const start = vh; // element bottom-of-viewport: progress 0
-    const end = vh * 0.45; // finishes higher up the viewport: progress 1, slower feel
-    document.querySelectorAll<HTMLElement>('.scroll-fly').forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (start - rect.top) / (start - end)));
-      el.style.setProperty('--fly-progress', progress.toFixed(3));
-    });
-  };
-
-  const onFlyScroll = () => {
-    if (!flyTicking) {
-      flyTicking = true;
-      requestAnimationFrame(updateFly);
-    }
-  };
-
-  let flyListenersBound = false;
-  const setupFly = () => {
-    if (reduceMotion || !document.querySelector('.scroll-fly')) return;
-    updateFly();
-    if (!flyListenersBound) {
-      window.addEventListener('scroll', onFlyScroll, { passive: true });
-      window.addEventListener('resize', onFlyScroll);
-      flyListenersBound = true;
-    }
-  };
-
   // Smoothed with a lerp loop rather than snapping straight to the scroll
   // position: raw scroll events fire in uneven bursts (mouse wheel steps,
   // trackpad ticks), so mapping 1:1 to the transform looks jerky. Chasing
@@ -233,11 +202,80 @@
     });
   };
 
+  // Iris reveal: opens the gallery's images one at a time (rather than all
+  // together) by staggering when .is-visible lands on each .iris-stage.
+  const irisObservers = new WeakMap<HTMLElement, IntersectionObserver>();
+  const irisTimers = new WeakMap<HTMLElement, number[]>();
+
+  const setupIris = () => {
+    document.querySelectorAll<HTMLElement>('.iris-gallery').forEach((gallery) => {
+      irisObservers.get(gallery)?.disconnect();
+      const stages = Array.from(gallery.querySelectorAll<HTMLElement>('.iris-stage'));
+
+      if (reduceMotion) {
+        stages.forEach((stage) => {
+          stage.classList.add('is-visible');
+          stage.closest<HTMLElement>('.iris-card')?.classList.add('is-framed');
+        });
+        return;
+      }
+
+      const clearTimers = () => {
+        irisTimers.get(gallery)?.forEach((id) => window.clearTimeout(id));
+        irisTimers.set(gallery, []);
+      };
+
+      const reveal = () => {
+        clearTimers();
+        const timers = stages.map((stage, i) =>
+          window.setTimeout(() => {
+            stage.classList.add('is-visible');
+            // The frame only fades in once the iris has actually finished
+            // blooming out, not while it's still opening.
+            const photo = stage.querySelector<HTMLElement>('.iris-reveal');
+            const card = stage.closest<HTMLElement>('.iris-card');
+            photo?.addEventListener(
+              'transitionend',
+              (e) => {
+                if (e.propertyName === 'clip-path') card?.classList.add('is-framed');
+              },
+              { once: true },
+            );
+          }, i * 500),
+        );
+        irisTimers.set(gallery, timers);
+      };
+
+      const hide = () => {
+        clearTimers();
+        stages.forEach((stage) => {
+          stage.classList.remove('is-visible');
+          stage.closest<HTMLElement>('.iris-card')?.classList.remove('is-framed');
+        });
+      };
+
+      const irisObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              reveal();
+            } else {
+              hide();
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+      );
+      irisObserver.observe(gallery);
+      irisObservers.set(gallery, irisObserver);
+    });
+  };
+
   const setup = () => {
     observe();
-    setupFly();
     setupHeroProgress();
     setupMosaic();
+    setupIris();
     if (document.querySelector('.reveal-hero:not(.is-visible)')) {
       window.addEventListener('scroll', revealHero, { passive: true });
     }
