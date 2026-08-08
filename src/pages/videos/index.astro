@@ -10,17 +10,31 @@ const videos = [
 ];
 ---
 
-<Layout title="Video & Tutorials" description="Astrophotography videos and tutorials by Valerio Avitabile.">
+<Layout
+  title="Video & Tutorials"
+  titleIt="Video & Tutorial"
+  description="Astrophotography videos and tutorials by Valerio Avitabile."
+  descriptionIt="Video e tutorial di astrofotografia di Valerio Avitabile."
+>
   <section class="mx-auto max-w-5xl px-6 py-20">
-    <p class="eyebrow text-center">Video &amp; Tutorials</p>
-    <h1 class="mt-3 text-center text-4xl font-semibold sm:text-5xl">Watch &amp; learn</h1>
+    <p class="eyebrow text-center">
+      <span data-lang-en>Video &amp; Tutorials</span>
+      <span data-lang-it>Video & Tutorial</span>
+    </p>
+    <h1 class="mt-3 text-center text-4xl font-semibold sm:text-5xl">
+      <span data-lang-en>Watch &amp; learn</span>
+      <span data-lang-it>Guarda e impara</span>
+    </h1>
 
     <div class="mt-14 grid gap-8 sm:grid-cols-2">
       {videos.map((v) => <LiteYouTube videoId={v.id} title={v.title} />)}
     </div>
 
     <div class="mt-16 text-center">
-      <a href="/utility/" class="btn-accent">Plate solve and other utilities</a>
+      <a href="/utility/" class="btn-accent">
+        <span data-lang-en>Plate solve and other utilities</span>
+        <span data-lang-it>Plate solve e altre utility</span>
+      </a>
     </div>
   </section>
 </Layout>

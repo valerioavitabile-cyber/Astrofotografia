@@ -12,6 +12,24 @@
   --color-accent-dim: #b97b0c;
 }
 
+/* i18n: both languages are always in the DOM (see components/T.astro and
+   data-lang-en/data-lang-it markup); this just shows/hides based on the
+   data-lang attribute LangSwitcher.astro sets on <html>. Defaults to Italian
+   before JS runs (matches DEFAULT_LANG in LangSwitcher.astro). */
+[data-lang-en],
+[data-lang-it] {
+  display: none;
+}
+
+:root[data-lang='it'] [data-lang-it],
+:root:not([data-lang]) [data-lang-it] {
+  display: revert;
+}
+
+:root[data-lang='en'] [data-lang-en] {
+  display: revert;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

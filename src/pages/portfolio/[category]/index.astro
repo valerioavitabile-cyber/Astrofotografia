@@ -16,12 +16,26 @@ const cat = categories[categoryId];
 const entries = (await getCollection('portfolio')).filter((e) => e.data.category === categoryId);
 ---
 
-<Layout title={cat.title} description={`${cat.blurb} — astrophotography portfolio by Valerio Avitabile.`}>
+<Layout
+  title={cat.title}
+  titleIt={cat.titleIt}
+  description={`${cat.blurb} — astrophotography portfolio by Valerio Avitabile.`}
+  descriptionIt={`${cat.blurbIt} — portfolio di astrofotografia di Valerio Avitabile.`}
+>
   <section class="mx-auto max-w-6xl px-6 py-20">
-    <a href="/#portfolio" class="text-sm text-white/50 hover:text-accent">&larr; Back to portfolio</a>
+    <a href="/#portfolio" class="text-sm text-white/50 hover:text-accent">
+      <span data-lang-en>&larr; Back to portfolio</span>
+      <span data-lang-it>&larr; Torna al portfolio</span>
+    </a>
     <p class="eyebrow mt-6">Portfolio</p>
-    <h1 class="mt-3 text-4xl font-semibold sm:text-5xl">{cat.title}</h1>
-    <p class="mt-3 max-w-xl text-white/60">{cat.blurb}</p>
+    <h1 class="mt-3 text-4xl font-semibold sm:text-5xl">
+      <span data-lang-en>{cat.title}</span>
+      <span data-lang-it>{cat.titleIt}</span>
+    </h1>
+    <p class="mt-3 max-w-xl text-white/60">
+      <span data-lang-en>{cat.blurb}</span>
+      <span data-lang-it>{cat.blurbIt}</span>
+    </p>
 
     <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map((entry) => (

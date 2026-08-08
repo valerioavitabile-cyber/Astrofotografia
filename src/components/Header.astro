@@ -25,7 +25,8 @@ const isHome = currentPath === '/';
       {
         mainNav.map((item) => (
           <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
-            {item.label}
+            <span data-lang-en>{item.label}</span>
+            <span data-lang-it>{item.labelIt}</span>
           </a>
         ))
       }
@@ -42,7 +43,8 @@ const isHome = currentPath === '/';
           mainNav.map((item) => (
             <li>
               <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
-                {item.label}
+                <span data-lang-en>{item.label}</span>
+                <span data-lang-it>{item.labelIt}</span>
               </a>
             </li>
           ))

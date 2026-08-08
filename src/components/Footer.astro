@@ -62,11 +62,22 @@ const socials = [
         ))}
       </a>
       <p class="mt-4 text-sm leading-relaxed text-white/60">
-        {site.tagline} &mdash; galaxies, nebulae and deep-sky objects captured from a home
-        terrace, shared through images, courses and tutorials.
+        <span data-lang-en>
+          {site.tagline} &mdash; galaxies, nebulae and deep-sky objects captured from a home
+          terrace, shared through images, courses and tutorials.
+        </span>
+        <span data-lang-it>
+          {site.tagline} &mdash; galassie, nebulose e oggetti del profondo cielo catturati da
+          una terrazza di casa, condivisi attraverso immagini, corsi e tutorial.
+        </span>
       </p>
 
-      <div class="mt-6 flex gap-3" role="list" aria-label="Follow on social media">
+      <div
+        class="mt-6 flex gap-3"
+        role="list"
+        aria-label="Follow on social media"
+        data-tr={JSON.stringify({ attr: 'aria-label', en: 'Follow on social media', it: 'Seguimi sui social' })}
+      >
         {
           socials.map((s) => (
             <a
@@ -102,27 +113,36 @@ const socials = [
       </div>
 
       <blockquote class="footer-quote mt-8 max-w-xs border-l-2 border-accent pl-4 text-[13.5px] italic leading-relaxed text-white/50">
-        Thank you for exploring the cosmos through my eyes. Never stop looking beyond &mdash; the
-        next dream is already among the stars.
+        <span data-lang-en>
+          Thank you for exploring the cosmos through my eyes. Never stop looking beyond &mdash;
+          the next dream is already among the stars.
+        </span>
+        <span data-lang-it>
+          Grazie per aver esplorato il cosmo attraverso i miei occhi. Non smettere mai di
+          guardare oltre &mdash; il prossimo sogno è già tra le stelle.
+        </span>
       </blockquote>
     </div>
 
     <div>
-      <p class="eyebrow">Get in touch</p>
+      <p class="eyebrow"><span data-lang-en>Get in touch</span><span data-lang-it>Contattami</span></p>
       <ul class="mt-5 space-y-2.5 text-sm text-white/70">
         <li>
           <a href={`mailto:${site.email}`} class="footer-link">{site.email}</a>
         </li>
         <li>
-          <a href="/contact/" class="footer-link">Contact form</a>
+          <a href="/contact/" class="footer-link">
+            <span data-lang-en>Contact form</span><span data-lang-it>Modulo di contatto</span>
+          </a>
         </li>
       </ul>
     </div>
 
     <div>
-      <p class="eyebrow">Stay updated</p>
+      <p class="eyebrow"><span data-lang-en>Stay updated</span><span data-lang-it>Resta aggiornato</span></p>
       <p class="mt-5 text-sm leading-relaxed text-white/60">
-        New photos, courses and deep-sky tips &mdash; straight to your inbox.
+        <span data-lang-en>New photos, courses and deep-sky tips &mdash; straight to your inbox.</span>
+        <span data-lang-it>Nuove foto, corsi e consigli sul profondo cielo &mdash; direttamente nella tua casella email.</span>
       </p>
       <form class="footer-newsletter mt-4 flex flex-col gap-2.5" onsubmit="return false;">
         <input
@@ -131,8 +151,11 @@ const socials = [
           placeholder="Your email"
           aria-label="Email address"
           class="footer-newsletter-input"
+          data-tr={JSON.stringify({ attr: 'placeholder', en: 'Your email', it: 'La tua email' })}
         />
-        <button type="submit" class="footer-newsletter-submit">Subscribe</button>
+        <button type="submit" class="footer-newsletter-submit">
+          <span data-lang-en>Subscribe</span><span data-lang-it>Iscriviti</span>
+        </button>
       </form>
     </div>
   </div>
@@ -141,8 +164,13 @@ const socials = [
     <div
       class="flex flex-col items-center gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:justify-between"
     >
-      <p>&copy; {year} Valerio Avitabile. All rights reserved.</p>
-      <a href="/privacy/" class="footer-link">Privacy Policy</a>
+      <p>
+        <span data-lang-en>&copy; {year} Valerio Avitabile. All rights reserved.</span>
+        <span data-lang-it>&copy; {year} Valerio Avitabile. Tutti i diritti riservati.</span>
+      </p>
+      <a href="/privacy/" class="footer-link">
+        <span data-lang-en>Privacy Policy</span><span data-lang-it>Informativa sulla Privacy</span>
+      </a>
     </div>
   </div>
 </footer>

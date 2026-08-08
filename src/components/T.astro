@@ -1,0 +1,27 @@
+---
+// Bilingual inline text: renders both language versions in the DOM and lets
+// global.css show/hide them based on the `data-lang` attribute set on <html>
+// by LangSwitcher.astro. Keeping both in the DOM (instead of swapping via
+// JS) means content works even before JS runs and needs no re-render logic.
+interface Props {
+  en: string;
+  it: string;
+  html?: boolean;
+}
+
+const { en, it, html = false } = Astro.props;
+---
+
+{
+  html ? (
+    <Fragment>
+      <span data-lang-en set:html={en} />
+      <span data-lang-it set:html={it} />
+    </Fragment>
+  ) : (
+    <Fragment>
+      <span data-lang-en>{en}</span>
+      <span data-lang-it>{it}</span>
+    </Fragment>
+  )
+}

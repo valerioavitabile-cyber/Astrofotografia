@@ -44,7 +44,7 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
 
 ---
 
-<Layout title={site.title} preloadImage={slides[0].src}>
+<Layout title={site.title} description={site.description} descriptionIt={site.descriptionIt} preloadImage={slides[0].src}>
   <section id="hero" class="relative flex min-h-dvh items-end overflow-hidden">
     <HeroSlideshow client:load slides={slides} />
     <!-- Reserves the layout space for the animated title, which is rendered
@@ -58,8 +58,14 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
   <section id="portfolio" class="border-t border-white/5 scroll-mt-20">
     <div class="reveal-left mx-auto max-w-6xl px-6 pt-8 pb-4 text-left">
       <p class="eyebrow">Portfolio</p>
-      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">The universe in your eyes</h2>
-      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
+      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">
+        <span data-lang-en>The universe in your eyes</span>
+        <span data-lang-it>L’universo nei tuoi occhi</span>
+      </h2>
+      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">
+        <span data-lang-en>Galaxies, nebulae, stars in a single shot</span>
+        <span data-lang-it>Galassie, nebulose, stelle in un solo scatto</span>
+      </p>
     </div>
   </section>
 
@@ -85,8 +91,14 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
         </span>
         <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         <div class="absolute inset-x-0 bottom-0 z-10 p-5">
-          <p class="text-lg font-semibold text-white">{cat.title}</p>
-          <p class="mt-1 text-sm text-white/60">{cat.blurb}</p>
+          <p class="text-lg font-semibold text-white">
+            <span data-lang-en>{cat.title}</span>
+            <span data-lang-it>{cat.titleIt}</span>
+          </p>
+          <p class="mt-1 text-sm text-white/60">
+            <span data-lang-en>{cat.blurb}</span>
+            <span data-lang-it>{cat.blurbIt}</span>
+          </p>
         </div>
       </a>
     ))}
@@ -94,9 +106,18 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
 
   <section class="border-t border-white/5">
     <div class="reveal-left mx-auto max-w-6xl px-6 pt-10 pb-8 text-left">
-      <p class="eyebrow">How can I help you?</p>
-      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">Customised online courses</h2>
-      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Stacking, photo editing, software, and other tips</p>
+      <p class="eyebrow">
+        <span data-lang-en>How can I help you?</span>
+        <span data-lang-it>Come posso aiutarti?</span>
+      </p>
+      <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">
+        <span data-lang-en>Customised online courses</span>
+        <span data-lang-it>Corsi online personalizzati</span>
+      </h2>
+      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">
+        <span data-lang-en>Stacking, photo editing, software, and other tips</span>
+        <span data-lang-it>Stacking, editing fotografico, software e altri consigli</span>
+      </p>
     </div>
 
     <div class="mx-auto max-w-6xl px-6 pb-24">
@@ -115,7 +136,8 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
         </div>
         <span class="media-card-overlay">
           <span class="media-card-label">
-            <span>Discover courses</span>
+            <span data-lang-en>Discover courses</span>
+            <span data-lang-it>Scopri i corsi</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -127,19 +149,27 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
 
   <section class="border-t border-white/5 bg-surface/40">
     <div class="reveal-left mx-auto max-w-6xl px-6 py-20 text-left">
-      <p class="eyebrow">Video &amp; Utilities</p>
+      <p class="eyebrow">
+        <span data-lang-en>Video &amp; Utilities</span>
+        <span data-lang-it>Video & Utility</span>
+      </p>
       <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl" data-parallax="0.04">
-        Videos and astronomical calculation tools
+        <span data-lang-en>Videos and astronomical calculation tools</span>
+        <span data-lang-it>Video e strumenti di calcolo astronomico</span>
       </h2>
     </div>
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-4 sm:grid-cols-2">
       <div data-parallax="-0.03">
-        <p class="reveal-left text-xl text-white/70">Video &amp; tutorial</p>
+        <p class="reveal-left text-xl text-white/70">
+          <span data-lang-en>Video &amp; tutorial</span>
+          <span data-lang-it>Video & tutorial</span>
+        </p>
         <a href="/videos/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
           <Image quality={90} src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
           <span class="media-card-overlay">
             <span class="media-card-label">
-              <span>Watch tutorials</span>
+              <span data-lang-en>Watch tutorials</span>
+              <span data-lang-it>Guarda i tutorial</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
@@ -148,12 +178,16 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
         </a>
       </div>
       <div>
-        <p class="reveal-right text-xl text-white/70">Plate solve and other</p>
+        <p class="reveal-right text-xl text-white/70">
+          <span data-lang-en>Plate solve and other</span>
+          <span data-lang-it>Plate solve e altro</span>
+        </p>
         <a href="/utility/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
           <Image quality={90} src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
           <span class="media-card-overlay">
             <span class="media-card-label">
-              <span>Explore tools</span>
+              <span data-lang-en>Explore tools</span>
+              <span data-lang-it>Esplora gli strumenti</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
@@ -179,7 +213,8 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
           <span class="barn-door barn-door-right" aria-hidden="true"></span>
           <span class="media-card-overlay">
             <span class="media-card-label">
-              <span>Read my story</span>
+              <span data-lang-en>Read my story</span>
+              <span data-lang-it>Leggi la mia storia</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
@@ -188,13 +223,18 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
         </a>
 
         <div class="reveal-right text-left">
-          <p class="eyebrow">About me</p>
+          <p class="eyebrow">
+            <span data-lang-en>About me</span>
+            <span data-lang-it>Chi sono</span>
+          </p>
           <h2 class="mt-4 text-4xl font-semibold leading-[1.05] sm:text-6xl" data-parallax="0.04">
-            Astrophotography is a lifestyle, a way of being&hellip;
+            <span data-lang-en>Astrophotography is a lifestyle, a way of being&hellip;</span>
+            <span data-lang-it>L’astrofotografia è uno stile di vita, un modo di essere&hellip;</span>
           </h2>
 
           <a href="/about/" class="btn-accent mt-6 justify-center min-w-[190px]">
-            <span>My story</span>
+            <span data-lang-en>My story</span>
+            <span data-lang-it>La mia storia</span>
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -202,11 +242,13 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
 
           <div class="mt-10 border-t border-white/10 pt-8">
             <p class="text-lg text-white/70" data-parallax="-0.03">
-              Do you have any questions?<br /> Feel free to write to me, I will be happy to answer you.
+              <span data-lang-en>Do you have any questions?<br /> Feel free to write to me, I will be happy to answer you.</span>
+              <span data-lang-it>Hai qualche domanda?<br /> Scrivimi pure, sarò felice di risponderti.</span>
             </p>
             <div class="mt-5 flex flex-wrap items-center gap-4">
               <a href="/contact/" class="btn-accent justify-center min-w-[190px]">
-                <span>Contact me</span>
+                <span data-lang-en>Contact me</span>
+                <span data-lang-it>Contattami</span>
                 <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>

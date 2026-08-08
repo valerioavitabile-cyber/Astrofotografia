@@ -7,9 +7,16 @@ import portrait from '../../assets/about/portrait.jpg';
 
 const entry = await getEntry('about', 'bio');
 const { Content } = await render(entry);
+const entryIt = await getEntry('aboutIt', 'bio');
+const { Content: ContentIt } = await render(entryIt);
 ---
 
-<Layout title="About Me" description="Amateur astrophotographer since 2018, sharing the sky from a home terrace in Italy.">
+<Layout
+  title="About Me"
+  titleIt="Chi sono"
+  description="Amateur astrophotographer since 2018, sharing the sky from a home terrace in Italy."
+  descriptionIt="Astrofotografo amatoriale dal 2018, condivido il cielo da una terrazza di casa in Italia."
+>
   <section class="mx-auto max-w-6xl px-6 py-20">
     <div class="grid gap-12 md:grid-cols-2 md:items-center">
       <div class="media-card aspect-[4/5] w-full max-w-md">
@@ -22,9 +29,17 @@ const { Content } = await render(entry);
         />
       </div>
       <div transition:animate={slide({ duration: '2.6s' })}>
-        <p class="eyebrow">About me</p>
+        <p class="eyebrow">
+          <span data-lang-en>About me</span>
+          <span data-lang-it>Chi sono</span>
+        </p>
         <div class="prose-astro mt-4">
-          <Content />
+          <div data-lang-en>
+            <Content />
+          </div>
+          <div data-lang-it>
+            <ContentIt />
+          </div>
         </div>
       </div>
     </div>

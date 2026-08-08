@@ -90,3 +90,22 @@ Aggiunto anche:
 **Perché:** le altre immagini del sito (portfolio, about, video/utility) passano già correttamente da `<Image>` di `astro:assets` (ottimizzate/responsive), solo la hero slideshow usava l'import grezzo perché passa i `src` come stringhe a un componente React (`HeroSlideshow.tsx`), bypassando l'ottimizzazione automatica.
 
 **Come si applica:** se in futuro si aggiungono altre immagini passate a componenti React (non `.astro`) come stringa `src`, usare sempre `getImage()` in frontmatter per generare la versione ottimizzata invece di passare `import.src` direttamente — l'ottimizzazione di Astro non è automatica fuori dal componente `<Image>`.
+
+## 2026-08-08 — Aggiunto switch lingua IT/EN (bandierine) a tutto il sito
+
+L'utente ha chiesto di poter switchare l'intero sito tra italiano e inglese con due bandierine (Italia/UK), termini tecnici (stacking, plate solve, ecc.) sempre in inglese anche nella versione italiana. Discusse due opzioni con l'utente ([AskUserQuestion](../CLAUDE.md)): routing separato `/it/` `/en/` (stile i18n nativo di Astro) vs toggle client-side senza cambio URL. L'utente ha scelto il **toggle client-side**, con **italiano come lingua di default**.
+
+Implementazione (nessun URL dedicato, stessa pagina per entrambe le lingue):
+- `src/components/LangSwitcher.astro`: due bottoni con bandiera (SVG inline IT/UK), fissi in alto a destra accanto all'hamburger menu. Al click, salva la lingua scelta in `localStorage` (`site-lang`, default `it`) e imposta `data-lang` su `<html>`.
+- `src/layouts/Layout.astro`: script bloccante `is:inline` in cima all'head che legge `localStorage` e imposta `data-lang`/`lang` su `<html>` **prima del paint**, per evitare un flash della lingua sbagliata. `<LangSwitcher />` incluso qui, quindi presente su ogni pagina.
+- `src/styles/global.css`: entrambe le lingue sono sempre nel DOM; le regole `[data-lang-en]`/`[data-lang-it]` (mostra/nascondi in base a `data-lang` su `:root`) fanno il toggle via CSS puro, default italiano se l'attributo non è ancora impostato (no-JS).
+- `src/components/T.astro`: componente helper per testo inline breve (rende due `<span data-lang-en>`/`<span data-lang-it>`), usato raramente — nella maggior parte delle pagine si è preferito scrivere `<span data-lang-en>…</span><span data-lang-it>…</span>` direttamente inline per restare coerenti con lo stile JSX-like già in uso nel progetto.
+- Contenuti lunghi (bio, schede portfolio, pagine `/utility/*`, privacy): duplicati come blocco `<div data-lang-en>…</div><div data-lang-it>…</div>` invece di span, per non spezzare paragrafi/markdown.
+- Attributi non duplicabili nel DOM (title `<title>`, `<meta name="description">`, `placeholder`, `aria-label`) via attributo `data-tr='{"attr":"...","en":"...","it":"..."}'`, letto dallo script di `LangSwitcher.astro` che aggiorna l'attributo al cambio lingua.
+- Contenuto markdown delle content collection: aggiunte due nuove collection in `src/content.config.ts`, **`portfolioIt`** (`src/content/portfolio-it/*.md`, stesso id/filename di ogni file in `src/content/portfolio/`) e **`aboutIt`** (`src/content/about-it/bio.md`) — file markdown italiani paralleli, non campi frontmatter aggiuntivi, così il testo italiano resta vero markdown (bold, link, liste) invece di stringhe piatte. `src/pages/portfolio/[category]/[object].astro` e `src/pages/about/index.astro` fanno `render()` su entrambe le entry e mostrano il blocco giusto via `data-lang-en`/`data-lang-it`.
+- `src/data/site.ts`: `mainNav` ha `labelIt` accanto a `label`, `categories` ha `titleIt`/`blurbIt` accanto a `title`/`blurb`, `site` ha `descriptionIt`.
+- Termini tecnici (stacking, plate solve, blending mode, ecc.) lasciati non tradotti nel testo italiano su richiesta esplicita dell'utente.
+
+**Perché:** l'utente vuole che il sito sia fruibile sia in italiano che in inglese, senza dover mantenere pagine duplicate per lingua (routing `/it/`/`/en/` scartato per semplicità di manutenzione su un sito di queste dimensioni).
+
+**Come si applica:** per nuove pagine o nuovo testo statico, seguire lo stesso pattern — span `data-lang-en`/`data-lang-it` per testo breve inline, div per blocchi lunghi/paragrafi, `data-tr` per attributi HTML, nuovo file `.md` gemello in una collection `*It` per contenuto markdown lungo. Non serve toccare `LangSwitcher.astro` o il CSS per aggiungere nuovo testo bilingue: il meccanismo è generico e si applica automaticamente a qualunque elemento marcato con quegli attributi.

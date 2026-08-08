@@ -28,4 +28,22 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { portfolio, about };
+// Italian translations of the portfolio/about markdown bodies. Kept as
+// separate collections (matched by entry id) rather than extra frontmatter
+// fields so the Italian text stays real markdown, rendered the same way as
+// the English body.
+const portfolioIt = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/portfolio-it' }),
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+const aboutIt = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/about-it' }),
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+export const collections = { portfolio, about, portfolioIt, aboutIt };

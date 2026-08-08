@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import { getImage } from 'astro:assets';
 import Lightbox from '../../../components/Lightbox';
 import { categories } from '../../../data/site';
@@ -18,14 +18,21 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const entryIt = await getEntry('portfolioIt', entry.id);
+const ContentIt = entryIt ? (await render(entryIt)).Content : null;
 const cat = categories[entry.data.category];
 const optimized = await getImage({ src: entry.data.image, width: 1600, quality: 90 });
 ---
 
-<Layout title={entry.data.title} description={`${entry.data.title} — astrophotography by Valerio Avitabile.`}>
+<Layout
+  title={entry.data.title}
+  description={`${entry.data.title} — astrophotography by Valerio Avitabile.`}
+  descriptionIt={`${entry.data.title} — astrofotografia di Valerio Avitabile.`}
+>
   <section class="mx-auto max-w-4xl px-6 py-16">
     <a href={`/portfolio/${cat.slug}/`} class="text-sm text-white/50 hover:text-accent">
-      &larr; Back to {cat.title}
+      <span data-lang-en>&larr; Back to {cat.title}</span>
+      <span data-lang-it>&larr; Torna a {cat.titleIt}</span>
     </a>
 
     <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">{entry.data.title}</h1>
@@ -41,12 +48,18 @@ const optimized = await getImage({ src: entry.data.image, width: 1600, quality: 
     </div>
 
     <div class="prose-astro mt-10 max-w-none">
-      <Content />
+      <div data-lang-en>
+        <Content />
+      </div>
+      <div data-lang-it>
+        {ContentIt ? <ContentIt /> : <Content />}
+      </div>
     </div>
 
     {entry.data.astrobinLink && (
       <a href={entry.data.astrobinLink} target="_blank" rel="noopener" class="btn-accent mt-4">
-        Equipment and Acquisition Details
+        <span data-lang-en>Equipment and Acquisition Details</span>
+        <span data-lang-it>Dettagli di attrezzatura e acquisizione</span>
       </a>
     )}
   </section>

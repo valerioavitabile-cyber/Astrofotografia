@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { ClientRouter, fade } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LangSwitcher from '../components/LangSwitcher.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import Parallax from '../components/Parallax.astro';
 import { site } from '../data/site';
@@ -11,24 +12,43 @@ import socialCard from '../assets/social-card.jpg';
 
 interface Props {
   title: string;
+  titleIt?: string;
   description?: string;
+  descriptionIt?: string;
   preloadImage?: string;
 }
 
-const { title, description = site.description, preloadImage } = Astro.props;
+const { title, titleIt, description = site.description, descriptionIt, preloadImage } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} · ${site.title}`;
+const pageTitleIt = titleIt ? (titleIt === site.title ? site.title : `${titleIt} · ${site.title}`) : pageTitle;
 const canonicalURL = new URL(Astro.url.pathname, site.url);
 const isHome = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="it" data-lang="it">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/jpeg" href={socialCard.src} />
-    <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <script is:inline>
+      // Set data-lang before anything paints, straight from localStorage, so
+      // the page never flashes the wrong language before LangSwitcher's own
+      // script runs (see components/LangSwitcher.astro).
+      (function () {
+        try {
+          var l = localStorage.getItem('site-lang');
+          document.documentElement.setAttribute('data-lang', l === 'en' ? 'en' : 'it');
+          document.documentElement.setAttribute('lang', l === 'en' ? 'en' : 'it');
+        } catch (e) {}
+      })();
+    </script>
+    <title data-tr={JSON.stringify({ attr: 'text', en: pageTitle, it: pageTitleIt })}>{pageTitleIt}</title>
+    <meta
+      name="description"
+      content={descriptionIt || description}
+      data-tr={JSON.stringify({ attr: 'content', en: description, it: descriptionIt || description })}
+    />
     <link rel="canonical" href={canonicalURL} />
     {preloadImage && <link rel="preload" as="image" fetchpriority="high" href={preloadImage} />}
 
@@ -80,6 +100,7 @@ const isHome = Astro.url.pathname === '/';
   </head>
   <body>
     <Header />
+    <LangSwitcher />
     <main
       class:list={[isHome && 'relative z-[1] -mb-px overflow-hidden rounded-b-[2rem] bg-ink']}
       transition:animate={fade({ duration: '2.8s' })}

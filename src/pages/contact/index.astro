@@ -3,14 +3,24 @@ import Layout from '../../layouts/Layout.astro';
 import { site } from '../../data/site';
 ---
 
-<Layout title="Contact" description="Get in touch with Valerio Avitabile for astrophotography courses, collaborations or questions.">
+<Layout
+  title="Contact"
+  titleIt="Contatti"
+  description="Get in touch with Valerio Avitabile for astrophotography courses, collaborations or questions."
+  descriptionIt="Contatta Valerio Avitabile per corsi di astrofotografia, collaborazioni o domande."
+>
   <section class="mx-auto max-w-3xl px-6 py-24 text-center">
-    <p class="eyebrow">Get in touch</p>
+    <p class="eyebrow">
+      <span data-lang-en>Get in touch</span>
+      <span data-lang-it>Contattami</span>
+    </p>
     <h1 class="mt-4 text-3xl font-semibold sm:text-4xl">
-      Select your favorite channel to reach me
+      <span data-lang-en>Select your favorite channel to reach me</span>
+      <span data-lang-it>Scegli il canale che preferisci per contattarmi</span>
     </h1>
     <p class="mt-4 text-white/70">
-      Do you have any questions? Feel free to write to me, I will be happy to answer you.
+      <span data-lang-en>Do you have any questions? Feel free to write to me, I will be happy to answer you.</span>
+      <span data-lang-it>Hai qualche domanda? Scrivimi pure, sarò felice di risponderti.</span>
     </p>
 
     <div class="mt-10 flex flex-wrap justify-center gap-4">

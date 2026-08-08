@@ -2,11 +2,20 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Page not found">
+<Layout title="Page not found" titleIt="Pagina non trovata">
   <section class="mx-auto max-w-2xl px-6 py-32 text-center">
     <p class="eyebrow">404</p>
-    <h1 class="mt-4 text-4xl font-semibold">This part of the sky is empty</h1>
-    <p class="mt-4 text-white/60">The page you're looking for doesn't exist.</p>
-    <a href="/" class="btn-accent mt-8 inline-flex">Back to home</a>
+    <h1 class="mt-4 text-4xl font-semibold">
+      <span data-lang-en>This part of the sky is empty</span>
+      <span data-lang-it>Questa parte di cielo è vuota</span>
+    </h1>
+    <p class="mt-4 text-white/60">
+      <span data-lang-en>The page you're looking for doesn't exist.</span>
+      <span data-lang-it>La pagina che stai cercando non esiste.</span>
+    </p>
+    <a href="/" class="btn-accent mt-8 inline-flex">
+      <span data-lang-en>Back to home</span>
+      <span data-lang-it>Torna alla home</span>
+    </a>
   </section>
 </Layout>
