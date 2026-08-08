@@ -96,13 +96,34 @@ const isHome = Astro.url.pathname === '/';
       // "/" via the client-side router never re-fires those — without it,
       // the page briefly shows whatever scroll position the previous page
       // was at (e.g. the footer) until something scrolls it back up.
+      // behavior: 'instant' is required too: global.css sets
+      // scroll-behavior: smooth, so a plain scrollTo(0, 0) would glide up
+      // from wherever the browser landed (often the footer, when the prior
+      // page's raw scroll offset overshoots the home page's height),
+      // visibly sliding the footer past the header hero on the way up.
       function resetHomeScroll() {
-        if (window.location.pathname === '/') window.scrollTo(0, 0);
+        if (window.location.pathname === '/') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       }
       resetHomeScroll();
       window.addEventListener('load', resetHomeScroll);
       window.addEventListener('pageshow', resetHomeScroll);
       document.addEventListener('astro:after-swap', resetHomeScroll);
+
+      // Resetting on 'astro:after-swap' alone is too late: the outgoing page
+      // (e.g. a long "courses" page scrolled down) still has its own scrollY
+      // when the view-transition snapshot is taken, and since the home page
+      // renders a sticky footer right after <main>, that leftover scrollY
+      // lands squarely in the footer's territory — so the footer is what the
+      // transition shows before the after-swap reset snaps it back up. Scroll
+      // the *current* (outgoing) page to the top as soon as navigation to "/"
+      // is requested, before the transition/snapshot ever starts, so there's
+      // no leftover offset left to flash.
+      if (!window.__homeScrollFix) {
+        window.__homeScrollFix = true;
+        document.addEventListener('astro:before-preparation', (event) => {
+          if (event.to?.pathname === '/') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        });
+      }
     </script>
   </head>
   <body>

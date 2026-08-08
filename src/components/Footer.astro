@@ -206,6 +206,27 @@ const socials = [
     transform: scale(1);
   }
 
+  /* While a page transition is in flight, <main>'s view-transition snapshot
+     is frozen at whatever height it had the instant the snapshot was taken
+     — often shorter than main's real (post-layout) height, since that's
+     captured right after swap, before images/JS-driven sizing settle. For
+     the rest of the transition's ~2.8s fade, that undersized snapshot no
+     longer fully covers this sticky footer sitting right behind it, and the
+     footer's own scroll-reveal (driven by IntersectionObserver, unrelated
+     to the transition) can already be mid-fade-in by then — so it shows
+     through before the incoming header hero has actually finished
+     appearing. Force it hidden for the transition's duration; it reverts to
+     its normal scroll-reveal behavior the instant the attribute clears.
+     `transition: none` is required too — without it, this rule's own
+     opacity/transform target is still reached by *animating* through the
+     0.9s reveal transition below, so the footer stays partway visible
+     for most of that time instead of disappearing immediately. */
+  :global(html[data-astro-transition]) .sticky-footer {
+    opacity: 0 !important;
+    transform: scale(0.92) !important;
+    transition: none !important;
+  }
+
   @media (min-width: 640px) {
     .sticky-footer {
       padding: 4rem 2.5rem 2rem;
