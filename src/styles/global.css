@@ -146,6 +146,34 @@
     @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
   }
 
+  /* Media card microinteraction: image zoom + gradient reveal + arrow nudge on hover/focus. */
+  .media-card {
+    @apply relative block overflow-hidden rounded-2xl ring-1 ring-white/10 transition-shadow duration-500 hover:shadow-2xl hover:shadow-accent/20 hover:ring-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent;
+  }
+
+  .media-card img,
+  .media-card video {
+    @apply h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110;
+  }
+
+  .media-card .media-card-overlay {
+    @apply pointer-events-none absolute inset-0 z-20 flex items-end bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100;
+  }
+
+  .media-card .media-card-label {
+    @apply flex translate-y-3 items-center gap-2 p-5 text-sm font-semibold uppercase tracking-wide text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100;
+  }
+
+  .media-card .media-card-label svg {
+    @apply h-4 w-4 -translate-x-1 transition-transform duration-500 group-hover:translate-x-0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-card img {
+      transition: none;
+    }
+  }
+
   .prose-astro p {
     @apply mb-5 leading-relaxed text-white/80;
   }

@@ -46,51 +46,47 @@ const flyOffsets = featured.slice(0, 3).map(() => {
   </section>
 
   <section class="border-t border-white/5">
-    <div class="reveal-left mx-auto max-w-6xl px-6 py-24 text-left">
+    <div class="reveal-left mx-auto max-w-6xl px-6 pt-24 pb-8 text-left">
       <p class="eyebrow">Portfolio</p>
       <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">The universe in your eyes</h2>
       <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Galaxies, nebulae, stars in a single shot</p>
-      <a href="/portfolio/" class="btn-accent mt-6 text-base">
-        <span>More</span>
-        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </a>
     </div>
   </section>
 
-  <section class="grid grid-cols-1 gap-6 px-6 py-24 sm:grid-cols-3 sm:py-32">
+  <section class="grid grid-cols-1 gap-6 px-6 pb-24 sm:grid-cols-3 sm:pb-32">
     {featured.slice(0, 3).map(({ img, alt }, i) => (
-      <div
-        class="scroll-fly overflow-hidden rounded-2xl"
+      <a
+        href="/portfolio/"
+        class="scroll-fly media-card group block"
         style={`--fly-x: ${flyOffsets[i].x}px; --fly-y: ${flyOffsets[i].y}px;`}
       >
         <Image
           src={img}
           alt={alt}
-          class="h-48 w-full object-cover sm:h-72"
+          class="h-48 sm:h-72"
         />
-      </div>
+        <span class="media-card-overlay">
+          <span class="media-card-label">
+            <span>View portfolio</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </span>
+      </a>
     ))}
   </section>
 
   <section class="border-t border-white/5">
-    <div class="reveal-left mx-auto max-w-6xl px-6 py-24 text-left">
+    <div class="reveal-left mx-auto max-w-6xl px-6 pt-24 pb-8 text-left">
       <p class="eyebrow">How can I help you?</p>
       <h2 class="mt-4 whitespace-nowrap text-4xl font-semibold leading-[1.05] sm:text-6xl">Customised online courses</h2>
       <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">Stacking, photo editing, software, and other tips</p>
-      <a href="/courses/" class="btn-accent mt-6 text-base">
-        <span>More</span>
-        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </a>
     </div>
 
     <div class="mx-auto max-w-6xl px-6 pb-24">
-      <div class="mosaic-reveal aspect-video w-full overflow-hidden rounded-2xl">
+      <a href="/courses/" class="mosaic-reveal media-card group aspect-video w-full">
         <video
-          class="h-full w-full object-cover"
           src={coursesVideo}
           loop
           muted
@@ -102,7 +98,15 @@ const flyOffsets = featured.slice(0, 3).map(() => {
             <span class="mosaic-tile"></span>
           ))}
         </div>
-      </div>
+        <span class="media-card-overlay">
+          <span class="media-card-label">
+            <span>Discover courses</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -116,35 +120,31 @@ const flyOffsets = featured.slice(0, 3).map(() => {
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-4 sm:grid-cols-2">
       <div data-parallax="-0.03">
         <p class="text-xl text-white/70">Video &amp; tutorial</p>
-        <a href="/videos/" class="btn-accent mt-4">
-          <span>More</span>
-          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
+        <a href="/videos/" class="media-card group mt-4 block aspect-video w-full">
+          <Image src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
+          <span class="media-card-overlay">
+            <span class="media-card-label">
+              <span>Watch tutorials</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </span>
         </a>
-        <div class="mt-6 aspect-video w-full overflow-hidden rounded-2xl">
-          <Image
-            src={videoTutorial}
-            alt="Video tutorial and astronomical calculation tools"
-            class="h-full w-full object-cover"
-          />
-        </div>
       </div>
       <div>
         <p class="text-xl text-white/70">Plate solve and other</p>
-        <a href="/utility/" class="btn-accent mt-4">
-          <span>More</span>
-          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
+        <a href="/utility/" class="media-card group mt-4 block aspect-video w-full">
+          <Image src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
+          <span class="media-card-overlay">
+            <span class="media-card-label">
+              <span>Explore tools</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </span>
         </a>
-        <div class="mt-6 aspect-video w-full overflow-hidden rounded-2xl">
-          <Image
-            src={astronomyTool}
-            alt="Astronomy tools for plate solving and calculations"
-            class="h-full w-full object-cover"
-          />
-        </div>
       </div>
     </div>
   </section>
