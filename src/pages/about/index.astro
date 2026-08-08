@@ -1,46 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import { slide } from 'astro:transitions';
 import portrait from '../../assets/about/portrait.jpg';
+
+const entry = await getEntry('about', 'bio');
+const { Content } = await render(entry);
 ---
 
 <Layout title="About Me" description="Amateur astrophotographer since 2018, sharing the sky from a home terrace in Italy.">
-  <section class="mx-auto max-w-5xl px-6 py-20">
+  <section class="mx-auto max-w-6xl px-6 py-20">
     <div class="grid gap-12 md:grid-cols-2 md:items-center">
-      <Image quality={90} src={portrait} alt="Valerio Avitabile" class="rounded-2xl border border-white/10" />
-      <div>
+      <div class="media-card aspect-[4/5] w-full max-w-md">
+        <Image
+          quality={90}
+          src={portrait}
+          alt="Valerio Avitabile"
+          class="h-full rounded-2xl"
+          transition:name="about-portrait"
+        />
+      </div>
+      <div transition:animate={slide({ duration: '2.6s' })}>
         <p class="eyebrow">About me</p>
         <div class="prose-astro mt-4">
-          <p>
-            Amateur astrophotographer, born in 1976, I have always been fascinated by the cosmos and its
-            mysteries.
-          </p>
-          <p>
-            In 2018, I assembled my first astronomical equipment, finally opening my eyes to horizons that
-            until then had only been reached by my imagination.
-          </p>
-          <p>
-            From my first shots with an SLR camera to the evolution towards modern CMOS sensors, each photo
-            has become a journey into the cosmos for me, among photons and wonder.
-          </p>
-          <p>
-            Over time, I have assimilated knowledge, constantly experimenting and perfecting shooting and
-            post-production techniques.
-          </p>
-          <p>
-            I have seen my images travel far and wide, recognized and published internationally: from the
-            NASA APOD selection to mentions on Astrobin, to winning the Optolong 2021 global contest.
-          </p>
-          <p>
-            All of this, strictly captured from my terrace at home, proves that with commitment and passion,
-            the cosmos can be within everyone's reach.
-          </p>
-          <p>
-            Today, I am pleased to make my acquired skills available to the community, offering
-            <a href="/courses/">personalized online courses</a> for those who want to get started in
-            astrophotography or perfect their technique, with the aim of sharing knowledge, sparking
-            curiosity, and helping others to look up at the stars.
-          </p>
+          <Content />
         </div>
       </div>
     </div>

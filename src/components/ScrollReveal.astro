@@ -160,11 +160,18 @@
     }
   };
 
-  const setupMosaic = () => {
-    document.querySelectorAll<HTMLElement>('.mosaic-reveal:not(.mosaic-ready)').forEach((container) => {
-      container.classList.add('mosaic-ready');
+  // Keyed on the container element so a re-run (e.g. after Astro reuses a
+  // cached page instance instead of parsing fresh DOM on navigation) tears
+  // down the previous observer instead of silently skipping re-init — the
+  // old `.mosaic-ready` class guard left stale/cached containers with a dead
+  // observer and no way to reattach, which is what left the video black
+  // after navigating away and back to the homepage.
+  const mosaicObservers = new WeakMap<HTMLElement, IntersectionObserver>();
 
-      const tileTransition = 1200; // matches .mosaic-tile transition duration (ms)
+  const setupMosaic = () => {
+    document.querySelectorAll<HTMLElement>('.mosaic-reveal').forEach((container) => {
+      mosaicObservers.get(container)?.disconnect();
+
       const maxDelay = 900;
       const tiles = Array.from(container.querySelectorAll<HTMLElement>('.mosaic-tile'));
       const randomizeDelays = () => {
@@ -178,6 +185,13 @@
 
       const reveal = () => {
         container.classList.add('is-visible');
+        // A container reused after being detached from the document (e.g.
+        // navigating away and back) can leave the video's decode buffer
+        // discarded even though currentTime/readyState still look sane, so
+        // force a reload before playing rather than trusting stale state.
+        if (video && video.readyState === 0) {
+          video.load();
+        }
         // Starts playback as soon as the tiles begin peeling (rather than
         // waiting for them to fully clear) so the black intro frames of
         // the clip have already played out by the time the video is
@@ -215,6 +229,7 @@
         { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
       );
       mosaicObserver.observe(container);
+      mosaicObservers.set(container, mosaicObserver);
     });
   };
 

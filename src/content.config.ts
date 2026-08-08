@@ -21,4 +21,11 @@ const portfolio = defineCollection({
     }),
 });
 
-export const collections = { portfolio };
+const about = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/about' }),
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+export const collections = { portfolio, about };

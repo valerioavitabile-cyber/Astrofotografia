@@ -142,11 +142,36 @@
   }
 
   .btn-accent {
-    @apply inline-flex items-center gap-2 rounded-full border border-accent/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-accent transition hover:scale-150 hover:bg-accent hover:text-ink;
+    @apply inline-flex items-center gap-2 rounded-full border border-accent/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-accent transition hover:scale-[1.15] hover:bg-accent hover:text-ink;
   }
 
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+
+  .footer-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+  }
+
+  .footer-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .footer-icon:hover,
+  .footer-icon:focus-visible {
+    color: var(--icon-hover);
+    border-color: var(--icon-hover);
+    background-color: color-mix(in srgb, var(--icon-hover) 15%, transparent);
+    transform: translateY(-2px) scale(1.08);
   }
 
   /* Media card microinteraction: image zoom + gradient reveal + arrow nudge on hover/focus. */
@@ -161,6 +186,18 @@
 
   .media-card img {
     @apply scale-100 transition-transform duration-700 ease-out will-change-transform group-hover:scale-110 group-focus-visible:scale-110;
+  }
+
+  /* Forces the hover zoom back to its resting scale before a page
+     transition starts (see the astro:before-preparation listener in
+     Layout.astro): without this, clicking the portrait while still
+     hovering carries the zoomed-in state into the view-transition
+     snapshot, which then visibly pops back to normal once the new
+     page's un-zoomed image swaps in. !important is required to beat
+     the still-active group-hover:scale-110 utility. */
+  .portrait-unzoom {
+    transform: scale(1) !important;
+    transition: transform 1.2s ease-out !important;
   }
 
   /* No hover zoom on <video>: scaling a *playing* video with CSS transform
@@ -267,5 +304,28 @@
       filter: none;
       transition: none;
     }
+  }
+}
+
+/* Slows the native View Transition morph of the shared portrait
+   (transition:name="about-portrait", set in index.astro/about/index.astro)
+   so its move/resize between home and bio takes as long as the bio text's
+   slide-in, instead of the browser's much snappier default. */
+::view-transition-group(about-portrait) {
+  animation-duration: 2.6s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(about-portrait),
+::view-transition-new(about-portrait) {
+  animation-duration: 2.6s;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(about-portrait),
+  ::view-transition-old(about-portrait),
+  ::view-transition-new(about-portrait) {
+    animation-duration: 0.01ms !important;
   }
 }

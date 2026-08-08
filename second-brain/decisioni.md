@@ -42,6 +42,30 @@ Nelle due sezioni finali di `src/pages/index.astro` (Video & Utilities, About me
 
 **Come si applica:** la direzione di `reveal-left`/`reveal-right` dipende da dove si trova la colonna nel grid (sinistra/destra), non dall'allineamento del testo al suo interno — non vanno confusi. Se in futuro l'animazione sembra "sparita" solo su alcune sezioni, controllare prima quale classe reveal è applicata a ciascuna colonna in `index.astro`.
 
+## 2026-08-08 — Ridisegnata la sezione "About me" della home per essere più accattivante/fruibile
+
+La sezione era solo testo (eyebrow + titolo + bottone "More" + un paragrafo + bottone "Contact me"), poco invitante rispetto alle altre sezioni della home che usano `media-card` con immagini. Portata a un layout a due colonne come `/about/`:
+
+- Colonna sinistra: ritratto (`assets/about/portrait.jpg`, stesso asset usato in `/about/`) dentro un `media-card` linkato a `/about/`, con overlay hover "Read my story" (stesso pattern delle altre card della home).
+- Colonna destra: eyebrow, titolo invariato, nuova riga di badge di credibilità (`NASA APOD featured`, `Optolong 2021 winner`, `Shooting since 2018` — presi dai fatti già raccontati in `/about/`), bottone "Read my story" (rinominato da "More"), poi sotto un separatore la domanda di contatto, bottone "Contact me" e tre icone social (Instagram/Facebook/YouTube, da `site.social`) per invitare a seguire i canali.
+- Aggiunta classe `.badge-pill` in `global.css` (coerente con `.eyebrow`/`.btn-accent`) per i badge.
+- Le icone social riusano lo stesso stile visivo del footer ma con markup/hover Tailwind inline (accent color unico invece dei colori per-brand del footer) invece di condividere la classe scoped `.footer-icon` di `Footer.astro`.
+- Colonne mantengono `reveal-left` (sinistra) / `reveal-right` (destra) coerentemente con [la voce sopra sulla direzione reveal](#2026-08-07--fix-colonna-destra-delle-sezioni-video--utilities-e-about-me-non-entrava-più-da-destra).
+
+**Perché:** richiesta esplicita dell'utente di rendere la sezione più accattivante visivamente e di dare un invito più chiaro a leggere la storia personale e a seguire/contattare (portfolio "About me" prima era solo testo su sfondo scuro, poco invitante rispetto al resto della home).
+
+**Come si applica:** per altre sezioni testuali della home che si vogliono rendere più coinvolgenti, questo è il pattern di riferimento (media-card con overlay + badge di credibilità + CTA + icone social), verificato visivamente con screenshot Playwright (stato normale e hover).
+
+## 2026-08-08 — Testo di `/about/` spostato da hardcoded a content collection markdown
+
+L'utente ha chiesto se la pagina `/about/` avesse un `.md` da qualche parte: non ce l'aveva, il testo della biografia era scritto direttamente come JSX/HTML dentro `src/pages/about/index.astro`. L'unica content collection esistente nel progetto era `portfolio` (`src/content/portfolio/*.md`, vedi `src/content.config.ts`), che usa il pattern `getCollection`/`render`/`<Content />` già visto in `src/pages/portfolio/[category]/[object].astro`.
+
+Creata una nuova collection `about` (stesso `glob` loader, base `./src/content/about`, schema con solo `title: z.string()`), e un file `src/content/about/bio.md` con lo stesso testo che prima era hardcoded (incluso il link a `/courses/` come link markdown). `src/pages/about/index.astro` ora fa `getEntry('about', 'bio')` + `render(entry)` e mostra `<Content />` dentro il div `.prose-astro`, invece dei sette `<p>` scritti a mano.
+
+**Perché:** rendere la biografia editabile come testo/markdown separato dal codice, coerente con come è già strutturato il resto dei contenuti testuali lunghi nel progetto (le schede portfolio).
+
+**Come si applica:** per modificare il testo della pagina About in futuro, editare `src/content/about/bio.md`, non `index.astro`. Se in futuro serve un'altra pagina "a contenuto lungo" editabile fuori dal codice, questo è il pattern da seguire (nuova collection + file .md + `getEntry`/`render`/`<Content />`).
+
 ## 2026-08-07 — `.reveal`/`.reveal-left`/`.reveal-right` resi ripetibili (replay ad ogni ingresso in viewport)
 
 L'observer in `ScrollReveal.astro` faceva `unobserve` dopo il primo reveal (one-shot): una volta apparso, il testo restava visibile per sempre, anche scrollando via e tornando indietro. L'utente vuole invece che, scrollando verso l'alto (via dalla sezione), il testo si nasconda di nuovo (tornando alla posizione traslata sx/dx con opacity 0) e rianimi da capo quando si rientra nella sezione scrollando in basso.

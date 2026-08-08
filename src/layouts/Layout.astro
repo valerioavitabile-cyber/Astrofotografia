@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/raleway';
 import '../styles/global.css';
+import { ClientRouter, fade } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
@@ -35,6 +36,30 @@ const isHome = Astro.url.pathname === '/';
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(socialCard.src, site.url)} />
     <meta name="twitter:card" content="summary_large_image" />
+    <ClientRouter />
+    <script is:inline>
+      // The portrait link's hover-zoom (group-hover:scale-110) stays active
+      // through the click since the pointer never leaves the element before
+      // navigation starts. Left as-is, the view-transition snapshot captures
+      // the zoomed-in image and it visibly pops back to normal once the
+      // (un-zoomed) about page swaps in. Delaying navigation just long enough
+      // for the zoom to ease back to scale(1) removes that pop.
+      if (!window.__portraitZoomFix) {
+        window.__portraitZoomFix = true;
+        document.addEventListener('astro:before-preparation', (event) => {
+          const link = event.sourceElement?.closest?.('[data-portrait-link]');
+          const img = link?.querySelector('img');
+          if (!img || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+          const originalLoader = event.loader;
+          event.loader = async () => {
+            img.classList.add('portrait-unzoom');
+            await new Promise((resolve) => setTimeout(resolve, 1250));
+            await originalLoader();
+          };
+        });
+      }
+    </script>
     {isHome && (
       <script is:inline>
         if ('scrollRestoration' in history) {
@@ -46,7 +71,7 @@ const isHome = Astro.url.pathname === '/';
   </head>
   <body>
     <Header />
-    <main>
+    <main transition:animate={fade({ duration: '2.8s' })}>
       <slot />
     </main>
     <Footer />
