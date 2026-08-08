@@ -27,6 +27,11 @@ const optimized = await getImage({
   width: 1600,
   quality: 90,
 });
+const fullRes = await getImage({
+  src: entry.data.image,
+  format: 'webp',
+  quality: 75,
+});
 ---
 
 <Layout
@@ -46,6 +51,7 @@ const optimized = await getImage({
       <Lightbox
         client:load
         src={optimized.src}
+        fullSrc={fullRes.src}
         alt={entry.data.title}
         width={optimized.attributes.width as number}
         height={optimized.attributes.height as number}
