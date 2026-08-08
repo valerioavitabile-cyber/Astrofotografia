@@ -1,5 +1,5 @@
 ---
-import { site, mainNav } from '../data/site';
+import { site } from '../data/site';
 
 const year = new Date().getFullYear();
 
@@ -46,8 +46,10 @@ const socials = [
 <footer class="sticky-footer border-t border-white/10 bg-surface-2" id="site-footer">
   <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"></div>
 
-  <div class="footer-top mx-auto flex w-full max-w-6xl flex-wrap items-start justify-between gap-12">
-    <div class="max-w-sm">
+  <div
+    class="footer-grid mx-auto grid w-full max-w-6xl grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]"
+  >
+    <div class="max-w-sm sm:col-span-2 lg:col-span-1">
       <a
         href="/"
         class="block text-[clamp(2.25rem,7vw,5rem)] font-semibold leading-[0.95] tracking-tight text-white"
@@ -98,46 +100,46 @@ const socials = [
           ))
         }
       </div>
+
+      <blockquote class="footer-quote mt-8 max-w-xs border-l-2 border-accent pl-4 text-[13.5px] italic leading-relaxed text-white/50">
+        Thank you for exploring the cosmos through my eyes. Never stop looking beyond &mdash; the
+        next dream is already among the stars.
+      </blockquote>
     </div>
 
-    <div class="flex flex-wrap gap-12 sm:gap-16">
-      <nav aria-label="Footer navigation">
-        <p class="eyebrow">Explore</p>
-        <ul class="mt-4 space-y-2.5">
-          {
-            mainNav.map((item) => (
-              <li>
-                <a href={item.href} class="footer-link">
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+    <div>
+      <p class="eyebrow">Get in touch</p>
+      <ul class="mt-5 space-y-2.5 text-sm text-white/70">
+        <li>
+          <a href={`mailto:${site.email}`} class="footer-link">{site.email}</a>
+        </li>
+        <li>
+          <a href="/contact/" class="footer-link">Contact form</a>
+        </li>
+      </ul>
+    </div>
 
-      <div>
-        <p class="eyebrow">Get in touch</p>
-        <ul class="mt-4 space-y-2.5 text-sm text-white/70">
-          <li>
-            <a href={`mailto:${site.email}`} class="footer-link">{site.email}</a>
-          </li>
-          <li>
-            <a href="/contact/" class="footer-link">Contact form</a>
-          </li>
-        </ul>
-      </div>
+    <div>
+      <p class="eyebrow">Stay updated</p>
+      <p class="mt-5 text-sm leading-relaxed text-white/60">
+        New photos, courses and deep-sky tips &mdash; straight to your inbox.
+      </p>
+      <form class="footer-newsletter mt-4 flex flex-col gap-2.5" onsubmit="return false;">
+        <input
+          type="email"
+          required
+          placeholder="Your email"
+          aria-label="Email address"
+          class="footer-newsletter-input"
+        />
+        <button type="submit" class="footer-newsletter-submit">Subscribe</button>
+      </form>
     </div>
   </div>
 
   <div class="footer-bottom mx-auto w-full max-w-6xl">
-    <p class="max-w-xs text-sm italic leading-relaxed text-white/50">
-      Thank you for exploring the cosmos through my eyes. Never stop looking beyond &mdash; the
-      next dream is already among the stars.
-    </p>
-
     <div
-      class="mt-8 flex flex-col items-center gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:justify-between"
+      class="flex flex-col items-center gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:justify-between"
     >
       <p>&copy; {year} Valerio Avitabile. All rights reserved.</p>
       <a href="/privacy/" class="footer-link">Privacy Policy</a>
@@ -188,6 +190,42 @@ const socials = [
       transform: none;
       transition: none;
     }
+  }
+
+  .footer-newsletter-input {
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--color-surface-2);
+    padding: 0.625rem 0.75rem;
+    font-size: 13.5px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .footer-newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .footer-newsletter-input:focus-visible {
+    border-color: var(--color-accent);
+  }
+
+  .footer-newsletter-submit {
+    border-radius: 0.5rem;
+    border: none;
+    background-color: var(--color-accent);
+    padding: 0.625rem 0.75rem;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: filter 0.2s ease;
+  }
+
+  .footer-newsletter-submit:hover,
+  .footer-newsletter-submit:focus-visible {
+    filter: brightness(1.08);
   }
 </style>
 
