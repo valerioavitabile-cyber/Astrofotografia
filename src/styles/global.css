@@ -95,8 +95,8 @@
     inset: 0;
     z-index: 10;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(10, 1fr);
     pointer-events: none;
   }
 
@@ -142,7 +142,7 @@
   }
 
   .btn-accent {
-    @apply inline-flex items-center gap-2 rounded-full border border-accent/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-accent transition hover:bg-accent hover:text-ink;
+    @apply inline-flex items-center gap-2 rounded-full border border-accent/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-accent transition hover:scale-150 hover:bg-accent hover:text-ink;
   }
 
   .eyebrow {
@@ -156,7 +156,23 @@
 
   .media-card img,
   .media-card video {
-    @apply h-full w-full origin-center scale-100 object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-110 group-focus-visible:scale-110;
+    @apply h-full w-full origin-center object-cover;
+  }
+
+  .media-card img {
+    @apply scale-100 transition-transform duration-700 ease-out will-change-transform group-hover:scale-110 group-focus-visible:scale-110;
+  }
+
+  /* No hover zoom on <video>: scaling a *playing* video with CSS transform
+     forces the browser to resample every decoded frame at the new size,
+     and a small high-contrast detail (a star against a dark sky) shimmers
+     under that resampling even with a single, conflict-free transform.
+     Images don't have this problem (a single static frame is scaled once
+     by the compositor), so only .media-card img gets the zoom; the video
+     stays put and relies on the overlay + label reveal for feedback. */
+  .media-card video {
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   .media-card .media-card-overlay {

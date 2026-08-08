@@ -175,19 +175,17 @@
       randomizeDelays();
 
       const video = container.querySelector<HTMLVideoElement>('[data-mosaic-video]');
-      let revealTimeout: number | undefined;
 
       const reveal = () => {
         container.classList.add('is-visible');
-        if (video) {
-          revealTimeout = window.setTimeout(() => {
-            video.play().catch(() => {});
-          }, maxDelay + tileTransition);
-        }
+        // Starts playback as soon as the tiles begin peeling (rather than
+        // waiting for them to fully clear) so the black intro frames of
+        // the clip have already played out by the time the video is
+        // uncovered, and viewers see real footage instead of a black flash.
+        video?.play().catch(() => {});
       };
 
       const hide = () => {
-        window.clearTimeout(revealTimeout);
         container.classList.remove('is-visible');
         randomizeDelays();
         if (video) {
