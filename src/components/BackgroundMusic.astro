@@ -1,0 +1,154 @@
+---
+const AUDIO_SRC =
+  'https://cdn.jsdelivr.net/gh/valerioavitabile-cyber/mysite/Video%20senza%20titolo%20-%20Realizzato%20con%20Clipchamp.m4a';
+---
+
+<div id="bg-music" transition:persist="bg-music">
+  <audio id="bg-music-audio" loop preload="auto" playsinline>
+    <source src={AUDIO_SRC} type="audio/mp4" />
+  </audio>
+  <button id="bg-music-toggle" type="button" aria-label="Attiva o disattiva la musica di sottofondo">
+    <svg id="bg-music-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M11 5 6 9H3v6h3l5 4V5ZM15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"
+      ></path>
+    </svg>
+    <svg id="bg-music-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M11 5 6 9H3v6h3l5 4V5ZM16 9l5 6M21 9l-5 6"
+      ></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  #bg-music-toggle {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    cursor: pointer;
+    z-index: 60;
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
+  }
+  #bg-music-toggle:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(1.08);
+  }
+  #bg-music-toggle svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // Persisted across Astro view-transition navigations on `window` (the
+    // one object that's never replaced by the router), since the audio/button
+    // themselves aren't reliably kept alive by transition:persist on every
+    // route and this script tag re-executes fresh on each page.
+    const state = (window.__bgMusicState ||= { userDisabled: false, deliberatePause: false });
+
+    const setIcon = (disabled) => {
+      const iconOn = document.getElementById('bg-music-icon-on');
+      const iconOff = document.getElementById('bg-music-icon-off');
+      if (iconOn) iconOn.style.display = disabled ? 'none' : 'block';
+      if (iconOff) iconOff.style.display = disabled ? 'block' : 'none';
+    };
+
+    const tryStart = () => {
+      const audio = document.getElementById('bg-music-audio');
+      if (!audio || state.userDisabled || !audio.paused) return;
+      audio.play().catch(() => {});
+    };
+
+    const setup = () => {
+      const audio = document.getElementById('bg-music-audio');
+      const toggle = document.getElementById('bg-music-toggle');
+      if (!audio || !toggle) return;
+
+      setIcon(state.userDisabled);
+
+      if (!audio.dataset.bgMusicBound) {
+        audio.dataset.bgMusicBound = '1';
+        audio.volume = 0.25;
+        audio.addEventListener('pause', () => {
+          if (state.deliberatePause) {
+            state.deliberatePause = false;
+            return;
+          }
+          tryStart();
+        });
+      }
+
+      if (!toggle.dataset.bgMusicBound) {
+        toggle.dataset.bgMusicBound = '1';
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          state.userDisabled = !state.userDisabled;
+          setIcon(state.userDisabled);
+          const current = document.getElementById('bg-music-audio');
+          if (!current) return;
+          if (state.userDisabled) {
+            state.deliberatePause = true;
+            current.pause();
+          } else {
+            current.play().catch(() => {});
+          }
+        });
+      }
+
+      tryStart();
+    };
+
+    // Document itself is never replaced by Astro's client-side router, so
+    // these only need to be bound once for the whole session.
+    if (!window.__bgMusicDocInit) {
+      window.__bgMusicDocInit = true;
+
+      document.addEventListener('scroll', tryStart, { once: true, passive: true });
+      document.addEventListener('click', tryStart, { once: true });
+
+      // Duck the background track whenever a video with actual sound starts
+      // playing (course/tutorial videos), so they don't overlap. Muted
+      // decorative videos (e.g. the scroll-triggered mosaic background clips)
+      // are ignored, otherwise scrolling past them would stop the music.
+      document.addEventListener(
+        'play',
+        (e) => {
+          const audio = document.getElementById('bg-music-audio');
+          if (audio && e.target instanceof HTMLVideoElement && !e.target.muted && !audio.paused) {
+            state.deliberatePause = true;
+            audio.pause();
+          }
+        },
+        true
+      );
+      document.body.addEventListener('click', (e) => {
+        const audio = document.getElementById('bg-music-audio');
+        if (audio && e.target.closest && e.target.closest('lite-youtube') && !audio.paused) {
+          state.deliberatePause = true;
+          audio.pause();
+        }
+      });
+
+      document.addEventListener('astro:page-load', setup);
+    }
+
+    setup();
+  })();
+</script>

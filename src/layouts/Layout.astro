@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import Parallax from '../components/Parallax.astro';
+import BackgroundMusic from '../components/BackgroundMusic.astro';
 import { site } from '../data/site';
 import socialCard from '../assets/social-card.jpg';
 
@@ -82,21 +83,27 @@ const isHome = Astro.url.pathname === '/';
         });
       }
     </script>
-    {isHome && (
-      <script is:inline>
-        if ('scrollRestoration' in history) {
-          history.scrollRestoration = 'manual';
-        }
-        // A single early scrollTo isn't enough: the browser can re-apply its
-        // own scroll restoration after this script runs (notably on
-        // 'pageshow', which also fires when the page is served from the
-        // bfcache on refresh/back-forward), so it's forced back to the top
-        // again at each of these later points too.
-        window.scrollTo(0, 0);
-        window.addEventListener('load', () => window.scrollTo(0, 0));
-        window.addEventListener('pageshow', () => window.scrollTo(0, 0));
-      </script>
-    )}
+    <script is:inline>
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      // A single early scrollTo isn't enough: the browser can re-apply its
+      // own scroll restoration after this script runs (notably on
+      // 'pageshow', which also fires when the page is served from the
+      // bfcache on refresh/back-forward), so it's forced back to the top
+      // again at each of these later points too. It also has to run on
+      // 'astro:after-swap' (not just 'load'/'pageshow'), since navigating to
+      // "/" via the client-side router never re-fires those — without it,
+      // the page briefly shows whatever scroll position the previous page
+      // was at (e.g. the footer) until something scrolls it back up.
+      function resetHomeScroll() {
+        if (window.location.pathname === '/') window.scrollTo(0, 0);
+      }
+      resetHomeScroll();
+      window.addEventListener('load', resetHomeScroll);
+      window.addEventListener('pageshow', resetHomeScroll);
+      document.addEventListener('astro:after-swap', resetHomeScroll);
+    </script>
   </head>
   <body>
     <Header />
@@ -110,5 +117,6 @@ const isHome = Astro.url.pathname === '/';
     {isHome && <Footer />}
     <ScrollReveal />
     <Parallax />
+    <BackgroundMusic />
   </body>
 </html>
