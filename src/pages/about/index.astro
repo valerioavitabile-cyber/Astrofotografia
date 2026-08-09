@@ -1,14 +1,15 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import { getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import { slide } from 'astro:transitions';
 import { marked } from 'marked';
 import portrait from '../../assets/about/portrait.jpg';
 
 const entry = await getEntry('about', 'bio');
-const { Content } = await render(entry);
-const contentItHtml = await marked.parse(entry.data.bodyIt);
+const [bodyIt, bodyEn] = entry?.body?.split(/\n\n---\n\n/) ?? ['', ''];
+const contentItHtml = await marked.parse(bodyIt.trim());
+const contentEnHtml = await marked.parse(bodyEn.trim());
 ---
 
 <Layout
@@ -34,9 +35,7 @@ const contentItHtml = await marked.parse(entry.data.bodyIt);
           <span data-lang-it>Chi sono</span>
         </p>
         <div class="prose-astro mt-4">
-          <div data-lang-en>
-            <Content />
-          </div>
+          <div data-lang-en set:html={contentEnHtml} />
           <div data-lang-it set:html={contentItHtml} />
         </div>
       </div>

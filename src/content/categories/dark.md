@@ -1,0 +1,5 @@
+Le nebulose oscure, o nubi molecolari, sono fredde strutture interstellari composte principalmente da gas e da una piccola frazione di polvere. La polvere assorbe la luce stellare circostante, soprattutto le lunghezze d'onda più corte dello spettro blu, facendo apparire la nube opaca rispetto agli sfondi luminosi. Tra gli ambienti più freddi dell'universo, queste nubi dalla forma irregolare sono spesso visibili a occhio nudo come sagome scure sullo sfondo della Via Lattea. Le varianti più grandi, le nubi molecolari giganti, possono raggiungere masse fino a un milione di volte quella del Sole.
+
+---
+
+Dark nebulae, or molecular clouds, are cold interstellar structures composed primarily of gas and a small fraction of dust. The dust absorbs background starlight—especially shorter wavelengths in the blue spectrum—causing the cloud to appear opaque against luminous backgrounds. Among the coldest environments in the universe, these irregularly shaped clouds are often visible to the naked eye as dark silhouettes against the Milky Way. The largest variants, giant molecular clouds, can reach masses up to a million times that of the Sun.

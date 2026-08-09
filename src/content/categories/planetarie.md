@@ -1,0 +1,7 @@
+Le nebulose planetarie costituiscono la fase evolutiva conclusiva delle stelle di massa piccola e media. Si formano con l'espulsione degli strati atmosferici esterni dell'astro, che lascia scoperto un nucleo denso e ad alta temperatura destinato a evolvere in nana bianca.
+La radiazione ultravioletta emessa dal nucleo ionizza il gas circostante, stimolando l'emissione spettrale di elementi come idrogeno e ossigeno. A dispetto della denominazione storica, questi oggetti non presentano alcuna correlazione con i pianeti. Con scale temporali dell'ordine di decine di migliaia di anni, la dispersione di queste strutture arricchisce il mezzo interstellare di elementi pesanti destinati alle successive generazioni stellari; processo che interesserà anche il Sole tra circa 5 miliardi di anni.
+
+---
+
+Planetary nebulae represent the final evolutionary stage of low- and medium-mass stars. They form when the star's outer atmospheric layers are expelled, exposing a dense, high-temperature core destined to evolve into a white dwarf.
+The ultraviolet radiation emitted by the core ionizes the surrounding gas, stimulating the spectral emission of elements such as hydrogen and oxygen. Despite their historical name, these objects have no correlation with planets. Over timescales of tens of thousands of years, the dispersal of these structures enriches the interstellar medium with heavy elements destined for subsequent stellar generations; a process that will also affect the Sun in about 5 billion years.
