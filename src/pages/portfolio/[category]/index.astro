@@ -23,17 +23,10 @@ const entries = (await getCollection('portfolio')).filter((e) => e.id.split('/')
   descriptionIt={`${cat.blurbIt} — portfolio di astrofotografia di Valerio Avitabile.`}
 >
   <section class="mx-auto max-w-6xl px-6 pt-40 pb-20">
-    {cat.description && cat.descriptionIt ? (
-      <p class="reveal-left max-w-2xl whitespace-pre-line text-white/60">
-        <span data-lang-en>{cat.description}</span>
-        <span data-lang-it>{cat.descriptionIt}</span>
-      </p>
-    ) : (
-      <p class="reveal-left max-w-xl text-white/60">
-        <span data-lang-en>{cat.blurb}</span>
-        <span data-lang-it>{cat.blurbIt}</span>
-      </p>
-    )}
+    <p class="reveal-left whitespace-pre-line text-white/60">
+      <span data-lang-en>{cat.description || cat.blurb}</span>
+      <span data-lang-it>{cat.descriptionIt || cat.blurbIt}</span>
+    </p>
 
     {entries.length >= 2 ? (
       <div class="stack-gallery mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

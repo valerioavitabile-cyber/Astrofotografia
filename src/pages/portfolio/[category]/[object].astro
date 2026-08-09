@@ -117,13 +117,8 @@ const fullRes = await getImage({
   description={`${entry.data.title} — astrophotography by Valerio Avitabile.`}
   descriptionIt={`${entry.data.title} — astrofotografia di Valerio Avitabile.`}
 >
-  <section class="mx-auto max-w-4xl px-6 py-16">
-    <a href={`/portfolio/${cat.slug}/`} class="text-sm text-white/50 hover:text-accent">
-      <span data-lang-en>&larr; Back to {cat.title}</span>
-      <span data-lang-it>&larr; Torna a {cat.titleIt}</span>
-    </a>
-
-    <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">{entry.data.title}</h1>
+  <section class="mx-auto max-w-4xl px-6 pt-40 pb-16">
+    <h1 class="text-3xl font-semibold sm:text-4xl">{entry.data.title}</h1>
 
     <div class="mt-8 overflow-hidden rounded-2xl border border-white/10">
       <Lightbox
