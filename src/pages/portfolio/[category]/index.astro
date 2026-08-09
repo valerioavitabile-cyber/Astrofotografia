@@ -35,27 +35,49 @@ const entries = (await getCollection('portfolio')).filter((e) => e.id.split('/')
       </p>
     )}
 
-    <div class="stack-gallery mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {entries.map((entry) => (
-        <a
-          href={`/portfolio/${cat.slug}/${entry.id.split('/').pop()}/`}
-          class="stack-card group relative overflow-hidden rounded-2xl border border-white/10 hover:border-accent/60"
-        >
-          <Image
-            quality={90}
-            src={entry.data.image}
-            alt={entry.data.title}
-            width={480}
-            height={360}
-            class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:brightness-110"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
-          <p class="absolute inset-x-0 bottom-0 p-4 font-semibold text-white">{entry.data.title}</p>
-        </a>
-      ))}
-    </div>
+    {entries.length >= 2 ? (
+      <div class="stack-gallery mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {entries.map((entry) => (
+          <a
+            href={`/portfolio/${cat.slug}/${entry.id.split('/').pop()}/`}
+            class="stack-card group relative overflow-hidden rounded-2xl border border-white/10 hover:border-accent/60"
+          >
+            <Image
+              quality={90}
+              src={entry.data.image}
+              alt={entry.data.title}
+              width={480}
+              height={360}
+              class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:brightness-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
+            <p class="absolute inset-x-0 bottom-0 p-4 font-semibold text-white">{entry.data.title}</p>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="mt-14 flex justify-center">
+        {entries.map((entry) => (
+          <a
+            href={`/portfolio/${cat.slug}/${entry.id.split('/').pop()}/`}
+            class="group relative block w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 hover:border-accent/60"
+          >
+            <Image
+              quality={90}
+              src={entry.data.image}
+              alt={entry.data.title}
+              width={480}
+              height={360}
+              class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:brightness-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
+            <p class="absolute inset-x-0 bottom-0 p-4 font-semibold text-white">{entry.data.title}</p>
+          </a>
+        ))}
+      </div>
+    )}
 
-    <div class="mt-14 flex justify-center">
+    <div class="mt-20 flex justify-center">
       <a href="/#portfolio" class="btn-accent justify-center min-w-[190px]">
         <span>Portfolio</span>
         <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">

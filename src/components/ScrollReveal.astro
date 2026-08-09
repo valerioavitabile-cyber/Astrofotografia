@@ -287,7 +287,12 @@
     document.querySelectorAll<HTMLElement>('.stack-gallery').forEach((gallery) => {
       stackObservers.get(gallery)?.disconnect();
       const cards = Array.from(gallery.querySelectorAll<HTMLElement>('.stack-card'));
-      if (!cards.length) return;
+      // Galleries with a single photo don't get the pile/unfurl treatment —
+      // there's nothing to fan out, so leave it in its natural, already-visible position.
+      if (cards.length < 2) {
+        cards.forEach((card) => card.classList.add('is-placed'));
+        return;
+      }
 
       if (reduceMotion) {
         gallery.classList.add('is-settled');
@@ -370,11 +375,20 @@
 
       let armed = false;
       let lastScrollY = window.scrollY;
+      let armTimer: number | null = null;
+
+      const disarm = () => {
+        armed = false;
+        window.removeEventListener('scroll', onArmedScroll);
+        if (armTimer !== null) {
+          window.clearTimeout(armTimer);
+          armTimer = null;
+        }
+      };
 
       const onArmedScroll = () => {
         if (!armed || window.scrollY === lastScrollY) return;
-        armed = false;
-        window.removeEventListener('scroll', onArmedScroll);
+        disarm();
         unfurl();
       };
 
@@ -385,9 +399,18 @@
               armed = true;
               lastScrollY = window.scrollY;
               window.addEventListener('scroll', onArmedScroll, { passive: true });
+              // Fallback for pages short enough that the gallery is already
+              // in view with little or nothing left to scroll (e.g. a
+              // category with only two photos) — without this, arming never
+              // gets a follow-up scroll event and the pile sits frozen
+              // forever. Gives the visitor a moment to start scrolling on
+              // their own before unfurling automatically.
+              armTimer = window.setTimeout(() => {
+                disarm();
+                unfurl();
+              }, 2200);
             } else {
-              armed = false;
-              window.removeEventListener('scroll', onArmedScroll);
+              disarm();
               pile();
             }
           }

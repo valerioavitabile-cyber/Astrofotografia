@@ -6,6 +6,8 @@ import { marked } from 'marked';
 import Lightbox from '../../../components/Lightbox';
 import { categories } from '../../../data/site';
 import astrobinData from '../../../data/astrobin.json';
+import '@fontsource/space-mono';
+import '@fontsource/space-mono/700.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('portfolio');
@@ -83,6 +85,21 @@ function mostCommonBortle(sessions: { bortle: number | null }[]) {
 const bortle = acquisition ? mostCommonBortle(acquisition.deepSkyAcquisitions) : null;
 const location = acquisition?.locations?.[0];
 const hemisphere = location?.latSide === 'N' ? 'north' : location?.latSide === 'S' ? 'south' : null;
+
+const hasPrimaryEquipment = acquisition
+  ? acquisition.imagingTelescopes.length > 0 || acquisition.imagingCameras.length > 0 || acquisition.mounts.length > 0
+  : false;
+
+const hasSecondaryDetails = acquisition
+  ? acquisition.guidingTelescopes.length > 0 ||
+    acquisition.guidingCameras.length > 0 ||
+    Boolean(location) ||
+    bortle != null ||
+    Boolean(hemisphere) ||
+    (acquisition.solution?.ra != null && acquisition.solution?.dec != null) ||
+    acquisition.solution?.pixscale != null ||
+    acquisition.solution?.radiusDeg != null
+  : false;
 const optimized = await getImage({
   src: entry.data.image,
   width: 1600,
@@ -127,212 +144,370 @@ const fullRes = await getImage({
     </div>
 
     {acquisition && (
-      <div class="mt-10 rounded-2xl border border-white/10 p-6 sm:p-8">
-        <h2 class="eyebrow">
-          <span data-lang-en>Equipment &amp; Acquisition</span>
-          <span data-lang-it>Attrezzatura e acquisizione</span>
-        </h2>
+      <div class="console-panel mt-10">
+        <div class="console-topbar">
+          <span class="console-title">
+            <span data-lang-en>Equipment &amp; Acquisition Log</span>
+            <span data-lang-it>Registro Attrezzatura e Acquisizione</span>
+          </span>
+        </div>
 
-        <dl class="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
-          {acquisition.imagingTelescopes.length > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Telescope</span>
-                <span data-lang-it>Telescopio</span>
+        <dl class="console-ledger">
+          {acquisition.totalIntegrationSeconds > 0 && (
+            <div class="ledger-row">
+              <dt title="TOTEXP">
+                <span data-lang-en>Total integration</span><span data-lang-it>Integrazione totale</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.imagingTelescopes.join(', ')}</dd>
+              <dd>
+                <span class="ledger-val">{formatDuration(acquisition.totalIntegrationSeconds)}</span>
+              </dd>
+            </div>
+          )}
+          {acquisition.imagingTelescopes.length > 0 && (
+            <div class="ledger-row">
+              <dt title="TELESCOP">
+                <span data-lang-en>Telescope</span><span data-lang-it>Telescopio</span>
+              </dt>
+              <dd class="ledger-stack">
+                {acquisition.imagingTelescopes.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
           {acquisition.imagingCameras.length > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Camera</span>
-                <span data-lang-it>Camera</span>
+            <div class="ledger-row">
+              <dt title="INSTRUME">
+                <span data-lang-en>Camera</span><span data-lang-it>Camera</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.imagingCameras.join(', ')}</dd>
+              <dd class="ledger-stack">
+                {acquisition.imagingCameras.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
           {acquisition.mounts.length > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Mount</span>
-                <span data-lang-it>Montatura</span>
+            <div class="ledger-row">
+              <dt title="MOUNT">
+                <span data-lang-en>Mount</span><span data-lang-it>Montatura</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.mounts.join(', ')}</dd>
-            </div>
-          )}
-          {acquisition.totalIntegrationSeconds > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Total integration</span>
-                <span data-lang-it>Integrazione totale</span>
-              </dt>
-              <dd class="mt-1 text-sm text-white/80">{formatDuration(acquisition.totalIntegrationSeconds)}</dd>
+              <dd class="ledger-stack">
+                {acquisition.mounts.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
           {acquisition.guidingTelescopes.length > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Guiding telescope</span>
-                <span data-lang-it>Strumento di guida</span>
+            <div class="ledger-row">
+              <dt title="GUIDESCP">
+                <span data-lang-en>Guiding telescope</span><span data-lang-it>Strumento di guida</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.guidingTelescopes.join(', ')}</dd>
+              <dd class="ledger-stack">
+                {acquisition.guidingTelescopes.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
           {acquisition.guidingCameras.length > 0 && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Guiding camera</span>
-                <span data-lang-it>Camera di guida</span>
+            <div class="ledger-row">
+              <dt title="GUIDECAM">
+                <span data-lang-en>Guiding camera</span><span data-lang-it>Camera di guida</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.guidingCameras.join(', ')}</dd>
+              <dd class="ledger-stack">
+                {acquisition.guidingCameras.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
           {location && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Location</span>
-                <span data-lang-it>Luogo</span>
+            <div class="ledger-row">
+              <dt title="SITE">
+                <span data-lang-en>Location</span><span data-lang-it>Luogo</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">
-                <span data-lang-en>{formatLocation(location, 'en')}</span>
-                <span data-lang-it>{formatLocation(location, 'it')}</span>
+              <dd>
+                <span class="ledger-val">
+                  <span data-lang-en>{formatLocation(location, 'en')}</span><span data-lang-it>{formatLocation(location, 'it')}</span>
+                </span>
+              </dd>
+            </div>
+          )}
+          {hemisphere && (
+            <div class="ledger-row">
+              <dt title="HEMISPH">
+                <span data-lang-en>Hemisphere</span><span data-lang-it>Emisfero</span>
+              </dt>
+              <dd>
+                <span class="ledger-val">
+                  <span data-lang-en>{hemisphere === 'north' ? 'Northern' : 'Southern'}</span>
+                  <span data-lang-it>{hemisphere === 'north' ? 'Nord' : 'Sud'}</span>
+                </span>
               </dd>
             </div>
           )}
           {bortle != null && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Bortle scale</span>
-                <span data-lang-it>Scala di Bortle</span>
+            <div class="ledger-row">
+              <dt title="BORTLE">
+                <span data-lang-en>Bortle scale</span><span data-lang-it>Scala di Bortle</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{bortle}</dd>
-            </div>
-          )}
-          {hemisphere && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Hemisphere</span>
-                <span data-lang-it>Emisfero</span>
-              </dt>
-              <dd class="mt-1 text-sm text-white/80">
-                <span data-lang-en>{hemisphere === 'north' ? 'Northern' : 'Southern'}</span>
-                <span data-lang-it>{hemisphere === 'north' ? 'Nord' : 'Sud'}</span>
+              <dd>
+                <span class="ledger-val">{bortle}</span>
               </dd>
             </div>
           )}
           {acquisition.solution?.ra != null && acquisition.solution?.dec != null && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Celestial coordinates</span>
-                <span data-lang-it>Coordinate celesti</span>
+            <div class="ledger-row">
+              <dt title="OBJCTRD">
+                <span data-lang-en>Celestial coordinates</span><span data-lang-it>Coordinate celesti</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">
-                RA {formatRA(acquisition.solution.ra)} · Dec {formatDec(acquisition.solution.dec)}
+              <dd>
+                <span class="ledger-val ledger-tabular">
+                  RA {formatRA(acquisition.solution.ra)} · DEC {formatDec(acquisition.solution.dec)}
+                </span>
               </dd>
             </div>
           )}
           {acquisition.solution?.pixscale != null && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Pixel scale</span>
-                <span data-lang-it>Campionamento</span>
+            <div class="ledger-row">
+              <dt title="PIXSCALE">
+                <span data-lang-en>Pixel scale</span><span data-lang-it>Campionamento</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{acquisition.solution.pixscale.toFixed(2)}″/px</dd>
+              <dd>
+                <span class="ledger-val ledger-tabular">{acquisition.solution.pixscale.toFixed(2)}″/px</span>
+              </dd>
             </div>
           )}
           {acquisition.solution?.radiusDeg != null && (
-            <div>
-              <dt class="text-xs uppercase tracking-wide text-white/40">
-                <span data-lang-en>Field radius</span>
-                <span data-lang-it>Raggio del campo</span>
+            <div class="ledger-row">
+              <dt title="FOVRAD">
+                <span data-lang-en>Field radius</span><span data-lang-it>Raggio del campo</span>
               </dt>
-              <dd class="mt-1 text-sm text-white/80">{(acquisition.solution.radiusDeg * 60).toFixed(1)}′</dd>
+              <dd>
+                <span class="ledger-val ledger-tabular">{(acquisition.solution.radiusDeg * 60).toFixed(1)}′</span>
+              </dd>
+            </div>
+          )}
+          {acquisition.filters.length > 0 && (
+            <div class="ledger-row">
+              <dt title="FILTERS">
+                <span data-lang-en>Filters</span><span data-lang-it>Filtri</span>
+              </dt>
+              <dd class="ledger-stack">
+                {acquisition.filters.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
+            </div>
+          )}
+          {acquisition.accessories.length > 0 && (
+            <div class="ledger-row">
+              <dt title="ACCESS">
+                <span data-lang-en>Accessories</span><span data-lang-it>Accessori</span>
+              </dt>
+              <dd class="ledger-stack">
+                {acquisition.accessories.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
+            </div>
+          )}
+          {acquisition.software.length > 0 && (
+            <div class="ledger-row">
+              <dt title="SOFTWARE">
+                <span data-lang-en>Software</span><span data-lang-it>Software</span>
+              </dt>
+              <dd class="ledger-stack">
+                {acquisition.software.map((v) => <span class="ledger-val">{v}</span>)}
+              </dd>
             </div>
           )}
         </dl>
 
-        {acquisition.filters.length > 0 && (
-          <div class="mt-5">
-            <p class="text-xs uppercase tracking-wide text-white/40">
-              <span data-lang-en>Filters</span>
-              <span data-lang-it>Filtri</span>
-            </p>
-            <div class="mt-2 flex flex-wrap gap-2">
-              {acquisition.filters.map((filter) => (
-                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{filter}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {acquisition.accessories.length > 0 && (
-          <div class="mt-5">
-            <p class="text-xs uppercase tracking-wide text-white/40">
-              <span data-lang-en>Accessories</span>
-              <span data-lang-it>Accessori</span>
-            </p>
-            <div class="mt-2 flex flex-wrap gap-2">
-              {acquisition.accessories.map((accessory) => (
-                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{accessory}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {acquisition.software.length > 0 && (
-          <div class="mt-5">
-            <p class="text-xs uppercase tracking-wide text-white/40">
-              <span data-lang-en>Software</span>
-              <span data-lang-it>Software</span>
-            </p>
-            <div class="mt-2 flex flex-wrap gap-2">
-              {acquisition.software.map((tool) => (
-                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{tool}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
         {acquisition.deepSkyAcquisitions.length > 0 && (
-          <div class="mt-6 overflow-x-auto">
-            <table class="w-full min-w-[520px] text-left text-sm">
-              <thead>
-                <tr class="text-xs uppercase tracking-wide text-white/40">
-                  <th class="pb-2 font-normal">
-                    <span data-lang-en>Date</span>
-                    <span data-lang-it>Data</span>
-                  </th>
-                  <th class="pb-2 font-normal">
-                    <span data-lang-en>Filter</span>
-                    <span data-lang-it>Filtro</span>
-                  </th>
-                  <th class="pb-2 font-normal">
-                    <span data-lang-en>Frames</span>
-                    <span data-lang-it>Pose</span>
-                  </th>
-                  <th class="pb-2 font-normal">
-                    <span data-lang-en>Exposure</span>
-                    <span data-lang-it>Esposizione</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {acquisition.deepSkyAcquisitions.map((session) => (
-                  <tr class="border-t border-white/10">
-                    <td class="py-2 text-white/60">{session.date ?? '—'}</td>
-                    <td class="py-2 text-white/80">{session.filter ?? '—'}</td>
-                    <td class="py-2 text-white/60">{session.number}×{session.durationSeconds}s</td>
-                    <td class="py-2 text-white/60">
-                      {formatDuration((session.durationSeconds ?? 0) * session.number)}
-                    </td>
+          <div class="console-sessions">
+            <p class="console-sessions-label">
+              <span data-lang-en>SESSION LOG</span>
+              <span data-lang-it>REGISTRO SESSIONI</span>
+            </p>
+            <div class="console-table-scroll">
+              <table class="console-table">
+                <thead>
+                  <tr>
+                    <th>
+                      <span data-lang-en>Date</span>
+                      <span data-lang-it>Data</span>
+                    </th>
+                    <th>
+                      <span data-lang-en>Filter</span>
+                      <span data-lang-it>Filtro</span>
+                    </th>
+                    <th class="is-numeric">
+                      <span data-lang-en>Frames</span>
+                      <span data-lang-it>Pose</span>
+                    </th>
+                    <th class="is-numeric">
+                      <span data-lang-en>Exposure</span>
+                      <span data-lang-it>Esposizione</span>
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {acquisition.deepSkyAcquisitions.map((session) => (
+                    <tr>
+                      <td>{session.date ?? '—'}</td>
+                      <td>{session.filter ?? '—'}</td>
+                      <td class="is-numeric">{session.number}×{session.durationSeconds}s</td>
+                      <td class="is-numeric">{formatDuration((session.durationSeconds ?? 0) * session.number)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
     )}
+
+    <div class="mt-14 flex justify-center">
+      <a href={`/portfolio/${cat.slug}/`} class="btn-accent justify-center min-w-[190px]">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-lang-en>Back to {cat.title}</span>
+        <span data-lang-it>Torna a {cat.titleIt}</span>
+      </a>
+    </div>
   </section>
 </Layout>
+
+<style>
+  .console-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(247, 166, 10, 0.18);
+    background: var(--color-ink);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    font-family: 'Space Mono', ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .console-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(247, 166, 10, 0.035) 0px,
+      rgba(247, 166, 10, 0.035) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  .console-panel > * {
+    position: relative;
+  }
+
+  .console-topbar {
+    border-bottom: 1px solid rgba(247, 166, 10, 0.18);
+    padding: 1.1rem 1.25rem;
+  }
+
+  .console-title {
+    display: block;
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.125rem;
+  }
+
+  .console-ledger {
+    padding: 0.4rem 1.25rem;
+  }
+
+  .ledger-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15rem 0.9rem;
+    padding-block: 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .ledger-row:last-child {
+    border-bottom: none;
+  }
+
+  .ledger-row dt {
+    flex: 0 0 auto;
+    min-width: 11rem;
+    color: var(--color-accent-dim);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    cursor: help;
+  }
+
+  .ledger-row dd {
+    display: flex;
+    flex: 1 1 16rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.6em;
+    min-width: 0;
+  }
+
+  .ledger-row dd.ledger-stack {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .ledger-val {
+    color: #f2f2f4;
+    word-break: break-word;
+  }
+
+  .ledger-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .console-sessions {
+    border-top: 1px solid rgba(247, 166, 10, 0.18);
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .console-sessions-label {
+    color: var(--color-accent-dim);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 0.6875rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .console-table-scroll {
+    overflow-x: auto;
+  }
+
+  .console-table {
+    width: 100%;
+    min-width: 480px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .console-table th {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.6875rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(247, 166, 10, 0.18);
+  }
+
+  .console-table td {
+    padding-block: 0.45rem;
+    color: rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .console-table .is-numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+</style>

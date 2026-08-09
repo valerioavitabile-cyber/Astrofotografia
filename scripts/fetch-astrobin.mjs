@@ -11,10 +11,17 @@
 // 4. Salva i campi utili (equipaggiamento, filtri, sessioni di acquisizione,
 //    software) in src/data/astrobin.json, indicizzato per slug del file .md.
 //
+// Aggiornamento automatico: questo script viene gia' rilanciato da solo a
+// ogni `astro dev`/`astro build` (vedi l'integrazione astrobinSync in
+// astro.config.mjs). Ogni entry scade da sola dopo CACHE_TTL_MS (24 ore): al
+// primo avvio successivo alla scadenza viene ri-scaricata in automatico, cosi'
+// le modifiche fatte solo su AstroBin (senza cambiare l'astrobinLink) arrivano
+// comunque sul sito entro un giorno, senza bisogno di comandi manuali.
+//
 // Uso:
-//   node scripts/fetch-astrobin.mjs                 # tutte le immagini mancanti
+//   node scripts/fetch-astrobin.mjs                 # tutte le immagini mancanti o scadute
 //   node scripts/fetch-astrobin.mjs --slug cone      # solo un'entry, per test
-//   node scripts/fetch-astrobin.mjs --force          # ri-scarica anche se in cache
+//   node scripts/fetch-astrobin.mjs --force          # ri-scarica subito, ignorando cache/scadenza
 
 import { chromium } from "playwright";
 import fs from "node:fs";
@@ -29,6 +36,12 @@ const OUTPUT_FILE = path.join(ROOT, "src", "data", "astrobin.json");
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 const REQUEST_DELAY_MS = 1500;
+
+// Ogni entry viene ri-scaricata da sola una volta scaduta (oltre al caso in
+// cui l'astrobinLink cambia): cosi' i dati restano aggiornati nel tempo anche
+// se su AstroBin si modifica solo l'equipaggiamento/le sessioni di una foto
+// gia' pubblicata, senza bisogno di rilanciare lo script a mano.
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 ore
 
 const args = process.argv.slice(2);
 const onlySlug = args.includes("--slug") ? args[args.indexOf("--slug") + 1] : null;
@@ -124,10 +137,13 @@ function simplify(raw) {
   };
 }
 
-// L'entry in cache resta valida solo finche' l'astrobinLink nel .md non cambia:
-// se il link e' diverso da quello con cui e' stata scaricata, va ri-scaricata.
+// L'entry in cache va ri-scaricata se: non esiste, l'astrobinLink nel .md e'
+// cambiato, oppure e' passato piu' di CACHE_TTL_MS dall'ultimo fetch (cache
+// senza _fetchedAt, formato vecchio, e' trattata come scaduta).
 function isStale(cachedEntry, url) {
-  return !cachedEntry || cachedEntry._sourceUrl !== url;
+  if (!cachedEntry || cachedEntry._sourceUrl !== url) return true;
+  if (!cachedEntry._fetchedAt) return true;
+  return Date.now() - new Date(cachedEntry._fetchedAt).getTime() > CACHE_TTL_MS;
 }
 
 async function fetchImageData(browser, hash, sourceUrl) {
@@ -186,7 +202,7 @@ async function main() {
         console.log("ERRORE: nessuna risposta API intercettata");
         continue;
       }
-      result[slug] = { ...simplify(raw), _sourceUrl: url };
+      result[slug] = { ...simplify(raw), _sourceUrl: url, _fetchedAt: new Date().toISOString() };
       console.log("ok");
     } catch (err) {
       console.log(`ERRORE: ${err.message}`);
