@@ -1,0 +1,3421 @@
+{
+  "andromeda": {
+    "title": "M31HaLRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong H-Alpha 3nm",
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 10.756,
+      "dec": 41.257,
+      "pixscale": 1.42,
+      "radiusDeg": 1.459
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-09-07",
+        "number": 103,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2023-09-08",
+        "number": 52,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2023-09-09",
+        "number": 52,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2023-09-10",
+        "number": 52,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm",
+        "date": "2023-09-11",
+        "number": 50,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -11,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 107700,
+    "published": "2025-09-17T18:54:08.766561",
+    "constellation": "And",
+    "viewCount": 682,
+    "likeCount": 228,
+    "_sourceUrl": "https://app.astrobin.com/u/valerio76?i=gadw4m"
+  },
+  "doppio": {
+    "title": "Double Cluster",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight"
+    ],
+    "filters": [
+      "Optolong L-Pro 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 35.206,
+      "dec": 57.142,
+      "pixscale": 1.193,
+      "radiusDeg": 0.765
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-01-26",
+        "number": 40,
+        "durationSeconds": 90,
+        "gain": "120.00",
+        "sensorCooling": -15,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 3600,
+    "published": "2021-01-27T19:01:24.829799",
+    "constellation": "Per",
+    "viewCount": 225,
+    "likeCount": 43,
+    "_sourceUrl": "https://www.astrobin.com/d96wk3/B/"
+  },
+  "m13": {
+    "title": "M13 Hercules Cluster",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 250.447,
+      "dec": 36.473,
+      "pixscale": 1.192,
+      "radiusDeg": 0.794
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Green",
+        "date": "2021-09-02",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2",
+        "date": "2021-09-02",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2021-09-02",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": null,
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 14400,
+    "published": "2021-09-03T17:12:22.555022",
+    "constellation": "Her",
+    "viewCount": 380,
+    "likeCount": 113,
+    "_sourceUrl": "https://www.astrobin.com/0ncd3o/C/"
+  },
+  "m44": {
+    "title": "M44 Beehive Cluster",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong L-Pro 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 130.116,
+      "dec": 19.652,
+      "pixscale": 1.194,
+      "radiusDeg": 0.831
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-04-04",
+        "number": 60,
+        "durationSeconds": 90,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 5400,
+    "published": "2021-04-06T21:20:08.337251",
+    "constellation": "Cnc",
+    "viewCount": 266,
+    "likeCount": 78,
+    "_sourceUrl": "https://www.astrobin.com/x6nfgm/B/"
+  },
+  "m45": {
+    "title": "M45 - Pleiades- LRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 56.637,
+      "dec": 24.134,
+      "pixscale": 1.428,
+      "radiusDeg": 1.436
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-12-17",
+        "number": 190,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2023-12-18",
+        "number": 51,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2023-12-19",
+        "number": 51,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2023-12-19",
+        "number": 51,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 102900,
+    "published": "2023-12-20T10:50:46.501975",
+    "constellation": "Tau",
+    "viewCount": 590,
+    "likeCount": 160,
+    "_sourceUrl": "https://www.astrobin.com/racrmb/0/"
+  },
+  "b150": {
+    "title": "B150 (LDN 1082)",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Luminance",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 312.383,
+      "dec": 60.144,
+      "pixscale": 1.193,
+      "radiusDeg": 0.762
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Luminance",
+        "date": "2021-07-10",
+        "number": 44,
+        "durationSeconds": 180,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 4
+      },
+      {
+        "filter": "Optolong Green",
+        "date": "2021-08-06",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2021-08-06",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2021-08-06",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 18720,
+    "published": "2021-08-08T10:41:13.744670",
+    "constellation": "Cep",
+    "viewCount": 3724,
+    "likeCount": 382,
+    "_sourceUrl": "https://www.astrobin.com/qce3vt/C/"
+  },
+  "iris": {
+    "title": "Ngc7023 Iris Nebula LRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 314.666,
+      "dec": 68.575,
+      "pixscale": 1.421,
+      "radiusDeg": 1.442
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-09-01",
+        "number": 173,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2023-09-02",
+        "number": 32,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2023-09-03",
+        "number": 32,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2023-09-04",
+        "number": 32,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 80700,
+    "published": "2023-09-15T10:42:29.553864",
+    "constellation": "Cep",
+    "viewCount": 388,
+    "likeCount": 135,
+    "_sourceUrl": "https://www.astrobin.com/5dh7jv/"
+  },
+  "ldn1157": {
+    "title": "LDN1157",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue 36 mm",
+      "Optolong Green 36 mm",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 310.364,
+      "dec": 67.705,
+      "pixscale": 1.422,
+      "radiusDeg": 1.453
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-06-22",
+        "number": 94,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-06-23",
+        "number": 91,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2023-06-27",
+        "number": 31,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2023-06-27",
+        "number": 31,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2023-06-27",
+        "number": 31,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-06-26",
+        "number": 86,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 65520,
+    "published": "2023-06-29T19:14:05.753168",
+    "constellation": "Cep",
+    "viewCount": 571,
+    "likeCount": 210,
+    "_sourceUrl": "https://www.astrobin.com/q3kpz2/D/"
+  },
+  "ldn772": {
+    "title": "Ldn772 The Loch Ness Dark Nebula",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 291.523,
+      "dec": 23.185,
+      "pixscale": 1.421,
+      "radiusDeg": 1.464
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2024-07-28",
+        "number": 65,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2024-07-29",
+        "number": 65,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2024-07-30",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2024-07-30",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2024-07-31",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 70500,
+    "published": "2024-08-01T05:54:58.477499",
+    "constellation": null,
+    "viewCount": 458,
+    "likeCount": 169,
+    "_sourceUrl": "https://www.astrobin.com/civtl4/B/"
+  },
+  "ngc1333": {
+    "title": "NGC 1333 and the Perseus Cloud Complex",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue 36 mm",
+      "Optolong Green 36 mm",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 51.941,
+      "dec": 30.747,
+      "pixscale": 1.421,
+      "radiusDeg": 1.462
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2025-09-19",
+        "number": 82,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2025-09-20",
+        "number": 82,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2025-09-18",
+        "number": 75,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2025-09-21",
+        "number": 25,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2025-09-21",
+        "number": 25,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2025-09-21",
+        "number": 25,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 94200,
+    "published": "2025-09-22T18:27:26.296531",
+    "constellation": "Ari",
+    "viewCount": 452,
+    "likeCount": 173,
+    "_sourceUrl": "https://www.astrobin.com/v6k2sl/B/"
+  },
+  "m33": {
+    "title": "Triangulum Galaxy (M33) HaOIIILRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue 36 mm",
+      "Optolong Green 36 mm",
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 23.455,
+      "dec": 30.645,
+      "pixscale": 1.422,
+      "radiusDeg": 1.464
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2023-10-05",
+        "number": 142,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2023-10-06",
+        "number": 59,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2023-10-07",
+        "number": 59,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2023-10-08",
+        "number": 59,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2023-10-10",
+        "number": 62,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2023-10-11",
+        "number": 55,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 165900,
+    "published": "2023-10-13T20:57:18.031784",
+    "constellation": "Tri",
+    "viewCount": 404,
+    "likeCount": 147,
+    "_sourceUrl": "https://www.astrobin.com/1c8fzi/"
+  },
+  "m51": {
+    "title": "M51",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Luminance",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 202.515,
+      "dec": 47.224,
+      "pixscale": 1.191,
+      "radiusDeg": 0.81
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Luminance",
+        "date": null,
+        "number": 234,
+        "durationSeconds": 60,
+        "gain": "1600.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green",
+        "date": null,
+        "number": 35,
+        "durationSeconds": 60,
+        "gain": "1600.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": null,
+        "number": 35,
+        "durationSeconds": 60,
+        "gain": "1600.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": null,
+        "number": 35,
+        "durationSeconds": 60,
+        "gain": "1600.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 20340,
+    "published": "2022-05-06T06:31:54.600743",
+    "constellation": "CVn",
+    "viewCount": 444,
+    "likeCount": 93,
+    "_sourceUrl": "https://www.astrobin.com/wc280q/"
+  },
+  "m64": {
+    "title": "M64 LLRGB",
+    "imagingTelescopes": [
+      "Tecnosky RC8 Carbon"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "PrimaLuceLab ESATTO 2\" robotic focuser",
+      "QHYCCD QHYCFW3-M"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 194.178,
+      "dec": 21.684,
+      "pixscale": 0.954,
+      "radiusDeg": 0.483
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2",
+        "date": "2022-07-01",
+        "number": 120,
+        "durationSeconds": 120,
+        "gain": "56.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2022-07-02",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "56.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green",
+        "date": "2022-07-03",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "56.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2022-07-04",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "56.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 27000,
+    "published": "2022-07-05T19:21:36.743567",
+    "constellation": "Com",
+    "viewCount": 272,
+    "likeCount": 110,
+    "_sourceUrl": "https://www.astrobin.com/o26d2u/C/"
+  },
+  "m81-82": {
+    "title": "M81-M82",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro",
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong L-Pro 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 148.961,
+      "dec": 69.342,
+      "pixscale": 0.777,
+      "radiusDeg": 0.543
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-06-16",
+        "number": 91,
+        "durationSeconds": 60,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": null,
+        "number": 36,
+        "durationSeconds": 600,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 4
+      }
+    ],
+    "totalIntegrationSeconds": 27060,
+    "published": "2021-06-20T06:21:28.825887",
+    "constellation": "UMa",
+    "viewCount": 751,
+    "likeCount": 71,
+    "_sourceUrl": "https://www.astrobin.com/8glhne/B/"
+  },
+  "ngc2903": {
+    "title": "Ngc 2903",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong L-Pro 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 143.036,
+      "dec": 21.492,
+      "pixscale": 1.194,
+      "radiusDeg": 0.802
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-03-19",
+        "number": 23,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-04-07",
+        "number": 24,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-04-08",
+        "number": 27,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": null,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 22200,
+    "published": "2021-04-11T12:55:22.128204",
+    "constellation": "Leo",
+    "viewCount": 219,
+    "likeCount": 26,
+    "_sourceUrl": "https://www.astrobin.com/mjjvmf/B/"
+  },
+  "ngc4565": {
+    "title": "NGC 4565 Needle Galaxy",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro",
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong L-Pro 2\"",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 189.086,
+      "dec": 26,
+      "pixscale": 0.947,
+      "radiusDeg": 0.587
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Green",
+        "date": "2022-03-01",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 6
+      },
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2020-06-13",
+        "number": 52,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2022-03-01",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 6
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2022-03-01",
+        "number": 30,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 6
+      }
+    ],
+    "totalIntegrationSeconds": 26400,
+    "published": "2022-03-10T08:57:04.553839",
+    "constellation": "Com",
+    "viewCount": 218,
+    "likeCount": 48,
+    "_sourceUrl": "https://www.astrobin.com/x7gnol/B/"
+  },
+  "trio": {
+    "title": "Draco Trio LRGB",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 234.648,
+      "dec": 59.325,
+      "pixscale": 1.193,
+      "radiusDeg": 0.699
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Green",
+        "date": "2021-09-11",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2",
+        "date": "2021-09-10",
+        "number": 130,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2021-09-11",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2021-09-11",
+        "number": 35,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 28200,
+    "published": "2021-09-22T06:29:36.791191",
+    "constellation": "Dra",
+    "viewCount": 532,
+    "likeCount": 97,
+    "_sourceUrl": "https://www.astrobin.com/ducz23/"
+  },
+  "tripletto": {
+    "title": "Leo Triplet LRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 169.988,
+      "dec": 13.217,
+      "pixscale": 1.422,
+      "radiusDeg": 0.83
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2024-04-06",
+        "number": 82,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2024-04-12",
+        "number": 50,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2024-04-13",
+        "number": 50,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2024-04-14",
+        "number": 50,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2024-04-07",
+        "number": 83,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 94500,
+    "published": "2024-04-19T18:39:03.112081",
+    "constellation": null,
+    "viewCount": 365,
+    "likeCount": 124,
+    "_sourceUrl": "https://www.astrobin.com/15dm2w/0/"
+  },
+  "cigno": {
+    "title": "Cygnus Wall in Hubble Palette",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+      "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+      "Baader S-II 6.5nm (CMOS-Optimized) 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 314.794,
+      "dec": 43.686,
+      "pixscale": 1.191,
+      "radiusDeg": 0.817
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2021-09-08",
+        "number": 14,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader S-II 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2021-09-14",
+        "number": 28,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2021-09-10",
+        "number": 28,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 42000,
+    "published": "2023-01-27T17:23:31.305062",
+    "constellation": "Cyg",
+    "viewCount": 343,
+    "likeCount": 117,
+    "_sourceUrl": "https://www.astrobin.com/qttlm1/B/"
+  },
+  "ic443": {
+    "title": "IC 443 SHO",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong SII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 94.756,
+      "dec": 22.79,
+      "pixscale": 1.423,
+      "radiusDeg": 1.425
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm",
+        "date": "2024-01-31",
+        "number": 98,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong SII 3nm 36 mm",
+        "date": "2024-02-02",
+        "number": 75,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2024-02-04",
+        "number": 85,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 154800,
+    "published": "2024-02-07T17:28:24.919964",
+    "constellation": "Gem",
+    "viewCount": 476,
+    "likeCount": 145,
+    "_sourceUrl": "https://www.astrobin.com/ig3kfe/0/"
+  },
+  "ngc2237": {
+    "title": "Rosette Nebula SHO",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong SII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 98.093,
+      "dec": 5.008,
+      "pixscale": 1.421,
+      "radiusDeg": 1.474
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2024-02-13",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong SII 3nm 36 mm",
+        "date": "2024-02-14",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2024-02-14",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 39600,
+    "published": "2024-02-15T11:13:23.541631",
+    "constellation": null,
+    "viewCount": 583,
+    "likeCount": 140,
+    "_sourceUrl": "https://www.astrobin.com/ix0o0f/B/"
+  },
+  "ngc281": {
+    "title": "NGC281 Hubble Palette",
+    "imagingTelescopes": [
+      "Sky-Watcher Explorer 200PDS",
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M",
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "PrimaLuceLab ESATTO 2\" robotic focuser",
+      "QHYCCD QHYCFW3-M-US",
+      "Sky-Watcher Quattro Coma Corrector",
+      "TS-Optics NEWTON Coma Corrector 1.0x (TSGPU)"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+      "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+      "Baader S-II 6.5nm (CMOS-Optimized) 2\"",
+      "Optolong H-Alpha 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 13.214,
+      "dec": 56.657,
+      "pixscale": 0.775,
+      "radiusDeg": 0.725
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2021-11-30",
+        "number": 37,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2022-01-14",
+        "number": 26,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader S-II 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2022-01-15",
+        "number": 25,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": null,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2023-02-19",
+        "number": 24,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 67200,
+    "published": "2023-02-27T18:03:28.570637",
+    "constellation": "Cas",
+    "viewCount": 403,
+    "likeCount": 132,
+    "_sourceUrl": "https://www.astrobin.com/m7vctd/0/"
+  },
+  "sh119": {
+    "title": "Sh2 - 119 The Clamshell Nebula",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong SII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 319.565,
+      "dec": 43.828,
+      "pixscale": 1.421,
+      "radiusDeg": 1.463
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2023-08-17",
+        "number": 44,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2023-08-18",
+        "number": 44,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong SII 3nm 36 mm",
+        "date": "2023-08-19",
+        "number": 40,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -11,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong SII 3nm 36 mm",
+        "date": "2023-08-20",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -11,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2023-08-21",
+        "number": 45,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 117000,
+    "published": "2023-08-23T10:32:42.919673",
+    "constellation": "Cyg",
+    "viewCount": 380,
+    "likeCount": 121,
+    "_sourceUrl": "https://www.astrobin.com/ooew66/0/"
+  },
+  "sh124": {
+    "title": "SH 2 - 124 SHO",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong SII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 324.67,
+      "dec": 50.307,
+      "pixscale": 1.137,
+      "radiusDeg": 1.469
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2023-07-09",
+        "number": 62,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong SII 3nm 36 mm",
+        "date": "2023-07-10",
+        "number": 32,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -11,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2023-08-11",
+        "number": 43,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 82200,
+    "published": "2023-08-12T11:52:38.125243",
+    "constellation": "Cyg",
+    "viewCount": 431,
+    "likeCount": 117,
+    "_sourceUrl": "https://www.astrobin.com/yyl2mh/E/"
+  },
+  "trunk": {
+    "title": "Vdb142 Hubble Palette SHO",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+      "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+      "Baader S-II 6.5nm (CMOS-Optimized) 2\""
+    ],
+    "guidingTelescopes": [
+      "Artesky Ultraguide 60"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 323.74,
+      "dec": 57.484,
+      "pixscale": 1.193,
+      "radiusDeg": 0.802
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Baader H-alpha 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2022-11-30",
+        "number": 48,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader O-III 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2022-12-13",
+        "number": 27,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader S-II 6.5nm (CMOS-Optimized) 2\"",
+        "date": "2022-12-15",
+        "number": 31,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 63600,
+    "published": "2025-06-29T14:53:19.982012",
+    "constellation": "Cep",
+    "viewCount": 241,
+    "likeCount": 121,
+    "_sourceUrl": "https://www.astrobin.com/9crllr/B/"
+  },
+  "cone": {
+    "title": "ngc2264 HaO3RGB",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P",
+      "Tecnosky APO ED 102/700 FPL53"
+    ],
+    "imagingCameras": [
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector",
+      "Tecnosky 0.8x Reducer for 115APO (TKsp082)"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Baader H-alpha 7nm",
+      "Optolong L-eXtreme 2\"",
+      "Optolong L-Pro 2\""
+    ],
+    "guidingTelescopes": [
+      "Artesky Ultraguide 60",
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 100.23,
+      "dec": 9.898,
+      "pixscale": 1.193,
+      "radiusDeg": 0.812
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-eXtreme 2\"",
+        "date": "2021-03-30",
+        "number": 71,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong L-Pro 2\"",
+        "date": "2021-03-31",
+        "number": 15,
+        "durationSeconds": 300,
+        "gain": "12.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader H-alpha 7nm",
+        "date": "2020-03-16",
+        "number": 15,
+        "durationSeconds": 600,
+        "gain": "120.00",
+        "sensorCooling": -15,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 34800,
+    "published": "2021-04-02T12:45:08.875564",
+    "constellation": "Mon",
+    "viewCount": 391,
+    "likeCount": 92,
+    "_sourceUrl": "https://www.astrobin.com/f4cgvr/D/"
+  },
+  "crescent": {
+    "title": "NGC6888 HOO",
+    "imagingTelescopes": [
+      "Sky-Watcher Explorer 200PDS",
+      "Tecnosky APO ED 102/700 FPL53"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M",
+      "ZWO ASI294MC"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "PrimaLuceLab ESATTO 2\" robotic focuser",
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky 0.8x Reducer for 115APO (TKsp082)",
+      "TS-Optics NEWTON Coma Corrector 1.0x (TSGPU)"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong L-eXtreme 2\"",
+      "Optolong OIII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Artesky Ultraguide 60",
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 303.044,
+      "dec": 38.337,
+      "pixscale": 0.775,
+      "radiusDeg": 0.742
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-eXtreme 2\"",
+        "date": null,
+        "number": 60,
+        "durationSeconds": 600,
+        "gain": "200.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": null,
+        "number": 32,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": null,
+        "number": 31,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 73800,
+    "published": "2022-12-04T17:40:56.005488",
+    "constellation": "Cyg",
+    "viewCount": 536,
+    "likeCount": 160,
+    "_sourceUrl": "https://www.astrobin.com/f4nx4z/0/"
+  },
+  "ic443hoo": {
+    "title": "IC443 HOO",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm",
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong SII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 94.774,
+      "dec": 22.784,
+      "pixscale": 1.423,
+      "radiusDeg": 1.45
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2024-01-31",
+        "number": 98,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2024-02-04",
+        "number": 85,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 109800,
+    "published": "2024-02-10T10:07:20.699088",
+    "constellation": "Gem",
+    "viewCount": 498,
+    "likeCount": 151,
+    "_sourceUrl": "https://www.astrobin.com/xtzq0q/B/"
+  },
+  "ic59": {
+    "title": "The Ghosts of Cassiopeia",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Baader H-alpha 6.5nm (CMOS-Optimized)",
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 14.587,
+      "dec": 60.922,
+      "pixscale": 1.192,
+      "radiusDeg": 0.752
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Green",
+        "date": "2022-02-23",
+        "number": 25,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader H-alpha 6.5nm (CMOS-Optimized)",
+        "date": "2022-02-11",
+        "number": 80,
+        "durationSeconds": 300,
+        "gain": "1600.00",
+        "sensorCooling": -20,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2022-02-23",
+        "number": 25,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2022-02-23",
+        "number": 25,
+        "durationSeconds": 120,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 33000,
+    "published": "2022-02-24T17:39:01.093355",
+    "constellation": "Cas",
+    "viewCount": 438,
+    "likeCount": 73,
+    "_sourceUrl": "https://www.astrobin.com/fx5eok/B/"
+  },
+  "m78": {
+    "title": "Messier 78",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 87.369,
+      "dec": 0.283,
+      "pixscale": 1.423,
+      "radiusDeg": 1.455
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2024-12-29",
+        "number": 220,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2024-12-30",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2024-12-30",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2024-12-31",
+        "number": 35,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 97500,
+    "published": "2025-01-01T20:32:30.369329",
+    "constellation": "Ori",
+    "viewCount": 346,
+    "likeCount": 161,
+    "_sourceUrl": "https://www.astrobin.com/pnhp6p/0/"
+  },
+  "m8": {
+    "title": "M8-M20 LRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2",
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue",
+      "Optolong Blue 36 mm",
+      "Optolong Green",
+      "Optolong Green 36 mm",
+      "Optolong Red",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 270.941,
+      "dec": -23.681,
+      "pixscale": 1.423,
+      "radiusDeg": 1.458
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": null,
+        "number": 70,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": null,
+        "number": 75,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": null,
+        "number": 30,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": null,
+        "number": 30,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": null,
+        "number": 30,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 42300,
+    "published": "2024-07-05T12:17:30.846949",
+    "constellation": null,
+    "viewCount": 392,
+    "likeCount": 164,
+    "_sourceUrl": "https://www.astrobin.com/et56ez/0/"
+  },
+  "ngc6914": {
+    "title": "NGC 6914 HaLRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "IDAS LPS-P2 36 mm",
+      "Optolong Blue 36 mm",
+      "Optolong Green 36 mm",
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 306.109,
+      "dec": 42.558,
+      "pixscale": 1.421,
+      "radiusDeg": 1.416
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2025-08-28",
+        "number": 100,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "IDAS LPS-P2 36 mm",
+        "date": "2025-09-02",
+        "number": 97,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2025-09-07",
+        "number": 47,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2025-09-18",
+        "number": 31,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2025-09-18",
+        "number": 31,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2025-09-18",
+        "number": 31,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 115200,
+    "published": "2025-09-20T15:49:57.013608",
+    "constellation": "Cyg",
+    "viewCount": 212,
+    "likeCount": 126,
+    "_sourceUrl": "https://www.astrobin.com/jmh5ij/0/"
+  },
+  "rosettahoo": {
+    "title": "Rosette Nebula HOO",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong OIII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 98.089,
+      "dec": 5.009,
+      "pixscale": 1.421,
+      "radiusDeg": 1.472
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": "2024-02-13",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2024-02-14",
+        "number": 22,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 26400,
+    "published": "2024-02-25T14:48:00.487532",
+    "constellation": null,
+    "viewCount": 499,
+    "likeCount": 155,
+    "_sourceUrl": "https://www.astrobin.com/s0aqj9/0/"
+  },
+  "sadr": {
+    "title": "Gamma Cygni & IC1318 RGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong Blue 36 mm",
+      "Optolong Green 36 mm",
+      "Optolong Red 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 306.124,
+      "dec": 40.112,
+      "pixscale": 1.421,
+      "radiusDeg": 1.484
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong Red 36 mm",
+        "date": "2024-07-31",
+        "number": 76,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green 36 mm",
+        "date": "2024-08-01",
+        "number": 76,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue 36 mm",
+        "date": "2024-08-02",
+        "number": 76,
+        "durationSeconds": 300,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 68400,
+    "published": "2024-08-03T12:41:53.349908",
+    "constellation": null,
+    "viewCount": 412,
+    "likeCount": 146,
+    "_sourceUrl": "https://www.astrobin.com/vwmmxp/0/"
+  },
+  "m27": {
+    "title": "M27 HOO",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY294M Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M",
+      "Sky-Watcher Quattro Coma Corrector",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Baader H-alpha 6.5nm (CMOS-Optimized)",
+      "Baader O-III 6.5nm (CMOS-Optimized)"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 299.909,
+      "dec": 22.727,
+      "pixscale": 1.193,
+      "radiusDeg": 0.522
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Baader O-III 6.5nm (CMOS-Optimized)",
+        "date": "2021-09-10",
+        "number": 29,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Baader H-alpha 6.5nm (CMOS-Optimized)",
+        "date": "2021-09-13",
+        "number": 28,
+        "durationSeconds": 600,
+        "gain": "1600.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 34200,
+    "published": "2021-09-16T13:17:30.108749",
+    "constellation": "Vul",
+    "viewCount": 852,
+    "likeCount": 150,
+    "_sourceUrl": "https://www.astrobin.com/uu77o9/B/"
+  },
+  "m1": {
+    "title": "M1 Crab Nabula",
+    "imagingTelescopes": [
+      "Sky-Watcher Quattro 200P"
+    ],
+    "imagingCameras": [
+      "ZWO ASI294MC Pro"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "Sky-Watcher Quattro Coma Corrector"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Serif Affinity Photo"
+    ],
+    "filters": [
+      "Optolong L-eXtreme 2\""
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 83.625,
+      "dec": 22.012,
+      "pixscale": 1.192,
+      "radiusDeg": 0.605
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-eXtreme 2\"",
+        "date": "2021-03-01",
+        "number": 78,
+        "durationSeconds": 300,
+        "gain": "120.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 23400,
+    "published": "2021-03-04T12:05:22.350594",
+    "constellation": "Tau",
+    "viewCount": 341,
+    "likeCount": 64,
+    "_sourceUrl": "https://www.astrobin.com/clh7jf/D/"
+  },
+  "wr134": {
+    "title": "WR 134 HaOIIIRGB",
+    "imagingTelescopes": [
+      "Tecnosky 90/540 FPL55 OWL"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 Pro M"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky TK_spian25var1x",
+      "ZWO EAF"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "Stefan Berg Nighttime Imaging 'N' Astronomy (N.I.N.A. / NINA)",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong Blue",
+      "Optolong Green",
+      "Optolong H-Alpha 3nm",
+      "Optolong OIII 3nm 36 mm",
+      "Optolong Red"
+    ],
+    "guidingTelescopes": [
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [
+      {
+        "name": "Vasto",
+        "city": "Vasto",
+        "state": "Abruzzo",
+        "country": "IT",
+        "latDeg": 42,
+        "latSide": "N",
+        "lonDeg": 14,
+        "lonSide": "E"
+      }
+    ],
+    "solution": {
+      "ra": 302.336,
+      "dec": 36.168,
+      "pixscale": 1.421,
+      "radiusDeg": 1.463
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2023-08-13",
+        "number": 50,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": "2023-08-14",
+        "number": 50,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm",
+        "date": "2023-08-15",
+        "number": 45,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Red",
+        "date": "2023-08-16",
+        "number": 50,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Green",
+        "date": "2023-08-17",
+        "number": 50,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong Blue",
+        "date": "2023-08-18",
+        "number": 50,
+        "durationSeconds": 180,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 114000,
+    "published": "2024-04-25T13:54:08.407501",
+    "constellation": null,
+    "viewCount": 912,
+    "likeCount": 194,
+    "_sourceUrl": "https://www.astrobin.com/8mjfpb/"
+  },
+  "wr136": {
+    "title": "NGC6888 HOO",
+    "imagingTelescopes": [
+      "Sky-Watcher Explorer 200PDS",
+      "Tecnosky APO ED 102/700 FPL53"
+    ],
+    "imagingCameras": [
+      "QHYCCD QHY268 M",
+      "ZWO ASI294MC"
+    ],
+    "mounts": [
+      "Sky-Watcher EQ6-R Pro"
+    ],
+    "accessories": [
+      "PrimaLuceLab ESATTO 2\" robotic focuser",
+      "QHYCCD QHYCFW3-M-US",
+      "Tecnosky 0.8x Reducer for 115APO (TKsp082)",
+      "TS-Optics NEWTON Coma Corrector 1.0x (TSGPU)"
+    ],
+    "software": [
+      "Adobe Photoshop",
+      "Main Sequence Software Sequence Generator Pro (SGP)",
+      "Open PHD Guiding Project PHD2",
+      "Pleiades Astrophoto PixInsight",
+      "The EQMOD Project EQASCOM"
+    ],
+    "filters": [
+      "Optolong H-Alpha 3nm 36 mm",
+      "Optolong L-eXtreme 2\"",
+      "Optolong OIII 3nm 36 mm"
+    ],
+    "guidingTelescopes": [
+      "Artesky Ultraguide 60",
+      "Sky-Watcher 70/500 Guidescope"
+    ],
+    "guidingCameras": [
+      "ZWO ASI224MC"
+    ],
+    "locations": [],
+    "solution": {
+      "ra": 303.044,
+      "dec": 38.337,
+      "pixscale": 0.775,
+      "radiusDeg": 0.742
+    },
+    "deepSkyAcquisitions": [
+      {
+        "filter": "Optolong L-eXtreme 2\"",
+        "date": null,
+        "number": 60,
+        "durationSeconds": 600,
+        "gain": "200.00",
+        "sensorCooling": -5,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong H-Alpha 3nm 36 mm",
+        "date": null,
+        "number": 32,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      },
+      {
+        "filter": "Optolong OIII 3nm 36 mm",
+        "date": null,
+        "number": 31,
+        "durationSeconds": 600,
+        "gain": "56.00",
+        "sensorCooling": -10,
+        "bortle": 5
+      }
+    ],
+    "totalIntegrationSeconds": 73800,
+    "published": "2022-12-04T17:40:56.005488",
+    "constellation": "Cyg",
+    "viewCount": 537,
+    "likeCount": 160,
+    "_sourceUrl": "https://www.astrobin.com/f4nx4z/"
+  }
+}

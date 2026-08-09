@@ -5,6 +5,7 @@ import { getImage } from 'astro:assets';
 import { marked } from 'marked';
 import Lightbox from '../../../components/Lightbox';
 import { categories } from '../../../data/site';
+import astrobinData from '../../../data/astrobin.json';
 
 export async function getStaticPaths() {
   const entries = await getCollection('portfolio');
@@ -22,6 +23,66 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const contentItHtml = await marked.parse(entry.data.bodyIt);
 const cat = categories[entry.id.split('/')[0] as keyof typeof categories];
+const objectSlug = entry.id.split('/').pop() as string;
+const acquisition = (astrobinData as Record<string, (typeof astrobinData)[string]>)[objectSlug];
+
+function formatDuration(totalSeconds: number) {
+  const totalMinutes = Math.round(totalSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours === 0) return `${minutes}m`;
+  if (minutes === 0) return `${hours}h`;
+  return `${hours}h ${minutes}m`;
+}
+
+// Right ascension is stored in degrees (0-360); astronomers read it in hours/minutes/seconds.
+function formatRA(deg: number) {
+  const totalHours = deg / 15;
+  const h = Math.floor(totalHours);
+  const totalMinutes = (totalHours - h) * 60;
+  const m = Math.floor(totalMinutes);
+  const s = Math.round((totalMinutes - m) * 60);
+  return `${h}h ${m}m ${s}s`;
+}
+
+function formatDec(deg: number) {
+  const sign = deg < 0 ? '−' : '+';
+  const abs = Math.abs(deg);
+  const d = Math.floor(abs);
+  const totalMinutes = (abs - d) * 60;
+  const m = Math.floor(totalMinutes);
+  const s = Math.round((totalMinutes - m) * 60);
+  return `${sign}${d}° ${m}′ ${s}″`;
+}
+
+const countryNamesEn = new Intl.DisplayNames(['en'], { type: 'region' });
+const countryNamesIt = new Intl.DisplayNames(['it'], { type: 'region' });
+
+function formatLocation(loc: { city: string | null; state: string | null; country: string | null }, locale: 'en' | 'it') {
+  const countryName = loc.country ? (locale === 'it' ? countryNamesIt : countryNamesEn).of(loc.country) : null;
+  return [loc.city, loc.state, countryName].filter(Boolean).join(', ');
+}
+
+function mostCommonBortle(sessions: { bortle: number | null }[]) {
+  const counts = new Map<number, number>();
+  for (const s of sessions) {
+    if (s.bortle == null) continue;
+    counts.set(s.bortle, (counts.get(s.bortle) ?? 0) + 1);
+  }
+  let best: number | null = null;
+  let bestCount = 0;
+  for (const [bortle, count] of counts) {
+    if (count > bestCount) {
+      best = bortle;
+      bestCount = count;
+    }
+  }
+  return best;
+}
+
+const bortle = acquisition ? mostCommonBortle(acquisition.deepSkyAcquisitions) : null;
+const location = acquisition?.locations?.[0];
+const hemisphere = location?.latSide === 'N' ? 'north' : location?.latSide === 'S' ? 'south' : null;
 const optimized = await getImage({
   src: entry.data.image,
   width: 1600,
@@ -65,11 +126,213 @@ const fullRes = await getImage({
       <div data-lang-it set:html={contentItHtml} />
     </div>
 
-    {entry.data.astrobinLink && (
-      <a href={entry.data.astrobinLink} target="_blank" rel="noopener" class="btn-accent mt-4">
-        <span data-lang-en>Equipment and Acquisition Details</span>
-        <span data-lang-it>Dettagli di attrezzatura e acquisizione</span>
-      </a>
+    {acquisition && (
+      <div class="mt-10 rounded-2xl border border-white/10 p-6 sm:p-8">
+        <h2 class="eyebrow">
+          <span data-lang-en>Equipment &amp; Acquisition</span>
+          <span data-lang-it>Attrezzatura e acquisizione</span>
+        </h2>
+
+        <dl class="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+          {acquisition.imagingTelescopes.length > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Telescope</span>
+                <span data-lang-it>Telescopio</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.imagingTelescopes.join(', ')}</dd>
+            </div>
+          )}
+          {acquisition.imagingCameras.length > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Camera</span>
+                <span data-lang-it>Camera</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.imagingCameras.join(', ')}</dd>
+            </div>
+          )}
+          {acquisition.mounts.length > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Mount</span>
+                <span data-lang-it>Montatura</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.mounts.join(', ')}</dd>
+            </div>
+          )}
+          {acquisition.totalIntegrationSeconds > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Total integration</span>
+                <span data-lang-it>Integrazione totale</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{formatDuration(acquisition.totalIntegrationSeconds)}</dd>
+            </div>
+          )}
+          {acquisition.guidingTelescopes.length > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Guiding telescope</span>
+                <span data-lang-it>Strumento di guida</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.guidingTelescopes.join(', ')}</dd>
+            </div>
+          )}
+          {acquisition.guidingCameras.length > 0 && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Guiding camera</span>
+                <span data-lang-it>Camera di guida</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.guidingCameras.join(', ')}</dd>
+            </div>
+          )}
+          {location && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Location</span>
+                <span data-lang-it>Luogo</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">
+                <span data-lang-en>{formatLocation(location, 'en')}</span>
+                <span data-lang-it>{formatLocation(location, 'it')}</span>
+              </dd>
+            </div>
+          )}
+          {bortle != null && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Bortle scale</span>
+                <span data-lang-it>Scala di Bortle</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{bortle}</dd>
+            </div>
+          )}
+          {hemisphere && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Hemisphere</span>
+                <span data-lang-it>Emisfero</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">
+                <span data-lang-en>{hemisphere === 'north' ? 'Northern' : 'Southern'}</span>
+                <span data-lang-it>{hemisphere === 'north' ? 'Nord' : 'Sud'}</span>
+              </dd>
+            </div>
+          )}
+          {acquisition.solution?.ra != null && acquisition.solution?.dec != null && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Celestial coordinates</span>
+                <span data-lang-it>Coordinate celesti</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">
+                RA {formatRA(acquisition.solution.ra)} · Dec {formatDec(acquisition.solution.dec)}
+              </dd>
+            </div>
+          )}
+          {acquisition.solution?.pixscale != null && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Pixel scale</span>
+                <span data-lang-it>Campionamento</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{acquisition.solution.pixscale.toFixed(2)}″/px</dd>
+            </div>
+          )}
+          {acquisition.solution?.radiusDeg != null && (
+            <div>
+              <dt class="text-xs uppercase tracking-wide text-white/40">
+                <span data-lang-en>Field radius</span>
+                <span data-lang-it>Raggio del campo</span>
+              </dt>
+              <dd class="mt-1 text-sm text-white/80">{(acquisition.solution.radiusDeg * 60).toFixed(1)}′</dd>
+            </div>
+          )}
+        </dl>
+
+        {acquisition.filters.length > 0 && (
+          <div class="mt-5">
+            <p class="text-xs uppercase tracking-wide text-white/40">
+              <span data-lang-en>Filters</span>
+              <span data-lang-it>Filtri</span>
+            </p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {acquisition.filters.map((filter) => (
+                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{filter}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {acquisition.accessories.length > 0 && (
+          <div class="mt-5">
+            <p class="text-xs uppercase tracking-wide text-white/40">
+              <span data-lang-en>Accessories</span>
+              <span data-lang-it>Accessori</span>
+            </p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {acquisition.accessories.map((accessory) => (
+                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{accessory}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {acquisition.software.length > 0 && (
+          <div class="mt-5">
+            <p class="text-xs uppercase tracking-wide text-white/40">
+              <span data-lang-en>Software</span>
+              <span data-lang-it>Software</span>
+            </p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {acquisition.software.map((tool) => (
+                <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">{tool}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {acquisition.deepSkyAcquisitions.length > 0 && (
+          <div class="mt-6 overflow-x-auto">
+            <table class="w-full min-w-[520px] text-left text-sm">
+              <thead>
+                <tr class="text-xs uppercase tracking-wide text-white/40">
+                  <th class="pb-2 font-normal">
+                    <span data-lang-en>Date</span>
+                    <span data-lang-it>Data</span>
+                  </th>
+                  <th class="pb-2 font-normal">
+                    <span data-lang-en>Filter</span>
+                    <span data-lang-it>Filtro</span>
+                  </th>
+                  <th class="pb-2 font-normal">
+                    <span data-lang-en>Frames</span>
+                    <span data-lang-it>Pose</span>
+                  </th>
+                  <th class="pb-2 font-normal">
+                    <span data-lang-en>Exposure</span>
+                    <span data-lang-it>Esposizione</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {acquisition.deepSkyAcquisitions.map((session) => (
+                  <tr class="border-t border-white/10">
+                    <td class="py-2 text-white/60">{session.date ?? '—'}</td>
+                    <td class="py-2 text-white/80">{session.filter ?? '—'}</td>
+                    <td class="py-2 text-white/60">{session.number}×{session.durationSeconds}s</td>
+                    <td class="py-2 text-white/60">
+                      {formatDuration((session.durationSeconds ?? 0) * session.number)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     )}
   </section>
 </Layout>

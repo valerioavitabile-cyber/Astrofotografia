@@ -1,7 +1,7 @@
 ---
 title: "M31 Andromeda"
 image: "./andromeda.jpg"
-astrobinLink: "https://www.astrobin.com/gadw4m/0/"
+astrobinLink: "https://app.astrobin.com/u/valerio76?i=gadw4m"
 bodyIt: |
   La Galassia di Andromeda, situata nell'omonima costellazione, dista da noi circa 2,5 milioni di anni luce. Sotto un cielo perfettamente terso e buio può essere debolmente visibile a occhio nudo. È il membro più grande del Gruppo Locale di galassie, con un trilione di stelle contenute in un disco che si estende per 220.000 anni luce, superando di gran lunga il numero di stelle della nostra Via Lattea. È inoltre la galassia a spirale più vicina alla nostra.
 
