@@ -3,51 +3,53 @@ import Layout from '../layouts/Layout.astro';
 import HeroSlideshow from '../components/HeroSlideshow';
 import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import b150 from '../assets/home/b150.jpg';
-import hargb from '../assets/home/hargb.jpg';
-import ic443 from '../assets/home/ic443-sho.jpg';
-import m44 from '../assets/home/m44.jpg';
-import ngc6914 from '../assets/home/ngc6914-halrgb.jpg';
-import wr134 from '../assets/home/wr134.jpg';
 import coursesVideo from '../assets/home/slideshow/Video Project (1).mp4';
 import videoTutorial from '../assets/home/video tutorial 2.png';
 import astronomyTool from '../assets/home/astronomy tool.png';
 import portrait from '../assets/about/portrait.jpg';
 import { site, categories } from '../data/site';
 
-const featured = [
-  { img: hargb, alt: 'Wide-field HaRGB astrophotography shot' },
-  { img: ic443, alt: 'IC 443, the Jellyfish Nebula, in SHO palette' },
-  { img: ngc6914, alt: 'NGC 6914 nebula in HaLRGB' },
-  { img: wr134, alt: 'WR 134, Wolf-Rayet nebula' },
-  { img: b150, alt: 'B150 dark nebula' },
-  { img: m44, alt: 'M44, the Beehive Cluster' },
-];
+const portfolioEntries = await getCollection('portfolio');
 
-const slides = await Promise.all(
-  featured.map(async ({ img, alt }) => {
-    const optimized = await getImage({ src: img, width: 1920, format: 'webp', quality: 80 });
-    return { src: optimized.src, alt };
+// Every portfolio photo is a candidate hero slide; 6 are picked at random
+// client-side on mount (see HeroSlideshow), so the combination differs on
+// every real browser refresh. This first slide is what ships in the static
+// HTML/preload before hydration picks the rest.
+const heroPool = await Promise.all(
+  portfolioEntries.map(async (entry) => {
+    const optimized = await getImage({ src: entry.data.image, width: 1920, format: 'webp', quality: 80 });
+    return { src: optimized.src, alt: entry.data.title };
   }),
 );
 
-const portfolioEntries = await getCollection('portfolio');
-const portfolioCovers: Record<string, (typeof portfolioEntries)[number]> = {};
+const entriesByCategory: Record<string, typeof portfolioEntries> = {};
 for (const entry of portfolioEntries) {
   const categoryId = entry.id.split('/')[0];
-  if (!portfolioCovers[categoryId]) portfolioCovers[categoryId] = entry;
+  (entriesByCategory[categoryId] ??= []).push(entry);
 }
-const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
-  id,
-  cat,
-  cover: portfolioCovers[id],
-}));
+
+// Same idea for the portfolio grid: every photo in a category is a candidate
+// cover, all pre-optimized here, and a small inline script (below) swaps in
+// a random one client-side so the "first photo" of each section is
+// different on every refresh too.
+const portfolioGrid = await Promise.all(
+  Object.entries(categories).map(async ([id, cat]) => {
+    const entries = entriesByCategory[id] ?? [];
+    const variants = await Promise.all(
+      entries.map(async (entry) => {
+        const optimized = await getImage({ src: entry.data.image, width: 480, height: 480, format: 'webp', quality: 90 });
+        return optimized.src;
+      }),
+    );
+    return { id, cat, variants };
+  }),
+);
 
 ---
 
-<Layout title={site.title} description={site.description} descriptionIt={site.descriptionIt} preloadImage={slides[0].src}>
+<Layout title={site.title} description={site.description} descriptionIt={site.descriptionIt} preloadImage={heroPool[0].src}>
   <section id="hero" class="relative flex min-h-dvh items-end overflow-hidden">
-    <HeroSlideshow client:load slides={slides} />
+    <HeroSlideshow client:load pool={heroPool} />
     <!-- Reserves the layout space for the animated title, which is rendered
          once in Header.astro and morphs into the corner brand on scroll. -->
     <div id="hero-placeholder" class="invisible relative z-10 mx-auto w-full max-w-6xl px-6 pb-20">
@@ -71,20 +73,21 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
   </section>
 
   <section class="iris-gallery grid grid-cols-2 gap-4 px-6 pb-6 sm:grid-cols-4 sm:gap-6 sm:pb-10">
-    {portfolioGrid.map(({ cat, cover }) => (
+    {portfolioGrid.map(({ cat, variants }) => (
       <a
         href={`/portfolio/${cat.slug}/`}
         class="iris-card media-card group block"
       >
         <span class="iris-stage relative block aspect-[16/9]">
-          {cover && (
+          {variants.length > 0 && (
             <span class="iris-reveal block h-full w-full">
-              <Image
-                quality={90}
-                src={cover.data.image}
+              <img
+                src={variants[0]}
+                data-cover-variants={variants.length > 1 ? JSON.stringify(variants) : undefined}
                 alt={cat.title}
                 width={480}
                 height={480}
+                loading="lazy"
                 class="h-full w-full object-cover"
               />
             </span>
@@ -100,6 +103,16 @@ const portfolioGrid = Object.entries(categories).map(([id, cat]) => ({
       </a>
     ))}
   </section>
+  <script>
+    // Each cover card starts on its build-time default image; here we swap
+    // in a random candidate from the same category on every real page load,
+    // so the grid shows a different combination on every refresh.
+    document.querySelectorAll<HTMLImageElement>('[data-cover-variants]').forEach((img) => {
+      const variants: string[] = JSON.parse(img.dataset.coverVariants ?? '[]');
+      if (variants.length < 2) return;
+      img.src = variants[Math.floor(Math.random() * variants.length)];
+    });
+  </script>
 
   <section class="border-t border-white/5">
     <div class="reveal-left mx-auto max-w-6xl px-6 pt-10 pb-8 text-left">
