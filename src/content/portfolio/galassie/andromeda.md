@@ -3,16 +3,16 @@ title: "M31 Andromeda"
 image: "./andromeda.jpg"
 astrobinLink: "https://app.astrobin.com/u/valerio76?i=gadw4m"
 ---
-La Galassia di Andromeda si trova nell'omonima costellazione, a circa 2,5 milioni di anni luce dalla Terra. In condizioni ottimali di visibilità ed elevata oscurità del cielo, è percepibile a occhio nudo. Rappresenta la galassia a spirale più vicina ed è la più estesa del Gruppo Locale: il suo disco ha un diametro di 220.000 anni luce e racchiude circa mille miliardi di stelle, un valore nettamente superiore a quello della Via Lattea.
+La Galassia di Andromeda si trova nella costellazione omonima, a circa 2,5 milioni di anni luce dalla Terra. In condizioni di elevata oscurità, è visibile a occhio nudo. Con un diametro del disco di 220.000 anni luce e circa mille miliardi di stelle — una popolazione nettamente superiore a quella della Via Lattea —, costituisce la galassia a spirale più vicina e la più estesa del Gruppo Locale.
 
-Il sistema si muove verso la Via Lattea a una velocità di circa 400.000 km/h. Si stima che tra circa 5 miliardi di anni le due galassie entreranno in collisione; l'interazione gravitazionale ne modificherà in modo radicale la morfologia.
+Il sistema si muove verso la Via Lattea a una velocità di circa 400.000 km/h; l'interazione gravitazionale tra le due galassie ne altererà la struttura in una collisione prevista tra circa 5 miliardi di anni.
 
-L'identificazione delle stelle variabili Cefeidi nelle lastre fotografiche di Andromeda, compiuta da Edwin Hubble, consentì di calcolarne la distanza. Tale misura provò che l'oggetto non era una nebulosa interna alla Via Lattea, come ipotizzato in passato quando era nota come Grande Nebulosa di Andromeda, ma un sistema galattico autonomo.
+L'individuazione delle stelle variabili Cefeidi nelle lastre fotografiche dell'oggetto, compiuta da Edwin Hubble, permise di calcolarne la distanza. La misura dimostrò che la struttura — storicamente nota come Grande Nebulosa di Andromeda — non era un componente interno alla Via Lattea, ma un sistema galattico autonomo.
 
 ---
 
-The Andromeda Galaxy is located in the constellation of the same name, approximately 2.5 million light-years from Earth. Under optimal visibility conditions and with very dark skies, it is visible to the naked eye. It is the closest spiral galaxy and the largest in the Local Group: its disk has a diameter of 220,000 light-years and contains approximately 1 trillion stars, significantly more than that of the Milky Way.
+The Andromeda Galaxy is located in the constellation of the same name, approximately 2.5 million light-years from Earth. In very dark conditions, it is visible to the naked eye. With a disk diameter of 220,000 light-years and approximately 1 trillion stars—a population significantly greater than that of the Milky Way—it is the closest and most extensive spiral galaxy in the Local Group.
 
-The system is moving toward the Milky Way at a speed of approximately 400,000 km/h. It is estimated that in approximately 5 billion years, the two galaxies will collide; the gravitational interaction will radically alter their morphology.
+The system is moving toward the Milky Way at a speed of approximately 400,000 km/h; the gravitational interaction between the two galaxies will alter its structure in a collision expected in approximately 5 billion years.
 
-The identification of Cepheid variable stars in photographic plates of Andromeda, accomplished by Edwin Hubble, allowed the calculation of their distance. This measurement proved that the object was not a nebula within the Milky Way, as previously hypothesized when it was known as the Great Andromeda Nebula, but an autonomous galactic system.
+The identification of Cepheid variable stars in photographic plates of the object, performed by Edwin Hubble, allowed the distance to be calculated. The measurement demonstrated that the structure—historically known as the Great Andromeda Nebula—was not an internal component of the Milky Way, but rather an independent galactic system.
