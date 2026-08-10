@@ -22,7 +22,8 @@ function astrobinSync() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://valerioavitabile-astrophotography.it',
+  site: 'https://valerioavitabile-cyber.github.io',
+  base: '/Astrofotografia',
   vite: {
     plugins: [tailwindcss()]
   },

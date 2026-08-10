@@ -125,6 +125,38 @@ const isHome = Astro.url.pathname === '/';
         });
       }
     </script>
+    <script is:inline>
+      // Altervista (shared hosting) drops a random handful of image requests
+      // under concurrent load (net::ERR_HTTP2_PROTOCOL_ERROR /
+      // ERR_CONNECTION_RESET, observed directly on the live site, not a bug
+      // in this codebase) — the image is fine, just that one fetch failed.
+      // Without a retry the <img> stays permanently broken until the whole
+      // page is reloaded. 'error' doesn't bubble, so this has to listen in
+      // the capture phase on `document` to catch it from any <img> anywhere.
+      (function () {
+        var MAX_RETRIES = 3;
+        var RETRY_DELAY_MS = 800;
+        var attempts = new WeakMap();
+        document.addEventListener(
+          'error',
+          function (event) {
+            var img = event.target;
+            if (!(img instanceof HTMLImageElement) || !img.src) return;
+            var count = attempts.get(img) || 0;
+            if (count >= MAX_RETRIES) return;
+            attempts.set(img, count + 1);
+            var src = img.src;
+            setTimeout(
+              function () {
+                img.src = src;
+              },
+              RETRY_DELAY_MS * (count + 1),
+            );
+          },
+          true,
+        );
+      })();
+    </script>
   </head>
   <body>
     <Header />
