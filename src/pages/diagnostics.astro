@@ -213,6 +213,42 @@
         text-align: center;
         margin-top: 32px;
       }
+
+      .sticky-section {
+        position: sticky;
+        top: 8px;
+        z-index: 10;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+      }
+
+      .spacer {
+        height: 130vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .reveal-replica {
+        opacity: 0;
+        transform: translateX(-16rem);
+        transition:
+          opacity 2s ease-out,
+          transform 2s ease-out;
+        padding: 16px;
+        border-radius: 8px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        margin-bottom: 12px;
+      }
+
+      .reveal-replica.is-visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
     </style>
   </head>
   <body>
@@ -264,6 +300,42 @@
         </div>
       </section>
 
+      <section id="scroll-live" class="sticky-section">
+        <div class="section-title">Scroll dal vivo (scorri questa pagina)</div>
+        <div class="row">
+          <span class="k">Eventi "scroll" ricevuti</span>
+          <span class="v" id="scrollcount">0</span>
+        </div>
+        <div class="row">
+          <span class="k">scrollY attuale</span>
+          <span class="v neutral" id="scrolly">0</span>
+        </div>
+        <div class="row">
+          <span class="k">innerHeight attuale</span>
+          <span class="v neutral" id="innerh">&hellip;</span>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">Replica esatta dell'animazione del sito</div>
+        <div class="test-box">
+          <p style="margin:0 0 14px;color:var(--muted)">
+            Scorri fino al riquadro qui sotto: deve restare invisibile finch&eacute; non ci arrivi, poi scivolare
+            dentro da sinistra in 2 secondi, esattamente come le sezioni della home.
+          </p>
+        </div>
+      </section>
+
+      <div class="spacer">&darr; continua a scorrere &darr;</div>
+
+      <section>
+        <div class="section-title">Riquadro da rivelare</div>
+        <div class="test-box">
+          <div class="reveal-replica" id="revealbox">Se leggi questo testo chiaramente e SUBITO senza averlo visto scivolare dentro, l'animazione non &egrave; partita.</div>
+          <div class="test-result" id="revealstatus">In attesa di entrare in viewport&hellip;</div>
+        </div>
+      </section>
+
       <section>
         <div class="section-title">Verdetto</div>
         <div class="verdict" id="verdict">Esegui il test qui sopra per vedere il verdetto.</div>
@@ -295,6 +367,66 @@
           window.innerWidth + ' x ' + window.innerHeight + ' (dpr ' + (window.devicePixelRatio || 1) + ')';
 
         document.getElementById('ua')!.textContent = navigator.userAgent;
+
+        // Live scroll-event counter: if this stays at 0 while the user
+        // physically scrolls, the site's window-'scroll' listeners (hero
+        // shrink, parallax) never fire on this device/browser, which is a
+        // completely different bug from IntersectionObserver-based reveals.
+        let scrollEvents = 0;
+        const scrollCountEl = document.getElementById('scrollcount')!;
+        const scrollYEl = document.getElementById('scrolly')!;
+        const innerHEl = document.getElementById('innerh')!;
+        const updateScrollStats = () => {
+          scrollYEl.textContent = String(Math.round(window.scrollY));
+          innerHEl.textContent = String(window.innerHeight);
+        };
+        window.addEventListener(
+          'scroll',
+          () => {
+            scrollEvents++;
+            scrollCountEl.textContent = String(scrollEvents);
+            updateScrollStats();
+          },
+          { passive: true },
+        );
+        window.addEventListener('resize', updateScrollStats);
+        updateScrollStats();
+
+        // Exact replica of ScrollReveal.astro's .reveal-left mechanism: same
+        // rootMargin/threshold, same class toggle. If this box reveals
+        // itself before actually being scrolled into view, the bug is in
+        // IntersectionObserver setup/timing, not in the CSS transition.
+        const revealBox = document.getElementById('revealbox')!;
+        const revealStatus = document.getElementById('revealstatus')!;
+        let revealTriggerCount = 0;
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              entry.target.classList.toggle('is-visible', entry.isIntersecting);
+              if (entry.isIntersecting) {
+                revealTriggerCount++;
+                revealStatus.textContent =
+                  'Rivelato alla scrollY=' + Math.round(window.scrollY) + ' (trigger #' + revealTriggerCount + ')';
+              } else {
+                revealStatus.textContent = 'Fuori viewport (in attesa)';
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+        );
+        revealObserver.observe(revealBox);
+
+        // Catches the exact bug this page exists to diagnose: if the box is
+        // already marked visible within the first second after load, without
+        // any scroll having happened, something is wrong with the observer
+        // setup itself (e.g. a layout/viewport-height quirk on this device),
+        // not with scroll handling.
+        setTimeout(() => {
+          if (revealBox.classList.contains('is-visible') && scrollEvents === 0) {
+            revealStatus.textContent =
+              '⚠ Rivelato SENZA scroll e senza eventi scroll: il box era già "visibile" al caricamento.';
+          }
+        }, 1000);
 
         const chip = document.getElementById('chip')!;
         const resultEl = document.getElementById('result')!;
