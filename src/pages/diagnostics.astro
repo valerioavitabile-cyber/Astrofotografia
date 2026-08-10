@@ -11,6 +11,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
     <title>Diagnostica Animazioni</title>
+    <script>
+      // Captures scrollY/innerHeight at several checkpoints from the
+      // earliest possible moment (head, synchronous, before any layout)
+      // through 'load', to catch a browser-driven scroll (e.g. address-bar
+      // collapse on a min-h-dvh section) that happens between paint and
+      // script execution — which a reading taken only after DOMContentLoaded
+      // would miss entirely.
+      window.__diag = [];
+      window.__diagRecord = function (label) {
+        window.__diag.push({
+          label: label,
+          t: Math.round(performance.now()),
+          scrollY: window.scrollY,
+          innerHeight: window.innerHeight,
+        });
+      };
+      window.__diagRecord('head-sync');
+      document.addEventListener('DOMContentLoaded', () => window.__diagRecord('DOMContentLoaded'));
+      window.addEventListener('load', () => {
+        window.__diagRecord('load');
+        requestAnimationFrame(() => {
+          window.__diagRecord('raf-after-load');
+          setTimeout(() => window.__diagRecord('+300ms'), 300);
+          setTimeout(() => window.__diagRecord('+1000ms'), 1000);
+        });
+      });
+    </script>
     <style>
       :root {
         --bg: #0b0d10;
@@ -263,6 +290,11 @@
       </header>
 
       <section>
+        <div class="section-title">Scroll dal primissimo istante (senza toccare nulla)</div>
+        <div id="checkpoints"></div>
+      </section>
+
+      <section>
         <div class="section-title">Impostazioni rilevate</div>
         <div class="row">
           <span class="k">Riduci movimento (prefers-reduced-motion)</span>
@@ -346,6 +378,20 @@
 
     <script>
       (function () {
+        const checkpointsEl = document.getElementById('checkpoints')!;
+        const renderCheckpoints = () => {
+          const rows = ((window as any).__diag as { label: string; t: number; scrollY: number; innerHeight: number }[])
+            .map(
+              (c) =>
+                `<div class="row"><span class="k">${c.label} (t=${c.t}ms)</span><span class="v neutral">scrollY=${c.scrollY} / innerHeight=${c.innerHeight}</span></div>`,
+            )
+            .join('');
+          checkpointsEl.innerHTML = rows;
+        };
+        renderCheckpoints();
+        const rerenderInterval = setInterval(renderCheckpoints, 250);
+        setTimeout(() => clearInterval(rerenderInterval), 2000);
+
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const rmEl = document.getElementById('rm')!;
         rmEl.textContent = reduced ? 'ATTIVO' : 'disattivo';
