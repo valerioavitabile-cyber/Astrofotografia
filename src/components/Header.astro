@@ -1,8 +1,9 @@
 ---
 import { site, mainNav } from '../data/site';
+import { withBase } from '../utils/url';
 
 const currentPath = new URL(Astro.request.url).pathname;
-const isHome = currentPath === '/';
+const isHome = currentPath === withBase('/');
 ---
 
 <div id="menus-container">
@@ -13,7 +14,7 @@ const isHome = currentPath === '/';
         <p class="hero-tagline mt-3 text-[2.4rem] text-accent">{site.tagline}</p>
       </div>
     ) : (
-      <a href="/" class="site-brand">
+      <a href={withBase('/')} class="site-brand">
         <span class="notranslate">{site.title}</span>
         <span class="site-brand-tag">{site.tagline}</span>
       </a>
@@ -24,7 +25,7 @@ const isHome = currentPath === '/';
     <div class="nav-links">
       {
         mainNav.map((item) => (
-          <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
+          <a href={withBase(item.href)} class:list={[currentPath === withBase(item.href) && 'is-active']}>
             <span data-lang-en>{item.label}</span>
             <span data-lang-it>{item.labelIt}</span>
           </a>
@@ -42,7 +43,7 @@ const isHome = currentPath === '/';
         {
           mainNav.map((item) => (
             <li>
-              <a href={item.href} class:list={[currentPath === item.href && 'is-active']}>
+              <a href={withBase(item.href)} class:list={[currentPath === withBase(item.href) && 'is-active']}>
                 <span data-lang-en>{item.label}</span>
                 <span data-lang-it>{item.labelIt}</span>
               </a>

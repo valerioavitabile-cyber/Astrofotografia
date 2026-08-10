@@ -10,6 +10,7 @@ import Parallax from '../components/Parallax.astro';
 import BackgroundMusic from '../components/BackgroundMusic.astro';
 import { site } from '../data/site';
 import socialCard from '../assets/social-card.jpg';
+import { withBase } from '../utils/url';
 
 interface Props {
   title: string;
@@ -22,8 +23,8 @@ interface Props {
 const { title, titleIt, description = site.description, descriptionIt, preloadImage } = Astro.props;
 const pageTitle = title === site.title ? site.title : `${title} · ${site.title}`;
 const pageTitleIt = titleIt ? (titleIt === site.title ? site.title : `${titleIt} · ${site.title}`) : pageTitle;
-const canonicalURL = new URL(Astro.url.pathname, site.url);
-const isHome = Astro.url.pathname === '/';
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const isHome = Astro.url.pathname === withBase('/');
 ---
 
 <!doctype html>
@@ -83,7 +84,7 @@ const isHome = Astro.url.pathname === '/';
         });
       }
     </script>
-    <script is:inline>
+    <script is:inline define:vars={{ homePath: withBase('/') }}>
       if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
@@ -102,7 +103,7 @@ const isHome = Astro.url.pathname === '/';
       // page's raw scroll offset overshoots the home page's height),
       // visibly sliding the footer past the header hero on the way up.
       function resetHomeScroll() {
-        if (window.location.pathname === '/') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        if (window.location.pathname === homePath) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       }
       resetHomeScroll();
       window.addEventListener('load', resetHomeScroll);
@@ -121,7 +122,7 @@ const isHome = Astro.url.pathname === '/';
       if (!window.__homeScrollFix) {
         window.__homeScrollFix = true;
         document.addEventListener('astro:before-preparation', (event) => {
-          if (event.to?.pathname === '/') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          if (event.to?.pathname === homePath) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         });
       }
     </script>

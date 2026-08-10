@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import { withBase } from '../utils/url';
 
 const year = new Date().getFullYear();
 
@@ -51,7 +52,7 @@ const socials = [
   >
     <div class="max-w-sm sm:col-span-2 lg:col-span-1">
       <a
-        href="/"
+        href={withBase('/')}
         class="block text-[clamp(2.25rem,7vw,5rem)] font-semibold leading-[0.95] tracking-tight text-white"
       >
         {site.title.split(' ').map((word) => (
@@ -131,7 +132,7 @@ const socials = [
           <a href={`mailto:${site.email}`} class="footer-link">{site.email}</a>
         </li>
         <li>
-          <a href="/contact/" class="footer-link">
+          <a href={withBase('/contact/')} class="footer-link">
             <span data-lang-en>Contact form</span><span data-lang-it>Modulo di contatto</span>
           </a>
         </li>
@@ -168,7 +169,7 @@ const socials = [
         <span data-lang-en>&copy; {year} Valerio Avitabile. All rights reserved.</span>
         <span data-lang-it>&copy; {year} Valerio Avitabile. Tutti i diritti riservati.</span>
       </p>
-      <a href="/privacy/" class="footer-link">
+      <a href={withBase('/privacy/')} class="footer-link">
         <span data-lang-en>Privacy Policy</span><span data-lang-it>Informativa sulla Privacy</span>
       </a>
     </div>

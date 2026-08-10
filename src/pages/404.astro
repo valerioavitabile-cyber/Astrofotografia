@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { withBase } from '../utils/url';
 ---
 
 <Layout title="Page not found" titleIt="Pagina non trovata">
@@ -13,7 +14,7 @@ import Layout from '../layouts/Layout.astro';
       <span data-lang-en>The page you're looking for doesn't exist.</span>
       <span data-lang-it>La pagina che stai cercando non esiste.</span>
     </p>
-    <a href="/" class="btn-accent mt-8 inline-flex">
+    <a href={withBase('/')} class="btn-accent mt-8 inline-flex">
       <span data-lang-en>Back to home</span>
       <span data-lang-it>Torna alla home</span>
     </a>

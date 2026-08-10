@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import LiteYouTube from '../../components/LiteYouTube.astro';
+import { withBase } from '../../utils/url';
 
 const videos = [
   { id: 'Ug6HP7CV-hY', title: 'Astrophotography video 1' },
@@ -31,7 +32,7 @@ const videos = [
     </div>
 
     <div class="mt-16 text-center">
-      <a href="/utility/" class="btn-accent">
+      <a href={withBase('/utility/')} class="btn-accent">
         <span data-lang-en>Plate solve and other utilities</span>
         <span data-lang-it>Plate solve e altre utility</span>
       </a>

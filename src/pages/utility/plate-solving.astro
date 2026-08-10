@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../utils/url';
 import { Image } from 'astro:assets';
 import hero from '../../assets/articles/plate-solving.jpg';
 ---
@@ -10,7 +11,7 @@ import hero from '../../assets/articles/plate-solving.jpg';
   descriptionIt="Cos'è il plate solving e quali metadati genera per le immagini di astrofotografia."
 >
   <article class="mx-auto max-w-3xl px-6 py-16">
-    <a href="/utility/" class="text-sm text-white/50 hover:text-accent">
+    <a href={withBase('/utility/')} class="text-sm text-white/50 hover:text-accent">
       <span data-lang-en>&larr; Back to Utility</span>
       <span data-lang-it>&larr; Torna a Utility</span>
     </a>

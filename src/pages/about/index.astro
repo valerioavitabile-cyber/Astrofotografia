@@ -5,11 +5,12 @@ import { getEntry } from 'astro:content';
 import { slide } from 'astro:transitions';
 import { marked } from 'marked';
 import portrait from '../../assets/about/portrait.jpg';
+import { withBase } from '../../utils/url';
 
 const entry = await getEntry('about', 'bio');
 const [bodyIt, bodyEn] = entry?.body?.split(/\n\n---\n\n/) ?? ['', ''];
-const contentItHtml = await marked.parse(bodyIt.trim());
-const contentEnHtml = await marked.parse(bodyEn.trim());
+const contentItHtml = (await marked.parse(bodyIt.trim())).replaceAll('href="/courses/"', `href="${withBase('/courses/')}"`);
+const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/courses/"', `href="${withBase('/courses/')}"`);
 ---
 
 <Layout

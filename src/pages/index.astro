@@ -8,6 +8,7 @@ import videoTutorial from '../assets/home/video tutorial 2.png';
 import astronomyTool from '../assets/home/astronomy tool.png';
 import portrait from '../assets/about/portrait.jpg';
 import { site, categories } from '../data/site';
+import { withBase } from '../utils/url';
 
 const portfolioEntries = await getCollection('portfolio');
 
@@ -75,7 +76,7 @@ const portfolioGrid = await Promise.all(
   <section class="iris-gallery grid grid-cols-2 gap-4 px-6 pb-6 sm:grid-cols-4 sm:gap-6 sm:pb-10">
     {portfolioGrid.map(({ cat, variants }) => (
       <a
-        href={`/portfolio/${cat.slug}/`}
+        href={withBase(`/portfolio/${cat.slug}/`)}
         class="iris-card media-card group block"
       >
         <span class="iris-stage relative block aspect-[16/9]">
@@ -131,7 +132,7 @@ const portfolioGrid = await Promise.all(
     </div>
 
     <div class="mx-auto max-w-6xl px-6 pb-24">
-      <a href="/courses/" class="mosaic-reveal media-card group aspect-video w-full">
+      <a href={withBase('/courses/')} class="mosaic-reveal media-card group aspect-video w-full">
         <video
           src={coursesVideo}
           loop
@@ -174,7 +175,7 @@ const portfolioGrid = await Promise.all(
           <span data-lang-en>Video &amp; tutorial</span>
           <span data-lang-it>Video & tutorial</span>
         </p>
-        <a href="/videos/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
+        <a href={withBase('/videos/')} class="reveal-blur media-card group mt-4 block aspect-video w-full">
           <Image quality={90} src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
           <span class="media-card-overlay">
             <span class="media-card-label">
@@ -192,7 +193,7 @@ const portfolioGrid = await Promise.all(
           <span data-lang-en>Plate solve and other</span>
           <span data-lang-it>Plate solve e altro</span>
         </p>
-        <a href="/utility/" class="reveal-blur media-card group mt-4 block aspect-video w-full">
+        <a href={withBase('/utility/')} class="reveal-blur media-card group mt-4 block aspect-video w-full">
           <Image quality={90} src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
           <span class="media-card-overlay">
             <span class="media-card-label">
@@ -211,7 +212,7 @@ const portfolioGrid = await Promise.all(
   <section class="border-t border-white/5">
     <div class="mx-auto max-w-6xl px-6 py-20">
       <div class="grid gap-12 md:grid-cols-2 md:items-center">
-        <a href="/about/" data-portrait-link class="barn-door-reveal media-card group block aspect-[4/5] w-full max-w-md">
+        <a href={withBase('/about/')} data-portrait-link class="barn-door-reveal media-card group block aspect-[4/5] w-full max-w-md">
           <Image
             quality={90}
             src={portrait}
@@ -242,7 +243,7 @@ const portfolioGrid = await Promise.all(
             <span data-lang-it>L’astrofotografia è uno stile di vita, un modo di essere&hellip;</span>
           </h2>
 
-          <a href="/about/" class="btn-accent mt-6 justify-center min-w-[190px]">
+          <a href={withBase('/about/')} class="btn-accent mt-6 justify-center min-w-[190px]">
             <span data-lang-en>My story</span>
             <span data-lang-it>La mia storia</span>
             <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
@@ -256,7 +257,7 @@ const portfolioGrid = await Promise.all(
               <span data-lang-it>Hai qualche domanda?<br /> Scrivimi pure, sarò felice di risponderti.</span>
             </p>
             <div class="mt-5 flex flex-wrap items-center gap-4">
-              <a href="/contact/" class="btn-accent justify-center min-w-[190px]">
+              <a href={withBase('/contact/')} class="btn-accent justify-center min-w-[190px]">
                 <span data-lang-en>Contact me</span>
                 <span data-lang-it>Contattami</span>
                 <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">

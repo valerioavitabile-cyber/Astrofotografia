@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../utils/url';
 import { Image } from 'astro:assets';
 import s01 from '../../assets/articles/tutorial/step-01.jpg';
 import s02 from '../../assets/articles/tutorial/step-02.jpg';
@@ -29,7 +30,7 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
   descriptionIt="Come eseguire un allineamento polare usando lo strumento Polar Alignment sul SynScan Hand Controller per montature SkyWatcher."
 >
   <article class="mx-auto max-w-3xl px-6 py-16">
-    <a href="/utility/" class="text-sm text-white/50 hover:text-accent">
+    <a href={withBase('/utility/')} class="text-sm text-white/50 hover:text-accent">
       <span data-lang-en>&larr; Back to Utility</span>
       <span data-lang-it>&larr; Torna a Utility</span>
     </a>

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../utils/url';
 import { Image } from 'astro:assets';
 import plateSolving from '../../assets/articles/plate-solving.jpg';
 import tutorialCover from '../../assets/articles/tutorial/step-01.jpg';
@@ -40,7 +41,7 @@ const articles = [
 
     <div class="mt-14 grid gap-6 sm:grid-cols-3">
       {articles.map((a) => (
-        <a href={a.href} class="group overflow-hidden rounded-2xl border border-white/10 bg-surface/40 transition duration-500 hover:border-accent/60">
+        <a href={withBase(a.href)} class="group overflow-hidden rounded-2xl border border-white/10 bg-surface/40 transition duration-500 hover:border-accent/60">
           {a.image ? (
             <Image quality={90} src={a.image} alt={a.title} width={480} height={320} class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:brightness-110" />
           ) : (

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { withBase } from '../../utils/url';
 
 const topics = [
   {
@@ -64,7 +65,7 @@ const topics = [
               techniques.
             </p>
             <p>
-              <a href="/contact/" class="font-semibold">Click here</a> to contact me through your preferred
+              <a href={withBase('/contact/')} class="font-semibold">Click here</a> to contact me through your preferred
               channels and get more information.
             </p>
           </div>
@@ -81,7 +82,7 @@ const topics = [
               tecniche alternative.
             </p>
             <p>
-              <a href="/contact/" class="font-semibold">Clicca qui</a> per contattarmi attraverso il tuo
+              <a href={withBase('/contact/')} class="font-semibold">Clicca qui</a> per contattarmi attraverso il tuo
               canale preferito e ricevere maggiori informazioni.
             </p>
           </div>
