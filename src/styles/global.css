@@ -368,6 +368,27 @@
     }
   }
 
+  /* .media-card-overlay/.media-card-label only reveal on hover/focus, which
+     touchscreens never trigger — without this override the label text (e.g.
+     "Discover courses", "My story") stays permanently invisible on mobile,
+     since tapping the card navigates away before any hover state can show
+     it. Scoped to devices with no hover capability, so desktop/mouse users
+     keep the exact same hover-reveal behavior as before. */
+  @media (hover: none) and (pointer: coarse) {
+    .media-card .media-card-overlay {
+      opacity: 1;
+    }
+
+    .media-card .media-card-label {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .media-card .media-card-label svg {
+      transform: translateX(0);
+    }
+  }
+
   .prose-astro p {
     @apply mb-5 leading-relaxed text-white/80;
   }
