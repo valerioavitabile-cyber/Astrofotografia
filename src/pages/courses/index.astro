@@ -90,11 +90,7 @@ const topics = [
       </div>
 
       <div>
-        <p class="text-sm text-white/60">
-          <span data-lang-en>The video shows an example of how raw data can be transformed into a stunning final image.</span>
-          <span data-lang-it>Il video mostra un esempio di come i dati raw possano essere trasformati in una splendida immagine finale.</span>
-        </p>
-        <div class="course-video-reveal mt-4 w-full overflow-hidden rounded-xl border border-white/10" data-course-video-card>
+        <div class="course-video-reveal w-full overflow-hidden rounded-xl border border-white/10" data-course-video-card>
           <video
             class="w-full"
             src={withBase('/video/course-demo.mp4')}
@@ -115,6 +111,10 @@ const topics = [
             <span data-lang-it>Attiva audio</span>
           </button>
         </div>
+        <p class="mt-4 text-sm text-white/60">
+          <span data-lang-en>The video shows an example of how raw data can be transformed into a stunning final image.</span>
+          <span data-lang-it>Il video mostra un esempio di come i dati raw possano essere trasformati in una splendida immagine finale.</span>
+        </p>
       </div>
     </div>
 
@@ -266,9 +266,9 @@ const topics = [
         <span data-lang-en>Course topic</span>
         <span data-lang-it>Argomenti del corso</span>
       </p>
-      <h2 class="reveal-left mt-2 text-2xl font-semibold sm:text-3xl" data-course-title>
-        <span data-lang-en>We will learn how to manage our raw files<br /> and get to the final image</span>
-        <span data-lang-it>Impareremo a gestire i nostri file raw<br /> fino ad arrivare all'immagine finale</span>
+      <h2 class="reveal-left mt-2 text-2xl font-semibold sm:whitespace-nowrap sm:text-2xl" data-course-title>
+        <span data-lang-en>We'll learn how to transform a RAW file into an extraordinary vision of the universe.</span>
+        <span data-lang-it>Impareremo a trasformare un file RAW in una straordinaria visione dell'universo.</span>
       </h2>
       <ul class="mt-5 grid gap-2 sm:grid-cols-2">
         {topics.map((t, i) => (

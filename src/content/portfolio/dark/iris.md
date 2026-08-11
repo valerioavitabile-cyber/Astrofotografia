@@ -1,5 +1,6 @@
 ---
 title: "NGC 7035 Iris Nebula"
+titleIt: "NGC 7035 Nebulosa Iris"
 image: "./iris.jpg"
 astrobinLink: "https://www.astrobin.com/5dh7jv/"
 ---

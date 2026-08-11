@@ -1,5 +1,6 @@
 ---
 title: "VDB142 Elephant Trunk Nebula"
+titleIt: "VDB142 Nebulosa Proboscide d'Elefante"
 image: "./trunk.jpg"
 astrobinLink: "https://www.astrobin.com/9crllr/B/"
 ---

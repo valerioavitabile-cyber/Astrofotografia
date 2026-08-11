@@ -1,5 +1,6 @@
 ---
 title: "NGC 869 & NGC 884 Double Cluster"
+titleIt: "NGC 869 & NGC 884 Doppio Ammasso"
 image: "./doppio.jpg"
 astrobinLink: "https://www.astrobin.com/d96wk3/B/"
 ---

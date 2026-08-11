@@ -1,5 +1,6 @@
 ---
 title: "NGC2264 The Cone nebula"
+titleIt: "NGC2264 Nebulosa Cono"
 image: "./cone.jpg"
 astrobinLink: "https://www.astrobin.com/f4cgvr/D/"
 ---

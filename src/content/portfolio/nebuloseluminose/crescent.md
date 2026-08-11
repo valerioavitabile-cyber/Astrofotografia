@@ -1,5 +1,6 @@
 ---
 title: "NGC 6888 Crescent Nebula"
+titleIt: "NGC 6888 Nebulosa Mezzaluna"
 image: "./crescent.jpg"
 astrobinLink: "https://www.astrobin.com/f4nx4z/0/"
 ---

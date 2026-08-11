@@ -1,5 +1,6 @@
 ---
 title: "Rosette nebula"
+titleIt: "Nebulosa Rosetta"
 image: "./rosettahoo.jpg"
 astrobinLink: "https://www.astrobin.com/s0aqj9/0/"
 ---

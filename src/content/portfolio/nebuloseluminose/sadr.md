@@ -1,5 +1,6 @@
 ---
 title: "IC 1318 & Sadr region"
+titleIt: "IC 1318 & Regione di Sadr"
 image: "./sadr.jpg"
 astrobinLink: "https://www.astrobin.com/vwmmxp/0/"
 ---

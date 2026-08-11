@@ -1,5 +1,6 @@
 ---
 title: "M31 Andromeda"
+titleIt: "M31 Andromeda"
 image: "./andromeda.jpg"
 astrobinLink: "https://app.astrobin.com/u/valerio76?i=gadw4m"
 ---

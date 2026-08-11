@@ -1,5 +1,6 @@
 ---
 title: "Draco Triplet"
+titleIt: "Tripletto del Drago"
 image: "./trio.jpg"
 astrobinLink: "https://www.astrobin.com/ducz23/"
 ---

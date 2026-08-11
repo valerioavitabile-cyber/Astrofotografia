@@ -1,5 +1,6 @@
 ---
 title: "Leo Triplet"
+titleIt: "Tripletto del Leone"
 image: "./tripletto.jpg"
 astrobinLink: "https://www.astrobin.com/15dm2w/0/"
 ---

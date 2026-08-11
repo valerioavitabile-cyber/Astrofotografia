@@ -10,6 +10,7 @@ const portfolio = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      titleIt: z.string(),
       image: image(),
       astrobinLink: z.string().url().optional(),
     }),

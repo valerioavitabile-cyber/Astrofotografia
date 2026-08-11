@@ -1,5 +1,6 @@
 ---
 title: "Cygnus wall"
+titleIt: "Il Muro del Cigno"
 image: "./cigno.jpg"
 astrobinLink: "https://www.astrobin.com/qttlm1/B/"
 ---

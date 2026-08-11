@@ -1,5 +1,6 @@
 ---
 title: "IC 443 Jellyfish Nebula"
+titleIt: "IC 443 Nebulosa Medusa"
 image: "./ic443hoo.jpg"
 astrobinLink: "https://www.astrobin.com/xtzq0q/B/"
 ---
