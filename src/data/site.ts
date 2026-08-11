@@ -102,8 +102,7 @@ export const mainNav = [
   { label: 'Home', labelIt: 'Home', href: '/' },
   { label: 'Portfolio', labelIt: 'Portfolio', href: '/#portfolio' },
   { label: 'Courses', labelIt: 'Corsi', href: '/courses/' },
-  { label: 'Videos & Tutorials', labelIt: 'Video & Tutorial', href: '/videos/' },
-  { label: 'Utility', labelIt: 'Utility', href: '/utility/' },
+  { label: 'Video & Utility', labelIt: 'Video & Utility', href: '/video-utility/' },
   { label: 'About', labelIt: 'Chi sono', href: '/about/' },
   { label: 'Contact', labelIt: 'Contatti', href: '/contact/' },
 ];

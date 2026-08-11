@@ -329,3 +329,19 @@ Rimosso tutto il codice temporaneo di debug: la pagina [src/pages/diagnostics.as
 **Perché è stato utile lasciare tracce nel second-brain anche per un "non-bug":** questa indagine (4 sessioni, più aggiornamenti) è un caso di riferimento per bug reali-solo-su-dispositivo che nessun emulatore riproduce — utile ricordare il metodo (pannello debug on-page con log condizionato a un query param, mai in produzione di default) se càpita di nuovo un sintomo "non riproducibile" simile.
 
 **Come si applica:** se in futuro serve investigare un altro bug visibile solo su un dispositivo reale specifico, il pattern di questa indagine è riutilizzabile: (1) pagina/pannello diagnostico temporaneo dietro un query param innocuo (`?debug=1`), mai attivo di default; (2) log con timestamp/stato ad ogni checkpoint rilevante, non solo all'inizio; (3) includere sempre anche i valori delle condizioni di guardia (qui `reduceMotion`/presenza elemento), non solo il risultato finale del calcolo — è stato il dettaglio che ha sbloccato la diagnosi. E controllare le **Opzioni sviluppatore Android** (non solo Accessibilità) quando un utente riporta "nessuna animazione da nessuna parte" su un dispositivo reale.
+
+## 2026-08-11 — Fuse le pagine "Video & tutorial" e "Utility" in un'unica pagina `/video-utility/`
+
+Le due sezioni della home (e le rispettive pagine `/videos/` e `/utility/`) avevano poco contenuto ciascuna (4 video, 3 articoli): su proposta dell'assistente, l'utente ha confermato di unirle in un'unica sezione più ricca, chiedendo un header con link che scrollano alla sezione dedicata invece di due pagine separate.
+
+Creata `src/pages/video-utility/index.astro`: un header con due pill-link ("Video & tutorial" / "Strumenti e guide") che scrollano via ancora a `#video` e `#tools` nella stessa pagina (contenuto invariato, solo riunito). Cancellate `src/pages/videos/index.astro` e `src/pages/utility/index.astro`; le sottopagine `src/pages/utility/{plate-solving,astronomy-tools,polar-alignment}.astro` restano agli stessi URL, solo il back-link ora punta a `/video-utility/#tools`.
+
+Aggiunti redirect statici in `astro.config.mjs` (`redirects: { '/videos/': ..., '/utility/': ... }`) verso `/video-utility/#video` e `/video-utility/#tools`, per non rompere link esterni/bookmark esistenti. **Attenzione:** le destinazioni dei `redirects` di Astro **non** vengono automaticamente prefissate con `base` (a differenza degli `href` generati da `withBase()`) — vanno scritte già complete, es. `/Astrofotografia/video-utility/#video`, altrimenti il redirect prodotto in build punta fuori dal sito (verificato leggendo l'HTML in `dist/` dopo la build).
+
+Nav (`site.ts`) ridotta da due voci a una sola ("Video & Utility" → `/video-utility/`).
+
+Sezione home: primo tentativo con una sola card full-width (le due immagini accostate dentro lo stesso `<a>`) **scartato dall'utente** ("non mi piace"). Ripristinate le due card separate originali (`videoTutorial`/`astronomyTool`, etichette "Video tutorial"/"Utility"), solo i link ora puntano a `/video-utility/#video` e `/video-utility/#tools` invece che a due pagine distinte.
+
+**Perché:** più contenuto percepito per sezione invece di due sezioni "vuote"; un solo salto di navigazione per l'utente finale.
+
+**Come si applica:** eventuali nuovi contenuti video o strumenti/guide vanno aggiunti come nuove voci negli array `videos`/`articles` in `video-utility/index.astro`, non in pagine separate. Se in futuro si aggiungono altri `redirects` in `astro.config.mjs`, ricordarsi di includere `/Astrofotografia` nella destinazione.

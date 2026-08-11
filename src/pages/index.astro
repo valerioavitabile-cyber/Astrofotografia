@@ -176,14 +176,14 @@ const portfolioGrid = await Promise.all(
         <span data-lang-en>Videos and astronomical calculation tools</span>
         <span data-lang-it>Video e strumenti di calcolo astronomico</span>
       </h2>
+      <p class="mt-5 max-w-xl text-xl leading-relaxed text-white/70">
+        <span data-lang-en>Tutorials to follow, tools to use</span>
+        <span data-lang-it>Tutorial da seguire, strumenti da sfruttare</span>
+      </p>
     </div>
     <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-4 sm:grid-cols-2">
       <div data-parallax="-0.03">
-        <p class="reveal-left text-xl text-white/70">
-          <span data-lang-en>Video &amp; tutorial</span>
-          <span data-lang-it>Video & tutorial</span>
-        </p>
-        <a href={withBase('/videos/')} class="reveal-blur media-card group mt-4 block aspect-video w-full">
+        <a href={withBase('/video-utility/#video')} class="reveal-blur media-card group block aspect-video w-full">
           <Image quality={90} src={videoTutorial} alt="Video tutorial and astronomical calculation tools" />
           <span class="media-card-overlay">
             <span class="media-card-label">
@@ -197,11 +197,7 @@ const portfolioGrid = await Promise.all(
         </a>
       </div>
       <div>
-        <p class="reveal-right text-xl text-white/70">
-          <span data-lang-en>Plate solve and other</span>
-          <span data-lang-it>Plate solve e altro</span>
-        </p>
-        <a href={withBase('/utility/')} class="reveal-blur media-card group mt-4 block aspect-video w-full">
+        <a href={withBase('/video-utility/#tools')} class="reveal-blur media-card group block aspect-video w-full">
           <Image quality={90} src={astronomyTool} alt="Astronomy tools for plate solving and calculations" />
           <span class="media-card-overlay">
             <span class="media-card-label">

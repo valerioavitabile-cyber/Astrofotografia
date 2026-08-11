@@ -129,13 +129,43 @@
     opacity: 1;
   }
 
+  /* Video stack (video-utility/index.astro): stessa tecnica FLIP di
+     .stack-card sopra, ma sovrapposizione perfetta (nessuna rotazione/
+     scarto tra le carte, un solo punto di convergenza) e partenza a tempo
+     invece che allo scroll — vedi setupVideoStack nella pagina. */
+  .video-stack-card {
+    position: relative;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .video-stack-card.is-placed {
+    opacity: 1;
+  }
+
+  .video-stack-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  .video-stack:not(.is-settled) .video-stack-card::after {
+    opacity: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal,
     .reveal-left,
     .reveal-right,
     .reveal-blur,
     .reveal-fade,
-    .stack-card {
+    .stack-card,
+    .video-stack-card {
       opacity: 1;
       transform: none;
       filter: none;
@@ -487,4 +517,60 @@
   ::view-transition-new(about-portrait) {
     animation-duration: 0.01ms !important;
   }
+}
+
+/* Morph card -> modale dei video YouTube (LiteYouTube.astro): stesso
+   meccanismo di about-portrait ma per una view transition JS same-document
+   (document.startViewTransition), non per la navigazione cross-page di
+   Astro. Durata piu breve perche qui e un apri/chiudi modale, non un
+   passaggio di pagina con testo che scorre in sync. */
+::view-transition-group(video-morph) {
+  animation-duration: 0.45s;
+  animation-timing-function: ease-out;
+}
+
+::view-transition-old(video-morph),
+::view-transition-new(video-morph) {
+  animation-duration: 0.45s;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(video-morph),
+  ::view-transition-old(video-morph),
+  ::view-transition-new(video-morph) {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Senza questa regola, la transizione del modale video anima anche il
+   gruppo "root" (tutta la pagina, esclusi solo gli elementi con un proprio
+   view-transition-name): se la larghezza della pagina cambia anche di poco
+   tra vecchio e nuovo snapshot (es. la scrollbar che ricompare quando il
+   modale toglie overflow-hidden dal body), il browser interpreta lo scarto
+   come uno zoom/crossfade su tutto il resto della pagina — l'effetto
+   "riverbero" segnalato dall'utente sugli oggetti fuori dal video. La
+   classe .video-vt-active (impostata solo durante l'apertura/chiusura del
+   modale, vedi LiteYouTube.astro) disattiva l'animazione del root senza
+   toccare le page-transition di Astro, che non usano questa classe. */
+html.video-vt-active::view-transition-group(root),
+html.video-vt-active::view-transition-old(root),
+html.video-vt-active::view-transition-new(root) {
+  animation: none !important;
+}
+
+/* Questo era il vero colpevole del "riverbero": Astro assegna un
+   view-transition-name proprio (es. astro-xxxxxxxx) a <main> e ad altri
+   elementi marcati [data-astro-transition-scope], per le SUE transizioni
+   di pagina — cosi facendo, quegli elementi non finiscono nel gruppo
+   "root" (gia disattivato sopra) ma in un gruppo a se, che la nostra
+   transizione JS anima comunque con il proprio resize/zoom quando cambia
+   anche di poco tra vecchio e nuovo snapshot. Togliendo il nome durante
+   .video-vt-active, <main> & co. ricadono nel gruppo "root" (disattivato)
+   invece di animare per conto proprio. Va sopra la regola di Astro
+   ([data-astro-transition-scope="..."] { view-transition-name: ... }, in
+   transition.js) sia per specificita (attributo + classe > solo attributo)
+   sia per !important. */
+html.video-vt-active [data-astro-transition-scope] {
+  view-transition-name: none !important;
 }

@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LiteYouTube from '../../components/LiteYouTube.astro';
+import { withBase } from '../../utils/url';
+import { Image } from 'astro:assets';
+import plateSolving from '../../assets/articles/plate-solving.jpg';
+import tutorialCover from '../../assets/articles/tutorial/step-01.jpg';
+
+const videos = [
+  { id: 'Ug6HP7CV-hY', title: 'Optolong L-Extreme workflow tutorial' },
+  // Video sorgente ha bande nere laterali incise nel frame (~4.7% per lato,
+  // misurato sulla maxresdefault): zoom compensa il pillarbox senza deformare.
+  { id: 'sKDhDhjzNQ8', title: 'NGC 6914 Editing process', zoom: 1.12 },
+  { id: 'ABFydJXkaW4', title: 'Pixinsight - Come creare un flat sintetico', titleEn: 'Pixinsight - How to create a synthetic flat' },
+  // Stesso problema, banda più larga (~8.4% per lato).
+  { id: 'Iu5LRdpN_7A', title: 'NGC 1333 LRGB Workflow Timeline', zoom: 1.22 },
+];
+
+const articles = [
+  {
+    href: '/utility/plate-solving/',
+    title: 'Plate Solving and Metadata',
+    titleIt: 'Plate Solving e Metadati',
+    image: plateSolving,
+  },
+  {
+    href: '/utility/astronomy-tools/',
+    title: 'Astronomy Tools',
+    titleIt: 'Astronomy Tools',
+    image: null,
+  },
+  {
+    href: '/utility/polar-alignment/',
+    title: 'Polar Alignment with Synscan',
+    titleIt: 'Allineamento Polare con Synscan',
+    image: tutorialCover,
+  },
+];
+---
+
+<Layout
+  title="Video &amp; Utility"
+  titleIt="Video &amp; Utility"
+  description="Astrophotography videos, tutorials and astronomical calculation tools by Valerio Avitabile."
+  descriptionIt="Video, tutorial e strumenti di calcolo astronomico di Valerio Avitabile."
+>
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <h1 class="text-center text-4xl font-semibold sm:text-5xl">
+      <span data-lang-en>Tutorials to follow, tools to use</span>
+      <span data-lang-it>Tutorial da seguire, strumenti da sfruttare</span>
+    </h1>
+
+    <div id="video" class="mt-16 scroll-mt-24">
+      <h2 class="text-2xl font-semibold sm:text-3xl">
+        <span data-lang-en>Video &amp; tutorials</span>
+        <span data-lang-it>Video &amp; tutorial</span>
+      </h2>
+      <div class="video-stack mt-8 grid gap-8 sm:grid-cols-2">
+        {videos.map((v, i) => (
+          <LiteYouTube videoId={v.id} title={v.title} titleEn={v.titleEn} zoom={v.zoom} revealSide={i % 2 === 0 ? 'left' : 'right'} />
+        ))}
+      </div>
+    </div>
+
+    <div id="tools" class="mt-24 scroll-mt-24">
+      <h2 class="text-2xl font-semibold sm:text-3xl">
+        <span data-lang-en>Tools &amp; guides</span>
+        <span data-lang-it>Strumenti e guide</span>
+      </h2>
+      <div class="mt-8 grid gap-6 sm:grid-cols-3">
+        {articles.map((a) => (
+          <a href={withBase(a.href)} class="group overflow-hidden rounded-2xl border border-white/10 bg-surface/40 transition duration-500 hover:border-accent/60">
+            {a.image ? (
+              <Image quality={90} src={a.image} alt={a.title} width={480} height={320} class="aspect-[3/2] w-full object-cover transition duration-500 group-hover:brightness-110" />
+            ) : (
+              <div class="flex aspect-[3/2] w-full items-center justify-center bg-surface text-4xl text-accent">
+                ✦
+              </div>
+            )}
+            <p class="p-4 font-semibold">
+              <span data-lang-en>{a.title}</span>
+              <span data-lang-it>{a.titleIt}</span>
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <script>
+      // Accatastamento dei 4 video: stessa tecnica FLIP della stack-gallery
+      // del portfolio (ScrollReveal.astro/setupStack) — si misura la
+      // posizione finale di ogni carta nel grid gia impaginato e si applica
+      // all'indietro l'offset per portarla al centro, cosi la pila e gia
+      // quello che si vede al primo paint (nessun flash della griglia
+      // impaginata). A differenza della gallery pero qui le 4 carte
+      // convergono TUTTE sullo stesso punto (nessuna rotazione/scarto: una
+      // sovrapposizione perfetta) e l'apertura parte a tempo (0.7s dal
+      // caricamento) invece che al primo scroll dell'utente. Le didascalie
+      // (data-video-caption, escluse dall'observer generico di
+      // ScrollReveal.astro) partono in coda, in sincrono con l'apertura di
+      // ciascuna carta invece che tutte insieme al load.
+      const setupVideoStack = () => {
+        const grid = document.querySelector<HTMLElement>('.video-stack');
+        const cards = Array.from(document.querySelectorAll<HTMLElement>('.video-stack-card'));
+        const captions = Array.from(document.querySelectorAll<HTMLElement>('[data-video-caption]'));
+        if (!grid || !cards.length || grid.dataset.stackBound) return;
+        grid.dataset.stackBound = '1';
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+          grid.classList.add('is-settled');
+          cards.forEach((card) => card.classList.add('is-placed'));
+          captions.forEach((caption) => caption.classList.add('is-visible'));
+          return;
+        }
+
+        const START_DELAY = 700;
+        const DURATION = 1400;
+        const STAGGER = 200;
+
+        const pile = () => {
+          cards.forEach((card) => {
+            card.style.transition = 'none';
+            card.style.transform = 'none';
+          });
+          const gridRect = grid.getBoundingClientRect();
+          const centerX = gridRect.width / 2;
+          const centerY = gridRect.height / 2;
+          cards.forEach((card, i) => {
+            const r = card.getBoundingClientRect();
+            const cardCenterX = r.left - gridRect.left + r.width / 2;
+            const cardCenterY = r.top - gridRect.top + r.height / 2;
+            const dx = centerX - cardCenterX;
+            const dy = centerY - cardCenterY;
+            card.style.zIndex = String(cards.length - i);
+            card.style.transform = `translate(${dx}px, ${dy}px) scale(0.86)`;
+            card.classList.add('is-placed');
+          });
+        };
+
+        const unfurl = () => {
+          cards.forEach((card, i) => {
+            card.style.transition = `transform ${DURATION}ms cubic-bezier(0.22, 1, 0.36, 1) ${i * STAGGER}ms`;
+            card.style.transform = 'translate(0, 0) scale(1)';
+          });
+          window.setTimeout(() => grid.classList.add('is-settled'), DURATION + cards.length * STAGGER);
+          captions.forEach((caption, i) => {
+            window.setTimeout(() => caption.classList.add('is-visible'), i * STAGGER + 400);
+          });
+        };
+
+        // Doppio rAF: aspetta un vero ciclo di layout/paint prima di
+        // misurare, altrimenti si rischia di leggere il grid a meta
+        // applicazione del CSS (offset quasi nulli, carte impilate su se
+        // stesse invece che al centro).
+        requestAnimationFrame(() => requestAnimationFrame(pile));
+        window.setTimeout(unfurl, START_DELAY);
+      };
+
+      document.addEventListener('astro:page-load', setupVideoStack);
+    </script>
+  </section>
+</Layout>

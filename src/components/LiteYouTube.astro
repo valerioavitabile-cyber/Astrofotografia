@@ -1,59 +1,222 @@
 ---
 interface Props {
   videoId: string;
+  /** Titolo italiano (lingua di default del sito). */
   title: string;
+  /** Traduzione inglese; se omessa si riusa `title` per entrambe le lingue. */
+  titleEn?: string;
+  /** Alcuni video sorgente hanno bande nere laterali incise nel frame
+   * (pillarbox). Un fattore >1 esegue uno zoom centrato (via CSS transform,
+   * sia sulla thumbnail che sul player nella modale) che le ritaglia via
+   * senza deformare l'immagine, sacrificando un margine equivalente
+   * sopra/sotto. Calcolato misurando la thumbnail maxresdefault reale. */
+  zoom?: number;
+  /** Lato da cui deve entrare la didascalia allo scroll (ScrollReveal.astro
+   * intercetta globalmente .reveal-left/.reveal-right). */
+  revealSide?: 'left' | 'right';
 }
-const { videoId, title } = Astro.props;
-const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+const { videoId, title, zoom, revealSide } = Astro.props;
+const titleEn = Astro.props.titleEn ?? title;
+const revealClass = revealSide === 'right' ? 'reveal-right' : revealSide === 'left' ? 'reveal-left' : '';
+const thumbHQ = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+const thumbFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 ---
 
-<lite-youtube data-id={videoId} data-title={title}>
-  <button
-    type="button"
-    aria-label={`Play: ${title}`}
-    class="group relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface"
-  >
-    <img
-      src={thumb}
-      alt={title}
-      loading="lazy"
-      class="h-full w-full object-cover opacity-80 transition group-hover:opacity-100"
-    />
-    <span
-      class="absolute inset-0 flex items-center justify-center bg-black/20 transition group-hover:bg-black/10"
+<figure class="m-0">
+  <lite-youtube data-id={videoId} data-title={title} data-title-en={titleEn} data-zoom={zoom ?? 1}>
+    <button
+      type="button"
+      aria-label={`Play: ${title}`}
+      data-tr={JSON.stringify({ attr: 'aria-label', it: `Play: ${title}`, en: `Play: ${titleEn}` })}
+      class="video-stack-card group relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface"
     >
-      <span class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-ink shadow-lg">
-        <svg viewBox="0 0 24 24" class="h-7 w-7 translate-x-0.5" fill="currentColor">
-          <path d="M8 5v14l11-7z"></path>
-        </svg>
+      <img
+        src={thumbHQ}
+        data-fallback={thumbFallback}
+        onerror="this.onerror=null;this.src=this.dataset.fallback;"
+        alt={title}
+        data-tr={JSON.stringify({ attr: 'alt', it: title, en: titleEn })}
+        loading="lazy"
+        style={zoom ? `transform: scale(${zoom});` : undefined}
+        class="h-full w-full origin-center object-cover opacity-80 transition group-hover:opacity-100"
+      />
+      <span
+        class="absolute inset-0 flex items-center justify-center bg-black/20 transition group-hover:bg-black/10"
+      >
+        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-accent/90 text-ink shadow-lg">
+          <svg viewBox="0 0 24 24" class="h-7 w-7 translate-x-0.5" fill="currentColor">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+        </span>
       </span>
-    </span>
-  </button>
-</lite-youtube>
+    </button>
+  </lite-youtube>
+  <figcaption class:list={['mt-2 text-sm text-white/70', revealClass]} data-video-caption>
+    <span data-lang-it>{title}</span>
+    <span data-lang-en>{titleEn}</span>
+  </figcaption>
+</figure>
 
 <script>
+  // Morph card -> modale via View Transitions API nativa (stesso schema
+  // richiesto dall'utente): il riquadro della thumbnail cliccata e il
+  // riquadro del player nella modale condividono per un istante lo stesso
+  // view-transition-name ("video-morph", stili in global.css), cosi il
+  // browser interpola da solo posizione/dimensione/raggio tra i due. Un
+  // solo modale alla volta puo essere aperto, quindi il nome puo essere
+  // condiviso da tutte le istanze del componente senza collisioni.
+  const VT_NAME = 'video-morph';
+  // Senza questo, la view transition anima anche il gruppo "root" (tutto il
+  // resto della pagina, non nominato): se nel frattempo la larghezza della
+  // pagina cambia anche di poco (es. la scrollbar che ricompare quando si
+  // toglie overflow-hidden dal body), il browser interpreta lo scarto tra
+  // vecchio/nuovo snapshot come uno zoom/crossfade su tutta la pagina. La
+  // classe disattiva quel gruppo (regola in global.css) solo mentre dura
+  // la nostra transizione, senza toccare le page-transition di Astro.
+  const VT_SUPPRESS_ROOT_CLASS = 'video-vt-active';
+
   class LiteYouTube extends HTMLElement {
     connectedCallback() {
       const button = this.querySelector('button');
-      button?.addEventListener(
-        'click',
-        () => {
-          const id = this.dataset.id;
-          const title = this.dataset.title ?? 'YouTube video';
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute('src', `https://www.youtube.com/embed/${id}?autoplay=1`);
-          iframe.setAttribute('title', title);
-          iframe.setAttribute(
-            'allow',
-            'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-          );
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.className = 'aspect-video w-full rounded-xl border border-white/10';
-          this.replaceChildren(iframe);
-        },
-        { once: true }
-      );
+      const img = this.querySelector('img');
+      if (!button || !img) return;
+      button.addEventListener('click', () => {
+        const id = this.dataset.id;
+        // Il modale (iframe title, alt del poster) usa la lingua attiva al
+        // momento del click, non quella con cui la pagina e stata renderizzata
+        // lato server — vedi data-lang su <html> impostato da LangSwitcher.astro.
+        const lang = document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'it';
+        const title = (lang === 'en' ? this.dataset.titleEn : this.dataset.title) ?? 'YouTube video';
+        const zoom = Number(this.dataset.zoom ?? '1') || 1;
+        openVideoModal(id!, title, zoom, button, img.currentSrc || img.src);
+      });
     }
   }
   customElements.define('lite-youtube', LiteYouTube);
+
+  function buildIframe(id: string, title: string) {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute(
+      'src',
+      `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`
+    );
+    iframe.setAttribute('title', title);
+    iframe.setAttribute(
+      'allow',
+      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    );
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.className = 'h-full w-full border-0';
+    // Niente zoom qui (a differenza della thumbnail/poster): scalare
+    // l'iframe sposta fuori dal riquadro anche i controlli nativi di
+    // YouTube (impostazioni, qualita, sottotitoli), rendendoli
+    // inutilizzabili. Il pillarbox del video sorgente resta quindi visibile
+    // in riproduzione per i due video con banda nera, ma i controlli
+    // restano pienamente funzionanti.
+    return iframe;
+  }
+
+  function openVideoModal(
+    id: string,
+    title: string,
+    zoom: number,
+    sourceEl: HTMLElement,
+    posterSrc: string
+  ) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const supportsMorph = typeof document.startViewTransition === 'function' && !reduceMotion;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 z-[999] flex items-center justify-center bg-black/90 p-4 sm:p-8';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'relative w-full max-w-6xl';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.className =
+      'absolute -top-10 right-0 text-3xl leading-none text-white/80 transition hover:text-white sm:-top-12';
+    closeBtn.textContent = '×';
+
+    // Ritaglia il pillarbox anche in riproduzione: contenitore fisso al
+    // 16:9 con overflow nascosto. E' anche il riquadro-bersaglio del morph.
+    const frame = document.createElement('div');
+    frame.className = 'aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface';
+
+    // Il player parte come immagine statica (stesso frame della thumbnail,
+    // stesso zoom di ritaglio) cosi il morph ha subito un contenuto
+    // coerente da mostrare; l'iframe vero sostituisce il poster a
+    // transizione conclusa, evitando un riquadro vuoto durante l'animazione.
+    const poster = document.createElement('img');
+    poster.src = posterSrc;
+    poster.alt = title;
+    poster.className = 'h-full w-full origin-center object-cover';
+    if (zoom !== 1) poster.style.transform = `scale(${zoom})`;
+    frame.append(poster);
+
+    wrapper.append(closeBtn, frame);
+    overlay.append(wrapper);
+
+    const lockScroll = () => document.body.classList.add('overflow-hidden');
+    const unlockScroll = () => document.body.classList.remove('overflow-hidden');
+
+    const finishOpen = () => {
+      const iframe = buildIframe(id, title);
+      frame.replaceChild(iframe, poster);
+    };
+
+    const close = () => {
+      const doClose = () => {
+        overlay.remove();
+        unlockScroll();
+        document.removeEventListener('keydown', onKeydown);
+      };
+
+      if (!supportsMorph) {
+        doClose();
+        return;
+      }
+
+      frame.style.viewTransitionName = VT_NAME;
+      document.documentElement.classList.add(VT_SUPPRESS_ROOT_CLASS);
+      const transition = document.startViewTransition(() => {
+        doClose();
+        sourceEl.style.viewTransitionName = VT_NAME;
+      });
+      transition.finished.finally(() => {
+        sourceEl.style.viewTransitionName = '';
+        document.documentElement.classList.remove(VT_SUPPRESS_ROOT_CLASS);
+      });
+    };
+    const onKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+    document.addEventListener('keydown', onKeydown);
+
+    if (!supportsMorph) {
+      document.body.append(overlay);
+      lockScroll();
+      finishOpen();
+      return;
+    }
+
+    sourceEl.style.viewTransitionName = VT_NAME;
+    document.documentElement.classList.add(VT_SUPPRESS_ROOT_CLASS);
+    const transition = document.startViewTransition(() => {
+      document.body.append(overlay);
+      lockScroll();
+      frame.style.viewTransitionName = VT_NAME;
+      sourceEl.style.viewTransitionName = '';
+    });
+    transition.finished.finally(() => {
+      finishOpen();
+      document.documentElement.classList.remove(VT_SUPPRESS_ROOT_CLASS);
+    });
+  }
 </script>

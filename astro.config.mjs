@@ -28,5 +28,10 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
+  redirects: {
+    '/videos/': '/Astrofotografia/video-utility/#video',
+    '/utility/': '/Astrofotografia/video-utility/#tools',
+  },
+
   integrations: [react(), astrobinSync()]
 });
