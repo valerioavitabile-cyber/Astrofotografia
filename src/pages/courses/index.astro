@@ -135,6 +135,19 @@ const topics = [
         position: relative;
       }
 
+      /* Le tessere globali (.mosaic-tile, global.css) sono del colore dello
+         sfondo pagina (--color-ink): sul teaser in home va bene, perché lo
+         sfondo attorno alla card è comunque scuro e il video sottostante è
+         luminoso. Qui invece il video parte da un fotogramma quasi nero, e
+         una card ink-su-ink diventa un rettangolo piatto indistinguibile
+         dalla pagina: l'apertura delle tessere non si vede perché non c'è
+         alcun contrasto da rivelare. Un tono leggermente più chiaro
+         (--color-surface, la stessa tinta delle card altrove nel sito) la
+         rende un mosaico visibile invece di un buco nero. */
+      .course-video-reveal .mosaic-tile {
+        background: var(--color-surface);
+      }
+
       .course-video-reveal.is-visible .mosaic-tile {
         opacity: 0;
         transform: scale(1.15);
