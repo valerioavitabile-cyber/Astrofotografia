@@ -143,7 +143,10 @@ const topics = [
         z-index: 20;
         background: var(--color-surface);
         clip-path: inset(0 0 0 0);
-        transition: clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+        /* Stessa durata/easing di .reveal-left (global.css), per coerenza
+           con l'ingresso del testo a fianco: 2s, ease-out arrotondato
+           invece del cubic-bezier più netto usato prima. */
+        transition: clip-path 2s ease-out;
       }
 
       .course-video-reveal.is-visible .course-video-wipe {
