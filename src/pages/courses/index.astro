@@ -8,29 +8,29 @@ const topics = [
     it: 'Stacking delle immagini, calibrazione con dark, flat, darkflat',
   },
   {
-    en: 'Creation and calibration of RGB channels',
-    it: 'Creazione e calibrazione dei canali RGB',
-  },
-  {
-    en: 'Gradient removal, photometric color calibration, starless image',
-    it: 'Rimozione dei gradienti, calibrazione fotometrica del colore, immagine starless',
-  },
-  {
-    en: 'Deconvolution and linear denoising',
-    it: 'Deconvoluzione e denoising in fase lineare',
-  },
-  {
     en: 'Stretching and non-linear phase',
     it: 'Stretching e fase non lineare',
+  },
+  {
+    en: 'Creation and calibration of RGB channels',
+    it: 'Creazione e calibrazione dei canali RGB',
   },
   {
     en: 'Curves, contrasts, saturation, blending modes',
     it: 'Curve, contrasti, saturazione, blending mode',
   },
   {
-    en: 'Definition of fine details, star color calibration, final image',
-    it: 'Definizione dei dettagli fini, calibrazione del colore delle stelle, immagine finale',
+    en: 'Gradient removal, photometric color calibration, starless image',
+    it: 'Rimozione dei gradienti, calibrazione fotometrica del colore',
   },
+  {
+    en: 'Fine details, star color calibration, final image',
+    it: 'Dettagli fini, calibrazione del colore delle stelle, immagine finale',
+  },
+  {
+    en: 'Starless image, deconvolution and linear denoising',
+    it: 'Immagine starless, deconvoluzione e denoising in fase lineare',
+  },  
   {
     en: 'Questions, reflections, release of the video lesson',
     it: 'Domande, riflessioni, consegna della video lezione',
@@ -44,8 +44,8 @@ const topics = [
   description="Personalized online astrophotography courses: stacking, gradient removal, stretching and color calibration with PixInsight, Photoshop and Camera Raw."
   descriptionIt="Corsi online personalizzati di astrofotografia: stacking, rimozione dei gradienti, stretching e calibrazione del colore con PixInsight, Photoshop e Camera Raw."
 >
-  <section class="mx-auto max-w-5xl px-6 pt-40 pb-20">
-    <div class="grid gap-12 md:grid-cols-2">
+  <section class="mx-auto max-w-5xl px-6 pt-28 pb-12">
+    <div class="grid gap-8 md:grid-cols-2">
       <div class="reveal-left">
         <p class="eyebrow">
           <span data-lang-en>How can I help you?</span>
@@ -261,24 +261,127 @@ const topics = [
       document.addEventListener('astro:page-load', setupCourseVideoReveal);
     </script>
 
-    <div class="mt-20 border-t border-white/10 pt-16">
+    <div class="mt-8 border-t border-white/10 pt-6">
       <p class="eyebrow">
         <span data-lang-en>Course topic</span>
         <span data-lang-it>Argomenti del corso</span>
       </p>
-      <h2 class="mt-3 text-2xl font-semibold sm:text-3xl">
+      <h2 class="reveal-left mt-2 text-2xl font-semibold sm:text-3xl" data-course-title>
         <span data-lang-en>We will learn how to manage our raw files<br /> and get to the final image</span>
         <span data-lang-it>Impareremo a gestire i nostri file raw<br /> fino ad arrivare all'immagine finale</span>
       </h2>
-      <ul class="mt-8 grid gap-3 sm:grid-cols-2">
-        {topics.map((t) => (
+      <ul class="mt-5 grid gap-2 sm:grid-cols-2">
+        {topics.map((t, i) => (
           <li class="flex gap-3 text-white/80">
             <span class="text-accent">■</span>
-            <span data-lang-en>{t.en}</span>
-            <span data-lang-it>{t.it}</span>
+            <span class="topic-fade" data-col={i % 2} data-lang-en>{t.en}</span>
+            <span class="topic-fade" data-col={i % 2} data-lang-it>{t.it}</span>
           </li>
         ))}
       </ul>
     </div>
+
+    <div class="mt-8 flex justify-center">
+      <a href={withBase('/')} class="btn-accent justify-center min-w-[190px]">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-lang-en>Back to Home</span>
+        <span data-lang-it>Torna alla Home</span>
+      </a>
+    </div>
+
+    <style>
+      /* Testo delle voci: fade in puro (i quadratini arancioni restano
+         sempre visibili, non hanno questa classe). Gestito via JS
+         (setupTopicsReveal sotto) invece del generico .reveal-fade: qui
+         serve pilotare l'ordine preciso colonna-per-colonna e attendere
+         la fine del reveal-left del titolo, cosa che il transition-delay
+         CSS da solo non può garantire in modo affidabile ad ogni reload. */
+      .topic-fade {
+        opacity: 0;
+        transition: opacity 0.9s ease-out;
+      }
+
+      .topic-fade.is-visible {
+        opacity: 1;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .topic-fade {
+          opacity: 1;
+          transition: none;
+        }
+      }
+    </style>
+
+    <script>
+      // Sequenza titolo -> colonne: un'unica IntersectionObserver pilota sia
+      // il reveal-left del titolo (escluso dall'observer generico di
+      // ScrollReveal.astro tramite [data-course-title]) sia i timer delle
+      // voci, cosi i due restano sempre sincronizzati — anche al refresh,
+      // quando titolo e lista possono risultare già entrambi nel viewport
+      // nello stesso istante invece che in due passaggi di scroll separati.
+      const setupTopicsReveal = () => {
+        const title = document.querySelector<HTMLElement>('[data-course-title]');
+        const items = Array.from(document.querySelectorAll<HTMLElement>('.topic-fade'));
+        if (!title || !items.length || title.dataset.topicsBound) return;
+        title.dataset.topicsBound = '1';
+
+        const TITLE_DURATION = 2000; // stessa durata di .reveal-left (global.css)
+        const STAGGER = 250;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const leftItems = items.filter((el) => el.dataset.col === '0');
+        const rightItems = items.filter((el) => el.dataset.col === '1');
+        // Colonna dx parte una pausa (STAGGER) dopo l'ultima voce della sx.
+        const rightStart = leftItems.length * STAGGER + STAGGER;
+
+        if (reduceMotion) {
+          title.classList.add('is-visible');
+          items.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+
+        let timers: number[] = [];
+        const clearTimers = () => {
+          timers.forEach((id) => window.clearTimeout(id));
+          timers = [];
+        };
+
+        const showColumns = () => {
+          leftItems.forEach((el, row) => {
+            timers.push(window.setTimeout(() => el.classList.add('is-visible'), row * STAGGER));
+          });
+          rightItems.forEach((el, row) => {
+            timers.push(window.setTimeout(() => el.classList.add('is-visible'), rightStart + row * STAGGER));
+          });
+        };
+
+        const hide = () => {
+          clearTimers();
+          title.classList.remove('is-visible');
+          items.forEach((el) => el.classList.remove('is-visible'));
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                clearTimers();
+                title.classList.add('is-visible');
+                timers.push(window.setTimeout(showColumns, TITLE_DURATION));
+              } else {
+                hide();
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+        );
+        observer.observe(title);
+      };
+
+      document.addEventListener('astro:page-load', setupTopicsReveal);
+    </script>
   </section>
 </Layout>

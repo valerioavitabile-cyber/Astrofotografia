@@ -17,7 +17,7 @@
   const observe = () => {
     document
       .querySelectorAll<HTMLElement>(
-        '.reveal, .reveal-left:not(.reveal-hero), .reveal-right:not(.reveal-hero), .reveal-blur, .reveal-fade, .barn-door-reveal',
+        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]), .reveal-right:not(.reveal-hero), .reveal-blur, .reveal-fade, .barn-door-reveal',
       )
       .forEach((el) => observer.observe(el));
   };
