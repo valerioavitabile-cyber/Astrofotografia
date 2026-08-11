@@ -123,27 +123,90 @@ const AUDIO_SRC =
       document.addEventListener('scroll', tryStart, { once: true, passive: true });
       document.addEventListener('click', tryStart, { once: true });
 
-      // Duck the background track whenever a video with actual sound starts
-      // playing (course/tutorial videos), so they don't overlap. Muted
-      // decorative videos (e.g. the scroll-triggered mosaic background clips)
-      // are ignored, otherwise scrolling past them would stop the music.
-      document.addEventListener(
-        'play',
-        (e) => {
-          const audio = document.getElementById('bg-music-audio');
-          if (audio && e.target instanceof HTMLVideoElement && !e.target.muted && !audio.paused) {
+      // Duck the background track whenever a video with actual sound is
+      // playing (course/tutorial videos), so they don't overlap, and let it
+      // resume once nothing is ducking it anymore. Tracked via a Set (rather
+      // than a single flag) so more than one source could duck at once
+      // without them stepping on each other's resume. Muted decorative
+      // videos (e.g. the scroll-triggered mosaic background clips) never
+      // duck, otherwise scrolling past them would stop the music.
+      const duckers = state.duckers || (state.duckers = new Set());
+
+      const applyDuckState = () => {
+        const audio = document.getElementById('bg-music-audio');
+        if (!audio) return;
+        if (duckers.size > 0) {
+          if (!audio.paused) {
             state.deliberatePause = true;
             audio.pause();
           }
+        } else {
+          tryStart();
+        }
+      };
+
+      const duck = (key) => {
+        duckers.add(key);
+        applyDuckState();
+      };
+      const unduck = (key) => {
+        duckers.delete(key);
+        applyDuckState();
+      };
+      window.__bgMusicDuck = duck;
+      window.__bgMusicUnduck = unduck;
+
+      const boundVideos = state.boundVideos || (state.boundVideos = new WeakSet());
+      const syncVideoDuck = (video) => {
+        if (!video.muted && !video.paused) duck(video);
+        else unduck(video);
+      };
+      const bindVideoDuck = (video) => {
+        if (boundVideos.has(video)) return;
+        boundVideos.add(video);
+        video.addEventListener('pause', () => unduck(video));
+        video.addEventListener('ended', () => unduck(video));
+        video.addEventListener('volumechange', () => syncVideoDuck(video));
+      };
+
+      document.addEventListener(
+        'play',
+        (e) => {
+          if (!(e.target instanceof HTMLVideoElement)) return;
+          bindVideoDuck(e.target);
+          syncVideoDuck(e.target);
         },
         true
       );
+      // Also catches unmuting a video that was already playing (autoplay-
+      // muted course videos flip `.muted` after the fact, with no new
+      // 'play' event), not just a fresh play() call.
+      document.addEventListener(
+        'volumechange',
+        (e) => {
+          if (!(e.target instanceof HTMLVideoElement)) return;
+          bindVideoDuck(e.target);
+          syncVideoDuck(e.target);
+        },
+        true
+      );
+
       document.body.addEventListener('click', (e) => {
         const audio = document.getElementById('bg-music-audio');
         if (audio && e.target.closest && e.target.closest('lite-youtube') && !audio.paused) {
           state.deliberatePause = true;
           audio.pause();
         }
+      });
+
+      // Navigating to a different page (view transition) leaves any
+      // still-playing video's DOM node behind, which would otherwise leave
+      // it stuck in the duckers set forever with no more events to clear
+      // it — so clear all ducking up front and let the resume happen (or
+      // the new page's own videos re-duck it as they start).
+      document.addEventListener('astro:before-preparation', () => {
+        duckers.clear();
+        applyDuckState();
       });
 
       document.addEventListener('astro:page-load', setup);
