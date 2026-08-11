@@ -15,11 +15,20 @@ import hero from '../../assets/articles/plate-solving.jpg';
       <span data-lang-en>&larr; Back to Video &amp; Utility</span>
       <span data-lang-it>&larr; Torna a Video &amp; Utility</span>
     </a>
-    <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">Plate Solving</h1>
+    <h1 class="reveal-left mt-6 text-3xl font-semibold sm:text-4xl" data-plate-title>
+      <span data-lang-en>What is Plate Solving?</span>
+      <span data-lang-it>Cos'è il Plate Solving?</span>
+    </h1>
 
-    <Image quality={90} src={hero} alt="Plate solving" class="mt-8 w-full rounded-2xl border border-white/10" />
+    <Image
+      quality={90}
+      src={hero}
+      alt="Plate solving"
+      class="plate-image-reveal mt-8 w-full rounded-2xl border border-white/10"
+      data-plate-image
+    />
 
-    <div class="prose-astro mt-10">
+    <div class="prose-astro mt-10" data-plate-description>
       <div data-lang-en>
         <p><strong>What is Plate Solving?</strong></p>
         <p>
@@ -180,4 +189,141 @@ import hero from '../../assets/articles/plate-solving.jpg';
       </div>
     </div>
   </article>
+
+  <style>
+    /* Immagine: fade-in puro, pilotato via JS (setupPlateSolvingReveal sotto)
+       una volta terminata l'animazione reveal-left del titolo — non usa
+       .reveal-fade globale per restare fuori dall'observer generico di
+       ScrollReveal.astro e mantenere l'ordine title -> image -> testo. */
+    .plate-image-reveal {
+      opacity: 0;
+      transition: opacity 1.4s ease-out;
+    }
+
+    .plate-image-reveal.is-visible {
+      opacity: 1;
+    }
+
+    /* Effetto macchina da scrivere: ogni carattere del testo diventa uno
+       <span> a sé (vedi splitIntoChars) e viene rivelato uno alla volta. */
+    .tw-char {
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+
+    .tw-char.is-visible {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .plate-image-reveal {
+        opacity: 1;
+        transition: none;
+      }
+    }
+  </style>
+
+  <script>
+    // Sequenza title -> image -> testo: titolo con reveal-left (escluso
+    // dall'observer generico di ScrollReveal.astro tramite [data-plate-title],
+    // come [data-course-title]), poi l'immagine in fade-in, poi la
+    // descrizione lettera per lettera. Un unico IntersectionObserver
+    // one-shot pilota tutta la catena così i tempi restano coerenti anche
+    // al primo load con la sezione già in viewport.
+    const TITLE_DURATION = 2000; // stessa durata di .reveal-left (global.css)
+    const IMAGE_DURATION = 1400; // stessa durata di .plate-image-reveal sopra
+    const CHAR_DELAY = 14; // ms tra un carattere e il successivo — da tarare
+
+    const setupPlateSolvingReveal = () => {
+      const title = document.querySelector<HTMLElement>('[data-plate-title]');
+      const image = document.querySelector<HTMLElement>('[data-plate-image]');
+      const description = document.querySelector<HTMLElement>('[data-plate-description]');
+      if (!title || !image || !description || title.dataset.plateBound) return;
+      title.dataset.plateBound = '1';
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion) {
+        title.classList.add('is-visible');
+        image.classList.add('is-visible');
+        return;
+      }
+
+      // Segmenta per grafema (non per code point) così le sequenze unicode
+      // composte (es. le emoji ✅ e 1️⃣/2️⃣/3️⃣, fatte di più code point) non si
+      // spezzano tra span diversi, cosa che ne romperebbe il rendering.
+      const segmenter =
+        'Segmenter' in Intl ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null;
+
+      const splitIntoChars = (root: HTMLElement) => {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const textNodes: Text[] = [];
+        let node: Node | null;
+        while ((node = walker.nextNode())) textNodes.push(node as Text);
+
+        const chars: HTMLElement[] = [];
+        textNodes.forEach((textNode) => {
+          const text = textNode.textContent ?? '';
+          const graphemes = segmenter
+            ? Array.from(segmenter.segment(text), (s) => s.segment)
+            : Array.from(text);
+          const frag = document.createDocumentFragment();
+          graphemes.forEach((g) => {
+            const span = document.createElement('span');
+            span.className = 'tw-char';
+            span.textContent = g;
+            frag.appendChild(span);
+            chars.push(span);
+          });
+          textNode.replaceWith(frag);
+        });
+        return chars;
+      };
+
+      const typeChars = (chars: HTMLElement[]) => {
+        let i = 0;
+        const step = () => {
+          if (i >= chars.length) return;
+          chars[i].classList.add('is-visible');
+          i++;
+          window.setTimeout(step, CHAR_DELAY);
+        };
+        step();
+      };
+
+      const runSequence = () => {
+        title.classList.add('is-visible');
+
+        window.setTimeout(() => {
+          image.classList.add('is-visible');
+
+          window.setTimeout(() => {
+            // Solo il blocco della lingua attiva viene trasformato in
+            // macchina da scrivere: l'altro resta testo normale (nascosto
+            // via CSS) e non viene mai animato.
+            const lang = document.documentElement.dataset.lang === 'en' ? 'en' : 'it';
+            const langRoot =
+              description.querySelector<HTMLElement>(`[data-lang-${lang}]`) ?? description;
+            typeChars(splitIntoChars(langRoot));
+          }, IMAGE_DURATION);
+        }, TITLE_DURATION);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              observer.disconnect();
+              runSequence();
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+      );
+      observer.observe(title);
+    };
+
+    setupPlateSolvingReveal();
+    document.addEventListener('astro:page-load', setupPlateSolvingReveal);
+  </script>
 </Layout>

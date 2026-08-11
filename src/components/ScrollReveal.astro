@@ -17,7 +17,7 @@
   const observe = () => {
     document
       .querySelectorAll<HTMLElement>(
-        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .barn-door-reveal',
+        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-plate-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .barn-door-reveal',
       )
       .forEach((el) => observer.observe(el));
   };
