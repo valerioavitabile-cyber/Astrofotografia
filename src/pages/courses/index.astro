@@ -94,16 +94,86 @@ const topics = [
           <span data-lang-en>The video shows an example of how raw data can be transformed into a stunning final image.</span>
           <span data-lang-it>Il video mostra un esempio di come i dati raw possano essere trasformati in una splendida immagine finale.</span>
         </p>
-        <video
-          class="mt-4 w-full rounded-xl border border-white/10"
-          src={withBase('/video/course-demo.mp4')}
-          poster={withBase('/video/course-demo-poster.jpg')}
-          controls
-          playsinline
-          preload="none"
-        />
+        <div class="mosaic-reveal mt-4 w-full overflow-hidden rounded-xl border border-white/10" data-course-video-card>
+          <video
+            class="w-full"
+            src={withBase('/video/course-demo.mp4')}
+            poster={withBase('/video/course-demo-poster.jpg')}
+            controls
+            playsinline
+            muted
+            preload="auto"
+            data-course-video
+          />
+          <div class="mosaic-tiles" aria-hidden="true">
+            {Array.from({ length: 260 }).map(() => (
+              <span class="mosaic-tile"></span>
+            ))}
+          </div>
+          <button
+            type="button"
+            class="absolute bottom-3 right-3 z-30 rounded-full bg-black/60 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur transition hover:bg-black/80"
+            data-unmute-btn
+          >
+            <span data-lang-en>Enable audio</span>
+            <span data-lang-it>Attiva audio</span>
+          </button>
+        </div>
       </div>
     </div>
+
+    <script>
+      // Reveal "a tessere" identico a quello del video-teaser in home
+      // (.mosaic-reveal), ma one-shot: qui il video è un vero tutorial con
+      // audio, non una clip decorativa in loop, quindi a differenza della
+      // home non va messo in pausa/azzerato se la sezione esce dallo
+      // schermo — l'utente perderebbe il punto in cui era arrivato.
+      const setupCourseVideoReveal = () => {
+        const card = document.querySelector<HTMLElement>('[data-course-video-card]');
+        const video = card?.querySelector<HTMLVideoElement>('[data-course-video]');
+        const unmuteBtn = card?.querySelector<HTMLButtonElement>('[data-unmute-btn]');
+        if (!card || !video) return;
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const reveal = () => {
+          card.classList.add('is-visible');
+          // L'autoplay con audio è bloccato da tutti i browser: parte solo
+          // muto, l'utente attiva l'audio dal pulsante o dai controlli nativi.
+          video.play().catch(() => {});
+        };
+
+        if (reduceMotion) {
+          reveal();
+        } else {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  reveal();
+                  observer.disconnect();
+                }
+              }
+            },
+            { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+          );
+          observer.observe(card);
+        }
+
+        unmuteBtn?.addEventListener('click', () => {
+          video.muted = false;
+          video.play().catch(() => {});
+          unmuteBtn.remove();
+        });
+
+        video.addEventListener('volumechange', () => {
+          if (!video.muted) unmuteBtn?.remove();
+        });
+      };
+
+      setupCourseVideoReveal();
+      document.addEventListener('astro:page-load', setupCourseVideoReveal);
+    </script>
 
     <div class="mt-20 border-t border-white/10 pt-16">
       <p class="eyebrow">
