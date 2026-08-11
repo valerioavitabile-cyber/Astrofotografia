@@ -132,75 +132,48 @@ const topics = [
       }
 
       /* Clip wipe one-shot: un pannello pieno copre il video e si "apre"
-         tagliandolo via da sinistra a destra con clip-path, invece della
-         tessitura a mosaico usata altrove — un unico bordo netto che
-         scorre, non tessere. --color-surface (non --color-ink) perché il
-         video parte da un fotogramma quasi nero: un pannello dello stesso
-         nero della pagina sarebbe indistinguibile dallo sfondo. */
+         con un bordo curvo animato via JS (vedi buildClipPath nello
+         script), invece della tessitura a mosaico usata altrove.
+         --color-surface (non --color-ink) perché il video parte da un
+         fotogramma quasi nero: un pannello dello stesso nero della pagina
+         sarebbe indistinguibile dallo sfondo. Stato di riposo = rettangolo
+         pieno semplice; la forma curva del "sipario" la calcola solo lo
+         script, fotogramma per fotogramma, durante il reveal. */
       .course-video-wipe {
         position: absolute;
         inset: 0;
         z-index: 20;
         background: var(--color-surface);
-        clip-path: polygon(
-          0% 0%, 0% 12.5%, 0% 25%, 0% 37.5%, 0% 50%, 0% 62.5%, 0% 75%, 0% 87.5%, 0% 100%,
-          100% 100%, 100% 0%
-        );
-      }
-
-      /* Bordo curvo anziché una linea dritta: il centro del confine
-         "anticipa" i bordi superiore/inferiore invece di muoversi tutti
-         alla pari, dando l'effetto elastico della curva di riferimento. I 9
-         punti sul bordo sinistro seguono un profilo sinusoidale (massimo al
-         centro, zero agli estremi) così la pancia è un vero arco morbido e
-         non uno spigolo triangolare. Serve un'animazione a keyframe (non
-         una semplice transition tra due stati) perché la pancia deve
-         crescere e poi raddrizzarsi mentre il pannello scompare — stessa
-         durata/easing di .reveal-left (global.css) per coerenza con
-         l'ingresso del testo. */
-      .course-video-reveal.is-visible .course-video-wipe {
-        animation: course-wipe-curve 2s ease-out forwards;
-      }
-
-      @keyframes course-wipe-curve {
-        0% {
-          clip-path: polygon(
-            0% 0%, 0% 12.5%, 0% 25%, 0% 37.5%, 0% 50%, 0% 62.5%, 0% 75%, 0% 87.5%, 0% 100%,
-            100% 100%, 100% 0%
-          );
-        }
-        35% {
-          clip-path: polygon(
-            15% 0%, 32.2% 12.5%, 46.8% 25%, 56.6% 37.5%, 60% 50%, 56.6% 62.5%, 46.8% 75%, 32.2% 87.5%, 15% 100%,
-            100% 100%, 100% 0%
-          );
-        }
-        65% {
-          clip-path: polygon(
-            55% 0%, 70.3% 12.5%, 83.3% 25%, 92% 37.5%, 95% 50%, 92% 62.5%, 83.3% 75%, 70.3% 87.5%, 55% 100%,
-            100% 100%, 100% 0%
-          );
-        }
-        100% {
-          clip-path: polygon(
-            100% 0%, 100% 12.5%, 100% 25%, 100% 37.5%, 100% 50%, 100% 62.5%, 100% 75%, 100% 87.5%, 100% 100%,
-            100% 100%, 100% 0%
-          );
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .course-video-reveal.is-visible .course-video-wipe {
-          animation: none;
-          clip-path: polygon(
-            100% 0%, 100% 12.5%, 100% 25%, 100% 37.5%, 100% 50%, 100% 62.5%, 100% 75%, 100% 87.5%, 100% 100%,
-            100% 100%, 100% 0%
-          );
-        }
+        clip-path: inset(0);
       }
     </style>
 
     <script>
+      // easeInOutCubic + buildClipPath: stessa tecnica "curtain" costruita
+      // dall'utente (poligono ricalcolato ad ogni frame, non una semplice
+      // CSS transition tra due stati) — il sipario resta un pannello
+      // statico, solo il suo clip-path cambia. Qui serve solo la fase di
+      // "reveal" (il video è già caricato sotto, non c'è una fase di
+      // cover/scambio contenuti come nella demo originale).
+      const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+      const buildClipPath = (edgeLeading: number, edgeTrailing: number, bow: number, steps = 24) => {
+        const pts: string[] = [];
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          const curve = (bow / 100) * Math.sin(t * Math.PI);
+          const x = (edgeLeading + curve) * 100;
+          pts.push(`${x}% ${t * 100}%`);
+        }
+        for (let i = steps; i >= 0; i--) {
+          const t = i / steps;
+          const curve = (bow / 100) * Math.sin(t * Math.PI);
+          const x = (edgeTrailing + curve) * 100;
+          pts.push(`${x}% ${t * 100}%`);
+        }
+        return `polygon(${pts.join(', ')})`;
+      };
+
       // Reveal "clip wipe" one-shot: rivela il video e lo avvia (muto) la
       // prima volta che entra in viewport, senza più toccarlo dopo (a
       // differenza del teaser in home, un vero tutorial con audio non va
@@ -208,11 +181,14 @@ const topics = [
       const setupCourseVideoReveal = () => {
         const card = document.querySelector<HTMLElement>('[data-course-video-card]');
         const video = card?.querySelector<HTMLVideoElement>('[data-course-video]');
+        const wipe = card?.querySelector<HTMLElement>('.course-video-wipe');
         const unmuteBtn = card?.querySelector<HTMLButtonElement>('[data-unmute-btn]');
-        if (!card || !video || card.dataset.revealBound) return;
+        if (!card || !video || !wipe || card.dataset.revealBound) return;
         card.dataset.revealBound = '1';
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const DURATION = 2000; // stessa durata di .reveal-left (global.css)
+        const BOW = 15;
 
         const reveal = () => {
           card.classList.add('is-visible');
@@ -228,6 +204,27 @@ const topics = [
           // L'autoplay con audio è bloccato da tutti i browser: parte solo
           // muto, l'utente attiva l'audio dal pulsante o dai controlli nativi.
           video.play().catch(() => {});
+
+          if (reduceMotion) {
+            wipe.style.clipPath = buildClipPath(-0.3, -0.3, 0);
+            return;
+          }
+
+          const start = performance.now();
+          const frame = (now: number) => {
+            const p = Math.min(1, (now - start) / DURATION);
+            const eased = easeInOutCubic(p);
+            // Il bordo "leading" arretra da fuori-scena a destra (1.15) a
+            // fuori-scena a sinistra (-0.15); il "trailing" resta fisso
+            // fuori-scena a sinistra: il sipario si ritira verso sinistra
+            // scoprendo il video da destra a sinistra, con la pancia della
+            // curva a inseguire al centro invece di un bordo dritto.
+            const leading = 1.15 - eased * 1.3;
+            const trailing = -0.3;
+            wipe.style.clipPath = buildClipPath(leading, trailing, BOW);
+            if (p < 1) requestAnimationFrame(frame);
+          };
+          requestAnimationFrame(frame);
         };
 
         if (reduceMotion) {
