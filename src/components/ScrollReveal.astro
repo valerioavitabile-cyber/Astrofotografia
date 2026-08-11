@@ -150,8 +150,9 @@
 
   let heroListenersBound = false;
   const setupHeroProgress = () => {
-    heroDebugRecord('setup-entry', getHeroTarget());
-    if (reduceMotion || !document.getElementById('hero')) return;
+    const heroEl = document.getElementById('hero');
+    heroDebugRecord(`setup-entry rm=${reduceMotion} hero=${!!heroEl} rs=${document.readyState}`, getHeroTarget());
+    if (reduceMotion || !heroEl) return;
     measureHeroClone();
     // Start exactly at the current scroll position (no animated entrance on
     // load/navigation) and only ease subsequent movement from there.
