@@ -142,20 +142,60 @@ const topics = [
         inset: 0;
         z-index: 20;
         background: var(--color-surface);
-        clip-path: inset(0 0 0 0);
-        /* Stessa durata/easing di .reveal-left (global.css), per coerenza
-           con l'ingresso del testo a fianco: 2s, ease-out arrotondato
-           invece del cubic-bezier più netto usato prima. */
-        transition: clip-path 2s ease-out;
+        clip-path: polygon(
+          0% 0%, 0% 12.5%, 0% 25%, 0% 37.5%, 0% 50%, 0% 62.5%, 0% 75%, 0% 87.5%, 0% 100%,
+          100% 100%, 100% 0%
+        );
       }
 
+      /* Bordo curvo anziché una linea dritta: il centro del confine
+         "anticipa" i bordi superiore/inferiore invece di muoversi tutti
+         alla pari, dando l'effetto elastico della curva di riferimento. I 9
+         punti sul bordo sinistro seguono un profilo sinusoidale (massimo al
+         centro, zero agli estremi) così la pancia è un vero arco morbido e
+         non uno spigolo triangolare. Serve un'animazione a keyframe (non
+         una semplice transition tra due stati) perché la pancia deve
+         crescere e poi raddrizzarsi mentre il pannello scompare — stessa
+         durata/easing di .reveal-left (global.css) per coerenza con
+         l'ingresso del testo. */
       .course-video-reveal.is-visible .course-video-wipe {
-        clip-path: inset(0 0 0 100%);
+        animation: course-wipe-curve 2s ease-out forwards;
+      }
+
+      @keyframes course-wipe-curve {
+        0% {
+          clip-path: polygon(
+            0% 0%, 0% 12.5%, 0% 25%, 0% 37.5%, 0% 50%, 0% 62.5%, 0% 75%, 0% 87.5%, 0% 100%,
+            100% 100%, 100% 0%
+          );
+        }
+        35% {
+          clip-path: polygon(
+            15% 0%, 32.2% 12.5%, 46.8% 25%, 56.6% 37.5%, 60% 50%, 56.6% 62.5%, 46.8% 75%, 32.2% 87.5%, 15% 100%,
+            100% 100%, 100% 0%
+          );
+        }
+        65% {
+          clip-path: polygon(
+            55% 0%, 70.3% 12.5%, 83.3% 25%, 92% 37.5%, 95% 50%, 92% 62.5%, 83.3% 75%, 70.3% 87.5%, 55% 100%,
+            100% 100%, 100% 0%
+          );
+        }
+        100% {
+          clip-path: polygon(
+            100% 0%, 100% 12.5%, 100% 25%, 100% 37.5%, 100% 50%, 100% 62.5%, 100% 75%, 100% 87.5%, 100% 100%,
+            100% 100%, 100% 0%
+          );
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .course-video-wipe {
-          transition: none;
+        .course-video-reveal.is-visible .course-video-wipe {
+          animation: none;
+          clip-path: polygon(
+            100% 0%, 100% 12.5%, 100% 25%, 100% 37.5%, 100% 50%, 100% 62.5%, 100% 75%, 100% 87.5%, 100% 100%,
+            100% 100%, 100% 0%
+          );
         }
       }
     </style>
