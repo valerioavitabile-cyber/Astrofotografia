@@ -2,36 +2,6 @@
 ---
 
 <script>
-  // Temporary on-page debug overlay (?debug=1) for the "hero title already
-  // shrunk on load" bug reported on a real Android device that isolated
-  // test pages couldn't reproduce — logs every hero-progress computation
-  // with a timestamp/scrollY/innerHeight snapshot so the real cause is
-  // visible without remote-debugging the device. Remove once the bug is
-  // fixed and confirmed on-device.
-  const debugMode = new URLSearchParams(location.search).get('debug') === '1';
-  const heroDebugLog: { label: string; t: number; scrollY: number; innerHeight: number; target: number }[] = [];
-  let heroDebugEl: HTMLElement | null = null;
-
-  const heroDebugRecord = (label: string, target: number) => {
-    if (!debugMode) return;
-    heroDebugLog.push({
-      label,
-      t: Math.round(performance.now()),
-      scrollY: window.scrollY,
-      innerHeight: window.innerHeight,
-      target,
-    });
-    if (!heroDebugEl) {
-      heroDebugEl = document.createElement('div');
-      heroDebugEl.style.cssText =
-        'position:fixed;bottom:0;left:0;right:0;max-height:45vh;overflow:auto;background:rgba(0,0,0,0.92);color:#e8a33d;font:11px/1.4 ui-monospace,monospace;padding:8px;z-index:99999;white-space:pre-wrap;';
-      document.body.appendChild(heroDebugEl);
-    }
-    heroDebugEl.textContent = heroDebugLog
-      .map((e) => `${e.label} t=${e.t}ms scrollY=${e.scrollY} innerHeight=${e.innerHeight} target=${e.target.toFixed(3)}`)
-      .join('\n');
-  };
-
   // Toggles rather than one-shot reveals: scrolling a section back out of
   // view (either direction) resets it, so it replays every time it
   // re-enters the viewport instead of staying revealed forever.
@@ -88,10 +58,7 @@
     heroRafId = heroCurrent === target ? null : requestAnimationFrame(heroTick);
   };
 
-  let heroScrollEventCount = 0;
   const onHeroScroll = () => {
-    heroScrollEventCount++;
-    if (heroScrollEventCount <= 5) heroDebugRecord(`scroll-event-#${heroScrollEventCount}`, getHeroTarget());
     if (heroRafId === null) {
       heroRafId = requestAnimationFrame(heroTick);
     }
@@ -142,30 +109,22 @@
   };
 
   const onHeroResize = () => {
-    heroDebugRecord('resize-before', getHeroTarget());
     measureHeroClone();
     onHeroScroll();
-    heroDebugRecord('resize-after', getHeroTarget());
   };
 
   let heroListenersBound = false;
   const setupHeroProgress = () => {
-    const heroEl = document.getElementById('hero');
-    heroDebugRecord(`setup-entry rm=${reduceMotion} hero=${!!heroEl} rs=${document.readyState}`, getHeroTarget());
-    if (reduceMotion || !heroEl) return;
+    if (reduceMotion || !document.getElementById('hero')) return;
     measureHeroClone();
     // Start exactly at the current scroll position (no animated entrance on
     // load/navigation) and only ease subsequent movement from there.
     heroCurrent = getHeroTarget();
     document.documentElement.style.setProperty('--hero-progress', heroCurrent.toFixed(4));
-    heroDebugRecord('setup-applied', heroCurrent);
     if (!heroListenersBound) {
       window.addEventListener('scroll', onHeroScroll, { passive: true });
       window.addEventListener('resize', onHeroResize);
-      document.fonts?.ready.then(() => {
-        measureHeroClone();
-        heroDebugRecord('fonts-ready', getHeroTarget());
-      });
+      document.fonts?.ready.then(() => measureHeroClone());
       heroListenersBound = true;
     }
   };
@@ -476,11 +435,4 @@
 
   setup();
   document.addEventListener('astro:page-load', setup);
-
-  if (debugMode) {
-    [300, 1000, 2000, 4000].forEach((delay) => {
-      setTimeout(() => heroDebugRecord(`+${delay}ms`, getHeroTarget()), delay);
-    });
-    window.addEventListener('load', () => heroDebugRecord('window-load', getHeroTarget()));
-  }
 </script>
