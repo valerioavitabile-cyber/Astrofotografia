@@ -106,13 +106,21 @@ const portfolioGrid = await Promise.all(
   </section>
   <script>
     // Each cover card starts on its build-time default image; here we swap
-    // in a random candidate from the same category on every real page load,
-    // so the grid shows a different combination on every refresh.
-    document.querySelectorAll<HTMLImageElement>('[data-cover-variants]').forEach((img) => {
-      const variants: string[] = JSON.parse(img.dataset.coverVariants ?? '[]');
-      if (variants.length < 2) return;
-      img.src = variants[Math.floor(Math.random() * variants.length)];
-    });
+    // in a random candidate from the same category. Bound to
+    // 'astro:page-load' (not just run inline) because the ClientRouter
+    // reuses this unchanged script tag across client-side navigations
+    // instead of re-executing it, so relying on the inline run alone means
+    // covers only randomize on a hard refresh and revert to the build-time
+    // defaults whenever you navigate back to the home page in-app.
+    function randomizeCovers() {
+      document.querySelectorAll<HTMLImageElement>('[data-cover-variants]').forEach((img) => {
+        const variants: string[] = JSON.parse(img.dataset.coverVariants ?? '[]');
+        if (variants.length < 2) return;
+        img.src = variants[Math.floor(Math.random() * variants.length)];
+      });
+    }
+    randomizeCovers();
+    document.addEventListener('astro:page-load', randomizeCovers);
   </script>
 
   <section class="border-t border-white/5">

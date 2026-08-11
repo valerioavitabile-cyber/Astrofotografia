@@ -30,6 +30,10 @@ export default function Lightbox({ src, fullSrc, alt, width, height, thumbClassN
   const movedRef = useRef(false);
   const scaleRef = useRef(1);
   const posRef = useRef<Point>({ x: 0, y: 0 });
+  // Active touch points, keyed by pointerId, so we can detect a second
+  // finger landing and switch from single-finger pan to pinch-to-zoom.
+  const pointersRef = useRef<Map<number, Point>>(new Map());
+  const pinchStartRef = useRef<{ dist: number; scale: number; pos: Point; mid: Point } | null>(null);
 
   useEffect(() => {
     scaleRef.current = scale;
@@ -118,19 +122,65 @@ export default function Lightbox({ src, fullSrc, alt, width, height, thumbClassN
     clampPosRef.current = clampPos;
   });
 
+  const getDistance = (p1: Point, p2: Point) => Math.hypot(p1.x - p2.x, p1.y - p2.y);
+  const getMidpoint = (p1: Point, p2: Point) => ({ x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 });
+
   const handlePointerDown = (e: React.PointerEvent<HTMLImageElement>) => {
     e.stopPropagation();
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
     if (!baseRectRef.current) {
       baseRectRef.current = imgRef.current?.getBoundingClientRect() ?? null;
     }
-    movedRef.current = false;
-    dragStartRef.current = { x: e.clientX, y: e.clientY };
-    posStartRef.current = pos;
-    setDragging(true);
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointersRef.current.size === 2) {
+      const [p1, p2] = Array.from(pointersRef.current.values());
+      pinchStartRef.current = {
+        dist: getDistance(p1, p2),
+        scale: scaleRef.current,
+        pos: posRef.current,
+        mid: getMidpoint(p1, p2),
+      };
+      setDragging(false);
+    } else if (pointersRef.current.size === 1) {
+      movedRef.current = false;
+      dragStartRef.current = { x: e.clientX, y: e.clientY };
+      posStartRef.current = pos;
+      setDragging(true);
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLImageElement>) => {
+    if (!pointersRef.current.has(e.pointerId)) return;
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pointersRef.current.size === 2 && pinchStartRef.current) {
+      const [p1, p2] = Array.from(pointersRef.current.values());
+      const { dist: startDist, scale: startScale, pos: startPos, mid } = pinchStartRef.current;
+      const dist = getDistance(p1, p2);
+      const newScale = Math.min(Math.max(startScale * (dist / startDist), MIN_SCALE), MAX_SCALE);
+      movedRef.current = true;
+
+      if (newScale <= MIN_SCALE) {
+        setScale(MIN_SCALE);
+        setPos({ x: 0, y: 0 });
+        return;
+      }
+
+      const rect = baseRectRef.current;
+      if (!rect) return;
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+      const ratio = newScale / startScale;
+      const newPos = {
+        x: mid.x - originX - ratio * (mid.x - originX - startPos.x),
+        y: mid.y - originY - ratio * (mid.y - originY - startPos.y),
+      };
+      setScale(newScale);
+      setPos(clampPos(newPos, newScale));
+      return;
+    }
+
     if (!dragging) return;
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
@@ -142,6 +192,21 @@ export default function Lightbox({ src, fullSrc, alt, width, height, thumbClassN
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLImageElement>) => {
+    pointersRef.current.delete(e.pointerId);
+
+    if (pointersRef.current.size >= 1) {
+      // Still one finger down after a pinch: rebase the pan origin on it so
+      // the image doesn't jump when the second finger lifts.
+      pinchStartRef.current = null;
+      const [remaining] = Array.from(pointersRef.current.values());
+      dragStartRef.current = remaining;
+      posStartRef.current = posRef.current;
+      movedRef.current = true;
+      setDragging(true);
+      return;
+    }
+
+    pinchStartRef.current = null;
     setDragging(false);
     if (movedRef.current) return;
 
@@ -227,7 +292,11 @@ export default function Lightbox({ src, fullSrc, alt, width, height, thumbClassN
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
-              onPointerCancel={() => setDragging(false)}
+              onPointerCancel={(e) => {
+                pointersRef.current.delete(e.pointerId);
+                pinchStartRef.current = null;
+                setDragging(false);
+              }}
               onClick={(e) => e.stopPropagation()}
               draggable={false}
             />
