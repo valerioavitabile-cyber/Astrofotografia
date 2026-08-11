@@ -94,7 +94,7 @@ const topics = [
           <span data-lang-en>The video shows an example of how raw data can be transformed into a stunning final image.</span>
           <span data-lang-it>Il video mostra un esempio di come i dati raw possano essere trasformati in una splendida immagine finale.</span>
         </p>
-        <div class="mosaic-reveal mt-4 w-full overflow-hidden rounded-xl border border-white/10" data-course-video-card>
+        <div class="course-video-reveal mt-4 w-full overflow-hidden rounded-xl border border-white/10" data-course-video-card>
           <video
             class="w-full"
             src={withBase('/video/course-demo.mp4')}
@@ -122,22 +122,56 @@ const topics = [
       </div>
     </div>
 
+    <style>
+      /* Stesso effetto a tessere di .mosaic-reveal (global.css), ma con una
+         classe dedicata: .mosaic-reveal è anche il selettore globale usato
+         da ScrollReveal.astro per il video-teaser della home, che lo mette
+         in pausa e lo ricopre di tessere ogni volta che esce dal viewport.
+         Qui il video è un vero tutorial con audio (non una clip decorativa
+         in loop), quindi serve un reveal one-shot indipendente: condividere
+         la classe faceva scattare anche la logica dell'altro componente,
+         che ricopriva il video subito dopo che il nostro script lo rivelava. */
+      .course-video-reveal {
+        position: relative;
+      }
+
+      .course-video-reveal.is-visible .mosaic-tile {
+        opacity: 0;
+        transform: scale(1.15);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .course-video-reveal .mosaic-tile {
+          transition: none;
+        }
+      }
+    </style>
+
     <script>
-      // Reveal "a tessere" identico a quello del video-teaser in home
-      // (.mosaic-reveal), ma one-shot: qui il video è un vero tutorial con
-      // audio, non una clip decorativa in loop, quindi a differenza della
-      // home non va messo in pausa/azzerato se la sezione esce dallo
-      // schermo — l'utente perderebbe il punto in cui era arrivato.
+      // Reveal "a tessere" one-shot: rivela il video e lo avvia (muto) la
+      // prima volta che entra in viewport, senza più toccarlo dopo (a
+      // differenza del teaser in home, un vero tutorial con audio non va
+      // messo in pausa/azzerato quando la sezione esce dallo schermo).
       const setupCourseVideoReveal = () => {
         const card = document.querySelector<HTMLElement>('[data-course-video-card]');
         const video = card?.querySelector<HTMLVideoElement>('[data-course-video]');
         const unmuteBtn = card?.querySelector<HTMLButtonElement>('[data-unmute-btn]');
-        if (!card || !video) return;
+        if (!card || !video || card.dataset.revealBound) return;
+        card.dataset.revealBound = '1';
 
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const reveal = () => {
           card.classList.add('is-visible');
+          // Un <video> riutilizzato dal router di Astro dopo una
+          // navigazione client-side (via e ritorno su /courses/) resta con
+          // readyState 0 anche se l'attributo src è corretto: il browser
+          // non riavvia da solo l'algoritmo di selezione della risorsa sul
+          // nodo riciclato, va richiamato load() esplicitamente prima di
+          // play() (stesso problema già gestito in ScrollReveal.astro).
+          if (video.readyState === 0) {
+            video.load();
+          }
           // L'autoplay con audio è bloccato da tutti i browser: parte solo
           // muto, l'utente attiva l'audio dal pulsante o dai controlli nativi.
           video.play().catch(() => {});
@@ -171,7 +205,9 @@ const topics = [
         });
       };
 
-      setupCourseVideoReveal();
+      // 'astro:page-load' fires on the initial load too (not just
+      // client-side navigations), so this alone covers both cases — no
+      // separate top-level call needed.
       document.addEventListener('astro:page-load', setupCourseVideoReveal);
     </script>
 
