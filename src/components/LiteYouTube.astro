@@ -106,7 +106,19 @@ const thumbFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
       'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
     );
     iframe.setAttribute('allowfullscreen', '');
-    iframe.className = 'h-full w-full border-0';
+    // Assoluto sopra il poster (non lo rimpiazza): a connessione lenta/a
+    // freddo l'iframe di YouTube resta esso stesso una casella nera vuota
+    // per secondi prima che il player interno carichi qualcosa (verificato
+    // con Playwright + rete rallentata: la richiesta embed e' solo la prima
+    // di una lunga catena — script del player, chiamate youtubei/v1 — tutte
+    // rallentate a cache fredda). Se lo sostituiamo subito al poster
+    // (comportamento precedente), l'utente vede il poster scomparire in un
+    // riquadro vuoto per secondi finche' quel riquadro non si popola di
+    // colpo: e' lo "scatto/cambio immagine veloce" segnalato. Restando
+    // invisibile e sovrapposto, il poster gia' caricato resta visibile
+    // finche' l'iframe non ha davvero qualcosa da mostrare (evento `load`,
+    // vedi sotto), poi la comparsa e' un fade invece di un salto a vuoto.
+    iframe.className = 'absolute inset-0 h-full w-full border-0 opacity-0 transition-opacity duration-500';
     // Niente zoom qui (a differenza della thumbnail/poster): scalare
     // l'iframe sposta fuori dal riquadro anche i controlli nativi di
     // YouTube (impostazioni, qualita, sottotitoli), rendendoli
@@ -142,7 +154,7 @@ const thumbFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
     // Ritaglia il pillarbox anche in riproduzione: contenitore fisso al
     // 16:9 con overflow nascosto. E' anche il riquadro-bersaglio del morph.
     const frame = document.createElement('div');
-    frame.className = 'aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface';
+    frame.className = 'relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-surface';
 
     // Il player parte come immagine statica (stesso frame della thumbnail,
     // stesso zoom di ritaglio) cosi il morph ha subito un contenuto
@@ -161,9 +173,30 @@ const thumbFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
     const lockScroll = () => document.body.classList.add('overflow-hidden');
     const unlockScroll = () => document.body.classList.remove('overflow-hidden');
 
+    // YouTube plays inside a cross-origin iframe, so there's no play/pause
+    // event to hook (unlike native <video>, which BackgroundMusic.astro
+    // detects on its own). Duck for the whole lifetime of the modal instead
+    // — from open (autoplay starts immediately) to close, however it closes
+    // (button, backdrop, Escape) — using the same duck/unduck registry
+    // BackgroundMusic.astro exposes for native videos, keyed on this overlay.
+    (window as any).__bgMusicDuck?.(overlay);
+
     const finishOpen = () => {
       const iframe = buildIframe(id, title);
-      frame.replaceChild(iframe, poster);
+      frame.append(iframe);
+      // `load` sull'iframe scatta quando il documento embed di YouTube ha
+      // finito di caricarsi (non quando il video parte: puo' ancora esserci
+      // buffering dopo), ma e' il primo momento in cui l'iframe ha
+      // effettivamente una UI propria da mostrare invece di essere vuoto —
+      // il poster viene rimosso solo qui, dopo il fade-in dell'iframe.
+      iframe.addEventListener(
+        'load',
+        () => {
+          iframe.classList.remove('opacity-0');
+          window.setTimeout(() => poster.remove(), 500);
+        },
+        { once: true }
+      );
     };
 
     const close = () => {
@@ -171,6 +204,7 @@ const thumbFallback = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
         overlay.remove();
         unlockScroll();
         document.removeEventListener('keydown', onKeydown);
+        (window as any).__bgMusicUnduck?.(overlay);
       };
 
       if (!supportsMorph) {

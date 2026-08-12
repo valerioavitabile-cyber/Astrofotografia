@@ -14,8 +14,10 @@ const portfolioEntries = await getCollection('portfolio');
 
 // Every portfolio photo is a candidate hero slide; 6 are picked at random
 // client-side on mount (see HeroSlideshow), so the combination differs on
-// every real browser refresh. This first slide is what ships in the static
-// HTML/preload before hydration picks the rest.
+// every real browser refresh — including which one lands in slide 0, so no
+// specific image here can be preloaded/prioritized ahead of time from
+// Astro's side (HeroSlideshow prioritizes whichever slide ends up at
+// position 0 once the client has made its pick).
 const heroPool = await Promise.all(
   portfolioEntries.map(async (entry) => {
     const optimized = await getImage({ src: entry.data.image, width: 1920, format: 'webp', quality: 80 });
@@ -48,7 +50,7 @@ const portfolioGrid = await Promise.all(
 
 ---
 
-<Layout title={site.title} description={site.description} descriptionIt={site.descriptionIt} preloadImage={heroPool[0].src}>
+<Layout title={site.title} description={site.description} descriptionIt={site.descriptionIt}>
   <section id="hero" class="relative flex min-h-dvh items-end overflow-hidden">
     <HeroSlideshow client:load pool={heroPool} />
     <!-- Reserves the layout space for the animated title, which is rendered

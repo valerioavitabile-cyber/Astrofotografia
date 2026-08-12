@@ -191,14 +191,6 @@ const AUDIO_SRC =
         true
       );
 
-      document.body.addEventListener('click', (e) => {
-        const audio = document.getElementById('bg-music-audio');
-        if (audio && e.target.closest && e.target.closest('lite-youtube') && !audio.paused) {
-          state.deliberatePause = true;
-          audio.pause();
-        }
-      });
-
       // Navigating to a different page (view transition) leaves any
       // still-playing video's DOM node behind, which would otherwise leave
       // it stuck in the duckers set forever with no more events to clear

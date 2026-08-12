@@ -153,8 +153,27 @@ const articles = [
         // misurare, altrimenti si rischia di leggere il grid a meta
         // applicazione del CSS (offset quasi nulli, carte impilate su se
         // stesse invece che al centro).
-        requestAnimationFrame(() => requestAnimationFrame(pile));
-        window.setTimeout(unfurl, START_DELAY);
+        //
+        // pile() e unfurl() erano schedulati come due timer indipendenti
+        // (rAF vs setTimeout): a cache calda (refresh) il doppio rAF risolve
+        // quasi subito, molto prima dei 700ms, quindi l'ordine sembrava
+        // sempre corretto. A cache fredda (prima sessione dopo l'accensione
+        // del PC: font/immagini/script ancora in caricamento, main thread
+        // occupato) il doppio rAF puo' slittare oltre i 700ms — unfurl()
+        // parte prima che pile() abbia mai impilato le carte (nessun
+        // effetto, sono gia' al loro posto), poi pile() arriva in ritardo e
+        // le fa scattare di colpo (transition: none) senza che nessun
+        // unfurl() successivo le riporti a posto: e' lo "scatto con
+        // cambio immagine veloce prima di assestarsi" segnalato dall'utente.
+        // Fix: incatenare unfurl a pile invece di lanciarli in parallelo,
+        // cosi' l'ordine e' garantito indipendentemente da quanto sia lento
+        // il primo paint.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            pile();
+            window.setTimeout(unfurl, START_DELAY);
+          })
+        );
       };
 
       document.addEventListener('astro:page-load', setupVideoStack);
