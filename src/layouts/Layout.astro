@@ -1,7 +1,7 @@
 ---
 import '@fontsource-variable/raleway';
 import '../styles/global.css';
-import { ClientRouter, fade } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import LangSwitcher from '../components/LangSwitcher.astro';
@@ -119,10 +119,81 @@ const isHome = Astro.url.pathname === withBase('/');
       // the *current* (outgoing) page to the top as soon as navigation to "/"
       // is requested, before the transition/snapshot ever starts, so there's
       // no leftover offset left to flash.
+      //
+      // Tried generalizing this to every destination (not just home), on the
+      // theory that lining up the outgoing snapshot's scroll position with
+      // the incoming page's (both at the top) would stop the crossfade from
+      // reading as "the page scrolls up, then changes" (see decisioni.md,
+      // 2026-08-12). Measured with Playwright frame-by-frame, including
+      // against a production `astro build` + `astro preview` — not just
+      // `astro dev` — to rule out dev-only overhead: there's a real,
+      // non-trivial gap between 'astro:after-preparation' (right after the
+      // fetch resolves) and the transition actually starting, so the
+      // generalized version just *relocated* the visible pre-scroll instead
+      // of removing it — the outgoing page still snaps to the top and sits
+      // there, still on the old URL, before anything crossfades. Reverted;
+      // kept home-only, where it was already working.
       if (!window.__homeScrollFix) {
         window.__homeScrollFix = true;
         document.addEventListener('astro:before-preparation', (event) => {
           if (event.to?.pathname === homePath) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        });
+      }
+
+      // "Torna a ..." links point at another page's #section (e.g.
+      // /video-utility/#tools). Astro's router can't scroll to a fragment as
+      // part of its own SPA-style swap, so for any `to.hash` it falls back to
+      // a real `location.href` navigation to let the browser do it natively
+      // — which, combined with global.css's `scroll-behavior: smooth`,
+      // animates toward the target's position *as measured at the start of
+      // the animation*. If that position shifts once the destination page's
+      // own layout (reveal animations, stacked cards, images) settles, the
+      // scroll lands short of the section instead of on it — which is what
+      // reads as "jumps to the top of the page" rather than to the target.
+      // Stripping the hash before Astro sees it skips that whole path, and
+      // scrolling to the element ourselves (after the swap, `instant` so
+      // there's no animation to get interrupted) lands exactly on the
+      // section every time. The hash is restored in the URL afterwards so
+      // the address bar/bookmark still reflect it.
+      if (!window.__hashScrollFix) {
+        window.__hashScrollFix = true;
+        let pendingHash = '';
+        document.addEventListener('astro:before-preparation', (event) => {
+          if (event.to?.hash) {
+            pendingHash = event.to.hash;
+            event.to.hash = '';
+          }
+        });
+        document.addEventListener('astro:after-swap', () => {
+          if (!pendingHash) return;
+          const hash = pendingHash;
+          pendingHash = '';
+          const target = document.querySelector(hash);
+          if (!target) return;
+          history.replaceState(history.state, '', location.pathname + location.search + hash);
+          target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        });
+      }
+
+      // Belt-and-suspenders: global.css's `scroll-behavior: smooth` on <html>
+      // applies to *every* scrollTo/scrollIntoView call, including the
+      // `behavior: 'instant'` ones above and Astro's own internal ones during
+      // a transition — 'instant' is supposed to override the CSS, but that's
+      // not consistently honored on every browser/fallback path (older
+      // Safari/Firefox without native View Transitions in particular, where
+      // Astro's router keeps the outgoing page as live, visible DOM instead
+      // of a frozen snapshot while it animates). Turning `scroll-behavior`
+      // off entirely for the duration of the navigation removes any chance
+      // of an animated scroll — ours or Astro's — being visible, on any
+      // browser, regardless of which path is taken.
+      if (!window.__noSmoothScrollDuringNav) {
+        window.__noSmoothScrollDuringNav = true;
+        const html = document.documentElement;
+        document.addEventListener('astro:before-preparation', () => {
+          html.style.scrollBehavior = 'auto';
+        });
+        document.addEventListener('astro:page-load', () => {
+          html.style.scrollBehavior = '';
         });
       }
     </script>
@@ -164,7 +235,7 @@ const isHome = Astro.url.pathname === withBase('/');
     <LangSwitcher />
     <main
       class:list={[isHome && 'relative z-[1] -mb-px overflow-hidden rounded-b-[2rem] bg-ink']}
-      transition:animate={fade({ duration: '2.8s' })}
+      transition:animate="none"
     >
       <slot />
     </main>
