@@ -5,143 +5,1305 @@ import { withBase } from '../../utils/url';
 
 <Layout
   title="Astronomy Tools"
-  description="Astronomy.tools calculators for CCD suitability and field of view planning."
-  descriptionIt="Calcolatori di Astronomy.tools per la compatibilità CCD e la pianificazione del campo inquadrato."
+  description="Custom sensor suitability, field of view and guidescope suitability calculators for astrophotography planning."
+  descriptionIt="Calcolatori personalizzati di campionamento deep sky, campo inquadrato e compatibilità del telescopio guida per la pianificazione dell'astrofotografia."
 >
   <article class="mx-auto max-w-3xl px-6 py-16">
-    <a href={withBase('/video-utility/#tools')} class="text-sm text-white/50 hover:text-accent">
-      <span data-lang-en>&larr; Back to Video &amp; Utility</span>
-      <span data-lang-it>&larr; Torna a Video &amp; Utility</span>
-    </a>
-    <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">Astronomy Tools</h1>
+    <h1 class="reveal-left mt-10 text-3xl font-semibold sm:text-4xl">Astronomy Tools</h1>
 
-    <div class="prose-astro mt-10">
+    <div class="reveal-right prose-astro mt-10" style="--reveal-delay: 150ms">
       <div data-lang-en>
         <p>
-          <strong>Astronomy.tools</strong> is an online platform designed to help amateur and professional
-          astronomers plan their observations, choose the right equipment, and analyze the performance of
-          optical systems in astrophotography. The site offers <strong>interactive calculators</strong> and
-          tools to simulate field of view, resolution, and image quality for different telescopes and cameras.
-        </p>
-
-        <p><strong>Main Features of Astronomy Tools</strong></p>
-        <p>
-          <strong>1️⃣ CCD Suitability Calculator</strong><br />
-          - Calculates <strong>image sampling</strong> in arcsec/pixel based on:<br />
-          - <strong>Pixel size of the sensor</strong> (in µm)<br />
-          - <strong>Telescope focal length</strong> (in mm)<br />
-          - <strong>Atmospheric seeing</strong> (in arcseconds)<br />
-          - Provides an image quality assessment:<br />
-          - <strong>Oversampling</strong> (too much detail, loss of light)<br />
-          - <strong>Undersampling</strong> (pixelated image, loss of detail)<br />
-          - <strong>Good Quality</strong> (optimal balance between pixels and seeing)
-        </p>
-        <p>
-          <strong>Useful for:</strong><br />
-          ✅ Determining if a <strong>CCD camera is suitable</strong> for a given telescope.<br />
-          ✅ Optimizing settings for <strong>planetary or deep-sky imaging</strong>.
-        </p>
-        <p>
-          🔗 <strong>Calculator link:</strong>
-          <a href="https://astronomy.tools/calculators/ccd_suitability" target="_blank" rel="noopener">CCD Suitability Calculator</a>
-        </p>
-
-        <p>
-          <strong>2️⃣ Field of View (FOV) Calculator</strong><br />
-          - Simulates the <strong>field of view</strong> of a telescope + camera combination.<br />
-          - Shows <strong>how a celestial object will appear</strong> (e.g., Moon, Orion Nebula, Andromeda Galaxy).<br />
-          - Allows comparison of multiple configurations to find the <strong>ideal magnification</strong>.
-        </p>
-        <p>
-          <strong>Useful for:</strong><br />
-          ✅ Planning astrophotography and selecting the right <strong>sensor/telescope</strong>.<br />
-          ✅ Avoiding incorrect framing (field too wide or too narrow).
-        </p>
-        <p>
-          🔗 <strong>Calculator link:</strong>
-          <a href="https://astronomy.tools/calculators/field_of_view" target="_blank" rel="noopener">FOV Calculator</a>
-        </p>
-
-        <p>
-          <strong>Why Use Astronomy Tools?</strong><br />
-          ✔️ <strong>Free</strong> and accessible from any device.<br />
-          ✔️ <strong>Interactive</strong>: test different configurations in real-time.<br />
-          ✔️ <strong>For everyone</strong>: useful for <strong>amateurs</strong> and <strong>professional
-          deep-sky photographers</strong>.<br />
-          ✔️ <strong>Easy to use</strong>: no installation required, everything is online.
-        </p>
-        <p>
-          <strong>Want to optimize your gear?</strong> Try the calculators at
-          <a href="https://astronomy.tools/" target="_blank" rel="noopener">Astronomy Tools</a> or use the window
-          below.
+          Four calculators built directly into this page, inspired by <a href="https://astronomy.tools/" target="_blank" rel="noopener">astronomy.tools</a>, to help plan
+          astrophotography sessions: a <strong>Sensor Suitability Calculator</strong> to check whether a
+          camera/telescope pair is well matched to the sky's seeing, a <strong>Field of View
+          Calculator</strong> to preview how large a target will appear in the frame, a <strong>Guidescope
+          Suitability Calculator</strong> to check whether a guide scope/camera pair can track precisely enough
+          for the main imaging setup, and a <strong>Filter Size Calculator</strong> to find the smallest
+          filter that won't vignette the sensor.
         </p>
       </div>
-
       <div data-lang-it>
         <p>
-          <strong>Astronomy.tools</strong> è una piattaforma online pensata per aiutare astronomi dilettanti e
-          professionisti a pianificare le proprie osservazioni, scegliere l'attrezzatura giusta e analizzare
-          le prestazioni dei sistemi ottici in astrofotografia. Il sito offre <strong>calcolatori
-          interattivi</strong> e strumenti per simulare il campo inquadrato, la risoluzione e la qualità
-          dell'immagine per diversi telescopi e camere.
-        </p>
-
-        <p><strong>Funzionalità principali di Astronomy Tools</strong></p>
-        <p>
-          <strong>1️⃣ Calcolatore di Compatibilità CCD</strong><br />
-          - Calcola il <strong>campionamento dell'immagine</strong> in arcsec/pixel in base a:<br />
-          - <strong>Dimensione del pixel del sensore</strong> (in µm)<br />
-          - <strong>Lunghezza focale del telescopio</strong> (in mm)<br />
-          - <strong>Seeing atmosferico</strong> (in secondi d'arco)<br />
-          - Fornisce una valutazione della qualità dell'immagine:<br />
-          - <strong>Oversampling</strong> (troppo dettaglio, perdita di luce)<br />
-          - <strong>Undersampling</strong> (immagine pixelata, perdita di dettaglio)<br />
-          - <strong>Buona Qualità</strong> (equilibrio ottimale tra pixel e seeing)
-        </p>
-        <p>
-          <strong>Utile per:</strong><br />
-          ✅ Determinare se una <strong>camera CCD è compatibile</strong> con un dato telescopio.<br />
-          ✅ Ottimizzare le impostazioni per <strong>l'imaging planetario o del profondo cielo</strong>.
-        </p>
-        <p>
-          🔗 <strong>Link al calcolatore:</strong>
-          <a href="https://astronomy.tools/calculators/ccd_suitability" target="_blank" rel="noopener">CCD Suitability Calculator</a>
-        </p>
-
-        <p>
-          <strong>2️⃣ Calcolatore di Campo Inquadrato (FOV)</strong><br />
-          - Simula il <strong>campo inquadrato</strong> di una combinazione telescopio + camera.<br />
-          - Mostra <strong>come apparirà un oggetto celeste</strong> (es. Luna, Nebulosa di Orione, Galassia di Andromeda).<br />
-          - Permette di confrontare più configurazioni per trovare l'<strong>ingrandimento ideale</strong>.
-        </p>
-        <p>
-          <strong>Utile per:</strong><br />
-          ✅ Pianificare l'astrofotografia e scegliere il giusto <strong>sensore/telescopio</strong>.<br />
-          ✅ Evitare inquadrature errate (campo troppo ampio o troppo stretto).
-        </p>
-        <p>
-          🔗 <strong>Link al calcolatore:</strong>
-          <a href="https://astronomy.tools/calculators/field_of_view" target="_blank" rel="noopener">FOV Calculator</a>
-        </p>
-
-        <p>
-          <strong>Perché usare Astronomy Tools?</strong><br />
-          ✔️ <strong>Gratuito</strong> e accessibile da qualsiasi dispositivo.<br />
-          ✔️ <strong>Interattivo</strong>: prova diverse configurazioni in tempo reale.<br />
-          ✔️ <strong>Per tutti</strong>: utile sia per <strong>dilettanti</strong> sia per
-          <strong>fotografi professionisti del profondo cielo</strong>.<br />
-          ✔️ <strong>Facile da usare</strong>: nessuna installazione richiesta, tutto è online.
-        </p>
-        <p>
-          <strong>Vuoi ottimizzare la tua attrezzatura?</strong> Prova i calcolatori su
-          <a href="https://astronomy.tools/" target="_blank" rel="noopener">Astronomy Tools</a> oppure usa la
-          finestra qui sotto.
+          Quattro calcolatori integrati direttamente in questa pagina, ispirati ad <a href="https://astronomy.tools/" target="_blank" rel="noopener">astronomy.tools</a>, per pianificare
+          le sessioni di astrofotografia: un <strong>calcolatore campionamento deep sky</strong> per verificare se
+          l'abbinamento camera/telescopio è adatto al seeing del cielo, un <strong>calcolatore di campo
+          inquadrato</strong> per vedere in anteprima quanto grande apparirà un soggetto nell'inquadratura, un <strong>calcolatore di compatibilità del telescopio guida</strong> per verificare se l'abbinamento
+          telescopio guida/camera di guida è abbastanza preciso per l'apparato di ripresa principale, e un <strong>calcolatore della dimensione del filtro</strong> per trovare il filtro più piccolo che non vignetti il sensore.
         </p>
       </div>
     </div>
 
-    <div class="mt-10 overflow-hidden rounded-2xl border border-white/10">
-      <iframe src="https://astronomy.tools/" width="100%" height="600" loading="lazy" title="Astronomy Tools"></iframe>
+    <!-- Sensor Suitability Calculator -->
+    <section class="mt-12 rounded-2xl border border-white/10 bg-surface/40 p-6">
+      <h2 class="text-xl font-semibold">
+        <span data-lang-en>1️⃣ Sensor Suitability Calculator</span>
+        <span data-lang-it>1️⃣ Calcolatore Campionamento Deep Sky</span>
+      </h2>
+      <p class="mt-2 text-sm text-white/60">
+        <span data-lang-en
+          >Checks how well a sensor's pixel scale matches the atmospheric seeing.</span
+        >
+        <span data-lang-it
+          >Verifica quanto il campionamento del sensore sia adatto al seeing atmosferico.</span
+        >
+      </p>
+
+      <div class="mt-6">
+        <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="ccd-camera-preset">
+          <span data-lang-en>Camera preset</span>
+          <span data-lang-it>Preset camera</span>
+        </label>
+        <select id="ccd-camera-preset" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"></select>
+      </div>
+
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="ccd-pixel-size">
+            <span data-lang-en>Pixel size (µm)</span>
+            <span data-lang-it>Dimensione pixel (µm)</span>
+          </label>
+          <input id="ccd-pixel-size" type="number" step="0.01" min="0" value="3.76" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="ccd-focal-length">
+            <span data-lang-en>Focal length (mm)</span>
+            <span data-lang-it>Lunghezza focale (mm)</span>
+          </label>
+          <input id="ccd-focal-length" type="number" step="1" min="1" value="750" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="ccd-seeing">
+            <span data-lang-en>Seeing (arcsec)</span>
+            <span data-lang-it>Seeing (arcsec)</span>
+          </label>
+          <input id="ccd-seeing" type="number" step="0.1" min="0.1" value="2.5" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="ccd-binning">
+            <span data-lang-en>Binning</span>
+            <span data-lang-it>Binning</span>
+          </label>
+          <select id="ccd-binning" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent">
+            <option value="1">1x1</option>
+            <option value="2">2x2</option>
+            <option value="3">3x3</option>
+            <option value="4">4x4</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-xl border border-white/10 bg-surface-2/50 p-4">
+        <p class="text-sm text-white/60">
+          <span data-lang-en>Image scale</span>
+          <span data-lang-it>Campionamento</span>
+        </p>
+        <p id="ccd-scale-output" class="mt-1 text-2xl font-semibold text-accent">—</p>
+        <p id="ccd-rating-output" class="mt-2 text-sm font-semibold">—</p>
+        <p id="ccd-rating-detail" class="mt-1 text-sm text-white/60">—</p>
+      </div>
+    </section>
+
+    <!-- Field of View Calculator -->
+    <section class="mt-8 rounded-2xl border border-white/10 bg-surface/40 p-6">
+      <h2 class="text-xl font-semibold">
+        <span data-lang-en>2️⃣ Field of View (FOV) Calculator</span>
+        <span data-lang-it>2️⃣ Calcolatore di Campo Inquadrato (FOV)</span>
+      </h2>
+      <p class="mt-2 text-sm text-white/60">
+        <span data-lang-en>Estimates the framing of a telescope + camera combination.</span>
+        <span data-lang-it>Stima l'inquadratura di una combinazione telescopio + camera.</span>
+      </p>
+
+      <div class="mt-6">
+        <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="fov-preset">
+          <span data-lang-en>Camera preset</span>
+          <span data-lang-it>Preset camera</span>
+        </label>
+        <select id="fov-preset" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"></select>
+      </div>
+
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="fov-focal-length">
+            <span data-lang-en>Focal length (mm)</span>
+            <span data-lang-it>Lunghezza focale (mm)</span>
+          </label>
+          <input id="fov-focal-length" type="number" step="1" min="1" value="750" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="fov-pixel-size">
+            <span data-lang-en>Pixel size (µm)</span>
+            <span data-lang-it>Dimensione pixel (µm)</span>
+          </label>
+          <input id="fov-pixel-size" type="number" step="0.01" min="0" value="3.76" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="fov-res-w">
+            <span data-lang-en>Resolution width (px)</span>
+            <span data-lang-it>Risoluzione larghezza (px)</span>
+          </label>
+          <input id="fov-res-w" type="number" step="1" min="1" value="6248" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="fov-res-h">
+            <span data-lang-en>Resolution height (px)</span>
+            <span data-lang-it>Risoluzione altezza (px)</span>
+          </label>
+          <input id="fov-res-h" type="number" step="1" min="1" value="4176" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Sensor size</span>
+            <span data-lang-it>Dimensione sensore</span>
+          </p>
+          <p id="fov-sensor-output" class="mt-1 text-lg font-semibold text-white">—</p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Image scale</span>
+            <span data-lang-it>Campionamento</span>
+          </p>
+          <p id="fov-scale-output" class="mt-1 text-lg font-semibold text-white">—</p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4 sm:col-span-2">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Field of view</span>
+            <span data-lang-it>Campo inquadrato</span>
+          </p>
+          <p id="fov-fov-output" class="mt-1 text-2xl font-semibold text-accent">—</p>
+          <p id="fov-diag-output" class="mt-1 text-sm text-white/60">—</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guidescope Suitability Calculator -->
+    <section class="mt-8 rounded-2xl border border-white/10 bg-surface/40 p-6">
+      <h2 class="text-xl font-semibold">
+        <span data-lang-en>3️⃣ Guidescope Suitability Calculator</span>
+        <span data-lang-it>3️⃣ Calcolatore di Compatibilità del Telescopio Guida</span>
+      </h2>
+      <p class="mt-2 text-sm text-white/60">
+        <span data-lang-en
+          >Compares the imaging setup's pixel scale with the guide setup's, to check whether the guide scope can
+          correct tracking errors precisely enough for the main telescope.</span
+        >
+        <span data-lang-it
+          >Confronta il campionamento dell'apparato di ripresa con quello di guida, per verificare se il
+          telescopio guida può correggere gli errori di inseguimento con la precisione richiesta dal telescopio
+          principale.</span
+        >
+      </p>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <div>
+          <h3 class="text-sm font-semibold text-white/80">
+            <span data-lang-en>Imaging setup</span>
+            <span data-lang-it>Apparato di ripresa</span>
+          </h3>
+          <div class="mt-3 grid gap-4">
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-img-focal-length">
+                <span data-lang-en>Focal length (mm)</span>
+                <span data-lang-it>Lunghezza focale (mm)</span>
+              </label>
+              <input id="guide-img-focal-length" type="number" step="1" min="1" value="750" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-img-camera-preset">
+                <span data-lang-en>Camera preset</span>
+                <span data-lang-it>Preset camera</span>
+              </label>
+              <select id="guide-img-camera-preset" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"></select>
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-img-pixel-size">
+                <span data-lang-en>Pixel size (µm)</span>
+                <span data-lang-it>Dimensione pixel (µm)</span>
+              </label>
+              <input id="guide-img-pixel-size" type="number" step="0.01" min="0" value="3.76" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-img-binning">
+                <span data-lang-en>Binning</span>
+                <span data-lang-it>Binning</span>
+              </label>
+              <select id="guide-img-binning" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent">
+                <option value="1">1x1</option>
+                <option value="2">2x2</option>
+                <option value="3">3x3</option>
+                <option value="4">4x4</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-white/80">
+            <span data-lang-en>Guide setup</span>
+            <span data-lang-it>Apparato di guida</span>
+          </h3>
+          <div class="mt-3 grid gap-4">
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-scope-focal-length">
+                <span data-lang-en>Focal length (mm)</span>
+                <span data-lang-it>Lunghezza focale (mm)</span>
+              </label>
+              <input id="guide-scope-focal-length" type="number" step="1" min="1" value="120" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-cam-camera-preset">
+                <span data-lang-en>Camera preset</span>
+                <span data-lang-it>Preset camera</span>
+              </label>
+              <select id="guide-cam-camera-preset" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"></select>
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-cam-pixel-size">
+                <span data-lang-en>Pixel size (µm)</span>
+                <span data-lang-it>Dimensione pixel (µm)</span>
+              </label>
+              <input id="guide-cam-pixel-size" type="number" step="0.01" min="0" value="2.9" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+            </div>
+            <div>
+              <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="guide-cam-binning">
+                <span data-lang-en>Binning</span>
+                <span data-lang-it>Binning</span>
+              </label>
+              <select id="guide-cam-binning" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent">
+                <option value="1">1x1</option>
+                <option value="2">2x2</option>
+                <option value="3">3x3</option>
+                <option value="4">4x4</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Imaging resolution</span>
+            <span data-lang-it>Campionamento ripresa</span>
+          </p>
+          <p id="guide-img-scale-output" class="mt-1 text-lg font-semibold text-white">—</p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Guiding resolution</span>
+            <span data-lang-it>Campionamento guida</span>
+          </p>
+          <p id="guide-guide-scale-output" class="mt-1 text-lg font-semibold text-white">—</p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface-2/50 p-4 sm:col-span-2">
+          <p class="text-sm text-white/60">
+            <span data-lang-en>Imaging / guiding ratio</span>
+            <span data-lang-it>Rapporto ripresa / guida</span>
+          </p>
+          <p id="guide-ratio-output" class="mt-1 text-2xl font-semibold text-accent">—</p>
+          <p id="guide-rating-output" class="mt-2 text-sm font-semibold">—</p>
+          <p id="guide-rating-detail" class="mt-1 text-sm text-white/60">—</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Size Calculator -->
+    <section class="mt-8 rounded-2xl border border-white/10 bg-surface/40 p-6">
+      <h2 class="text-xl font-semibold">
+        <span data-lang-en>4️⃣ Filter Size Calculator</span>
+        <span data-lang-it>4️⃣ Calcolatore della Dimensione del Filtro</span>
+      </h2>
+      <p class="mt-2 text-sm text-white/60">
+        <span data-lang-en
+          >Finds the smallest filter diameter that won't vignette the corners of the sensor, based on how far the
+          filter sits from the focal plane.</span
+        >
+        <span data-lang-it
+          >Trova il diametro minimo del filtro che non vignetta gli angoli del sensore, in base a quanto il
+          filtro è distante dal piano focale.</span
+        >
+      </p>
+
+      <div class="mt-6">
+        <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="filter-camera-preset">
+          <span data-lang-en>Camera preset</span>
+          <span data-lang-it>Preset camera</span>
+        </label>
+        <select id="filter-camera-preset" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"></select>
+      </div>
+
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="filter-aperture">
+            <span data-lang-en>Telescope aperture (mm)</span>
+            <span data-lang-it>Apertura del telescopio (mm)</span>
+          </label>
+          <input id="filter-aperture" type="number" step="1" min="1" value="80" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="filter-focal-length">
+            <span data-lang-en>Focal length (mm)</span>
+            <span data-lang-it>Lunghezza focale (mm)</span>
+          </label>
+          <input id="filter-focal-length" type="number" step="1" min="1" value="600" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="filter-gap">
+            <span data-lang-en>Filter-to-sensor distance (mm)</span>
+            <span data-lang-it>Distanza filtro-sensore (mm)</span>
+          </label>
+          <input id="filter-gap" type="number" step="0.5" min="0" value="20" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/50" for="filter-ccd-diagonal">
+            <span data-lang-en>Sensor diagonal (mm)</span>
+            <span data-lang-it>Diagonale del sensore (mm)</span>
+          </label>
+          <input id="filter-ccd-diagonal" type="number" step="0.01" min="0" value="11.21" class="w-full rounded-lg border border-white/15 bg-surface-2/60 px-3 py-2 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-xl border border-white/10 bg-surface-2/50 p-4">
+        <p class="text-sm text-white/60">
+          <span data-lang-en>Recommended minimum filter size</span>
+          <span data-lang-it>Dimensione minima del filtro consigliata</span>
+        </p>
+        <p id="filter-size-output" class="mt-1 text-2xl font-semibold text-accent">—</p>
+        <p id="filter-standard-output" class="mt-1 text-sm text-white/60">—</p>
+      </div>
+    </section>
+
+    <div class="mt-14 flex justify-center">
+      <a href={withBase('/video-utility/')} class="btn-accent justify-center min-w-[190px]">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-lang-en>Back to Video &amp; Utility</span>
+        <span data-lang-it>Torna a Video &amp; Utility</span>
+      </a>
     </div>
   </article>
 </Layout>
+
+<script>
+  const ARCSEC_PER_RAD = 206265;
+  const ARCMIN_PER_RAD = 3437.746771;
+
+  function currentLang(): 'en' | 'it' {
+    return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'it';
+  }
+
+  function formatDegMin(totalArcmin: number): string {
+    const deg = Math.floor(totalArcmin / 60);
+    const min = totalArcmin - deg * 60;
+    if (deg > 0) return `${deg}° ${min.toFixed(1)}'`;
+    return `${min.toFixed(2)}'`;
+  }
+
+  // Camera database (brand, model, resolution width px, resolution height px, pixel size µm),
+  // sourced from astronomy.tools' own camera list, deduplicated and with two verified
+  // data-entry fixes (Nikon D3300 width/height were swapped, SBIG STF-8300 read 2x2px).
+  const CAMERA_DB: [string, string, number, number, number][] = [
+  ["ALCCD", "QHY-21c", 1940, 1460, 4.54],
+  ["ALCCD", "QHY-22c", 2758, 2208, 4.54],
+  ["ALCCD", "QHY-23c", 3388, 2712, 3.69],
+  ["Altair Astro", "GPCAM MT9M034M", 1280, 960, 3.75],
+  ["Altair Astro", "GPCAM2 130", 1280, 960, 3.75],
+  ["Altair Astro", "GPCAM2 224C", 1280, 960, 3.75],
+  ["Altair Astro", "GPCAM2 327C", 1920, 1080, 2.9],
+  ["Altair Astro", "GPCAM3 178C/M", 3040, 2048, 2.4],
+  ["Altair Astro", "GPCAM3 287M", 720, 540, 6.9],
+  ["Altair Astro", "GPCAM3 290C/M", 1936, 1096, 2.9],
+  ["Altair Astro", "GPCAM3 385C", 1936, 1096, 3.75],
+  ["Altair Astro", "Hypercam 115M", 4128, 2808, 4.63],
+  ["Altair Astro", "Hypercam 174M", 1920, 1200, 5.86],
+  ["Altair Astro", "Hypercam 183C/M", 5440, 3648, 2.4],
+  ["Altair Astro", "Hypercam 269C", 5280, 3956, 3.3],
+  ["Altair Astro", "Hypercam 26C/M", 6224, 4168, 3.76],
+  ["Altair Astro", "Hypercam 294C", 4128, 2808, 4.63],
+  ["Altair Astro", "Hypercam 533C", 3000, 3000, 3.76],
+  ["Altair Astro", "Hypercam AA24CFX", 6064, 4040, 5.94],
+  ["Altair Astro", "Hypercam AA61CFX/MFX", 9568, 6380, 3.76],
+  ["Astro Video Systems", "DSO-1", 768, 494, 5],
+  ["Atik", "11000", 4008, 2672, 9],
+  ["Atik", "16200 Mono / Colour", 4499, 3599, 6],
+  ["Atik", "16ic", 659, 494, 7.4],
+  ["Atik", "314L Plus", 1392, 1040, 6.45],
+  ["Atik", "320E", 1620, 1220, 4.4],
+  ["Atik", "383L+", 3362, 2504, 5.4],
+  ["Atik", "4000", 2048, 2048, 7.4],
+  ["Atik", "4120EX", 4242, 2830, 3.1],
+  ["Atik", "414EX", 1392, 1040, 6.45],
+  ["Atik", "420", 1619, 1219, 4.4],
+  ["Atik", "428EX", 1932, 1452, 4.54],
+  ["Atik", "450", 2448, 2050, 3.45],
+  ["Atik", "460EX", 2750, 2200, 4.54],
+  ["Atik", "490EX", 3380, 2704, 3.69],
+  ["Atik", "ACIS 12.3", 4096, 3008, 3.45],
+  ["Atik", "ACIS 2.4", 1936, 1216, 5.86],
+  ["Atik", "ACIS 7.1", 3208, 2200, 4.5],
+  ["Atik", "Apx60 (CosMOS)", 9576, 6388, 3.76],
+  ["Atik", "GP", 1296, 964, 3.75],
+  ["Atik", "Horizon", 4644, 3506, 3.8],
+  ["Atik", "Infinity", 1392, 1040, 6.45],
+  ["Atik", "One 6.0", 2750, 2200, 4.54],
+  ["Atik", "One 9.0", 3380, 2704, 3.69],
+  ["Atik", "Titan", 659, 494, 7.4],
+  ["Canon", "1000D", 3888, 2591, 5.71],
+  ["Canon", "10D", 3072, 2048, 7.38],
+  ["Canon", "1200D", 5184, 3456, 4.3],
+  ["Canon", "1300D", 5184, 3456, 4.29],
+  ["Canon", "200D / MKII", 6000, 4000, 3.7],
+  ["Canon", "20D", 3520, 2344, 6.4],
+  ["Canon", "30D", 3504, 2336, 6.42],
+  ["Canon", "350D", 3456, 2304, 6.41],
+  ["Canon", "450D", 4272, 2848, 5.1],
+  ["Canon", "50d", 4752, 3168, 4.7],
+  ["Canon", "550D", 5184, 3456, 4.3],
+  ["Canon", "5DS", 8988, 5792, 4.13],
+  ["Canon", "5DSR", 8688, 5792, 4.14],
+  ["Canon", "600D", 5184, 3456, 4.29],
+  ["Canon", "60Da", 5184, 3456, 4.3],
+  ["Canon", "650D", 5184, 3456, 4.29],
+  ["Canon", "6D", 5472, 3648, 6.54],
+  ["Canon", "70D", 5472, 3648, 4.1],
+  ["Canon", "760D", 6000, 4000, 3.7],
+  ["Canon", "7D", 5184, 3456, 4.3],
+  ["Canon", "800D", 6000, 4000, 3.72],
+  ["Canon", "90D", 6960, 4640, 3.19],
+  ["Canon", "EOS 1000D", 3888, 2592, 5.71],
+  ["Canon", "EOS 100D", 5196, 3464, 4.3],
+  ["Canon", "EOS 1100D", 4272, 2848, 5.18],
+  ["Canon", "EOS 1300D", 5184, 3456, 4.3],
+  ["Canon", "EOS 1500D", 6000, 4000, 3.72],
+  ["Canon", "EOS 40D", 3888, 2592, 5.7],
+  ["Canon", "EOS 500D", 4752, 3168, 4.68],
+  ["Canon", "EOS 5D Mk11", 5616, 3744, 6.4],
+  ["Canon", "EOS 5D Mk111", 5760, 3840, 6.25],
+  ["Canon", "EOS 5D MkIV", 6720, 4480, 5.3],
+  ["Canon", "EOS 700D", 5184, 3456, 4.3],
+  ["Canon", "EOS 750D", 6024, 4022, 3.7],
+  ["Canon", "EOS 7D mkII", 5472, 3648, 4.1],
+  ["Canon", "EOS 80D", 6000, 4000, 3.7],
+  ["Canon", "EOS M5", 6000, 4000, 3.7],
+  ["Canon", "EOS M50", 6000, 4000, 3.71],
+  ["Canon", "EOS M6 Mk II", 6960, 4640, 3.19],
+  ["Canon", "EOS R10", 6000, 4000, 3.72],
+  ["Canon", "EOS R5", 8192, 5464, 4.39],
+  ["Canon", "EOS R6", 5472, 3648, 6.54],
+  ["Canon", "EOS R6 Mk II", 6000, 4000, 5.96],
+  ["Canon", "EOS R7", 6960, 4640, 3.2],
+  ["Canon", "EOS Ra", 6720, 4480, 5.36],
+  ["Canon", "EOS RP", 6240, 4160, 5.73],
+  ["Celestron", "NexImage 10", 3856, 2764, 1.67],
+  ["Celestron", "Neximage 5", 2592, 1944, 2.2],
+  ["Celestron", "Neximage Burst", 1280, 960, 3.75],
+  ["Celestron", "NexImage Solar System Imager", 1280, 720, 3],
+  ["Celestron", "Nightscape 8300", 3326, 2504, 5.4],
+  ["Celestron", "Origin (678C)", 3856, 2180, 2],
+  ["Celestron", "Origin (IMX178LQJ)", 3096, 2080, 2.4],
+  ["Celestron", "Skyris 132", 1280, 960, 3.75],
+  ["Celestron", "Skyris 236", 1920, 1200, 2.8],
+  ["Celestron", "Skyris 274", 1600, 1200, 4.4],
+  ["Celestron", "Skyris 445", 1280, 960, 3.75],
+  ["Celestron", "Skyris 618", 640, 480, 5.6],
+  ["DWARFLAB", "DWARF II (IMX415)", 3840, 2160, 1.45],
+  ["DWARFLAB", "DWARF III (IMX678)", 3840, 2160, 2],
+  ["FLI", "ML 8300", 3326, 2504, 5.4],
+  ["FLI", "ML-09000", 3056, 3056, 12],
+  ["FLI", "ML11002", 4008, 2672, 9],
+  ["FLI", "ML16803", 4096, 4096, 9],
+  ["FLI", "ML50100", 8176, 6132, 6],
+  ["FLI", "Proline PL 16803", 4096, 4096, 9],
+  ["Fujifilm", "GFX 100S", 11648, 8736, 3.76],
+  ["Fujifilm", "GFX50S II", 8256, 6192, 5.3],
+  ["Fujifilm", "X-E3", 6000, 4000, 3.93],
+  ["Fujifilm", "X-H1", 6000, 4000, 3.93],
+  ["Fujifilm", "X-T1", 4896, 3264, 4.8],
+  ["Fujifilm", "X-T2", 6000, 4000, 3.93],
+  ["Hasselblad", "X1Dii", 8272, 6200, 5.3],
+  ["Imaging Source", "DMK 41AU02", 1360, 1024, 4.65],
+  ["iNova", "PLB-Cx", 1280, 960, 3.75],
+  ["Lacerta", "MGEN-3", 1280, 960, 3.75],
+  ["Lacerta", "MGEN-II", 752, 582, 4.7],
+  ["Lumix", "GH2", 4608, 3456, 3.75],
+  ["Mallincam", "DS10C / TEC", 4096, 2160, 4.63],
+  ["Mallincam", "SkyRaider", 1280, 960, 3.75],
+  ["Mallincam", "SkyRaider 23DS Plus", 1936, 1216, 5.86],
+  ["Meade", "DSI 2", 752, 582, 8.3],
+  ["Meade", "DSI III Pro", 1360, 1024, 6.45],
+  ["Meade", "DSI-C", 510, 492, 9.6],
+  ["Microsoft", "HD Lifecam", 1280, 720, 3.1],
+  ["Moravian", "16803", 4096, 4096, 9],
+  ["Moravian", "G2-4000", 2056, 2042, 7.4],
+  ["Moravian", "G2-8300", 3358, 2536, 5.4],
+  ["Moravian", "G3-1000", 1024, 1024, 24],
+  ["Moravian", "G3-11000", 4032, 2688, 9],
+  ["Moravian", "G3-16200", 4540, 3640, 6],
+  ["NASA", "Webb NIRCam Module A - Short Wavelength", 4080, 4080, 18],
+  ["Nikon", "D300S", 4288, 2848, 5.5],
+  ["Nikon", "D3200", 6016, 4000, 3.84],
+  ["Nikon", "D3300", 6000, 4000, 3.9],
+  ["Nikon", "D3S", 4256, 2832, 8.45],
+  ["Nikon", "D500", 5568, 3712, 4.2],
+  ["Nikon", "D5000", 4288, 2848, 5.51],
+  ["Nikon", "D5100", 4928, 3264, 4.78],
+  ["Nikon", "D5300", 6000, 4000, 3.92],
+  ["Nikon", "D5500", 6000, 4000, 3.89],
+  ["Nikon", "D5600", 6000, 4000, 3.92],
+  ["Nikon", "D610", 6016, 4016, 5.95],
+  ["Nikon", "D7000", 4991, 3280, 4.7],
+  ["Nikon", "D70S", 3008, 2000, 7.9],
+  ["Nikon", "D7100", 6000, 4000, 3.9],
+  ["Nikon", "D7200", 6000, 4000, 3.89],
+  ["Nikon", "D750", 6016, 4016, 5.97],
+  ["Nikon", "D7500", 5568, 3712, 4.2],
+  ["Nikon", "D800", 7360, 4912, 4.88],
+  ["Nikon", "D810a", 7360, 4912, 4.88],
+  ["Nikon", "D90", 4288, 2848, 5.51],
+  ["Nikon", "V1", 3872, 2592, 3.41],
+  ["Nikon", "Z50", 5568, 3712, 4.2],
+  ["Nikon", "Z6", 6048, 4024, 5.92],
+  ["Nikon", "Z7", 8256, 5504, 4.34],
+  ["Nikon", "Z8", 8256, 5504, 4.35],
+  ["Nikon", "Z8 - DX", 5392, 3592, 4.35],
+  ["Olympus", "E-PM1", 4032, 3024, 4.29],
+  ["Olympus", "O-MD E-M10 II", 4608, 3456, 3.74],
+  ["Olympus", "OM-1", 5184, 3888, 3.32],
+  ["Olympus", "OM-D E-M5 Mark III", 5184, 3888, 3.36],
+  ["Olympus", "OMD Em-5 mk2", 4608, 3456, 3.74],
+  ["Opticstar", "DS-616C XL", 3032, 2014, 7.8],
+  ["Orion", "SSAG", 1280, 1024, 5.2],
+  ["Orion", "StarShoot AutoGuider", 1280, 1024, 5.2],
+  ["Orion", "StarShoot G3 Mono", 752, 852, 8.6],
+  ["Orion", "StarShoot IV", 1280, 1024, 3.6],
+  ["Panasonic", "DMC-G3", 4592, 3448, 3.77],
+  ["Panasonic", "DMC-GH4", 4608, 3456, 3.75],
+  ["Panasonic", "Lumix GX7", 4592, 3448, 3.75],
+  ["PCO Imaging", "PCO Edge", 2560, 2160, 6.5],
+  ["Pegasus", "SmartEye", 3008, 3008, 3.76],
+  ["Pentax", "K-01", 4928, 3264, 4.81],
+  ["Pentax", "K-1", 7360, 4912, 4.88],
+  ["Pentax", "K-30", 4928, 3264, 4.8],
+  ["Pentax", "K200D", 3896, 2616, 6.05],
+  ["Pentax", "K3", 6024, 4024, 3.91],
+  ["Pentax", "K3III", 6192, 4128, 3.76],
+  ["Phil Dyer", "PD1", 752, 582, 6.5],
+  ["Phillips", "SPC900NC", 640, 480, 5.6],
+  ["Player One", "Apollo-C", 1936, 1216, 5.86],
+  ["Player One", "Apollo-M", 1936, 1216, 5.86],
+  ["Player One", "Apollo-M MAX", 1608, 1104, 9],
+  ["Player One", "Apollo-M MINI", 1944, 1472, 4.5],
+  ["Player One", "Artemis C-Pro", 4144, 2824, 4.63],
+  ["Player One", "Artemis M-Pro", 8288, 5648, 2.32],
+  ["Player One", "Ceres-C", 1304, 976, 3.75],
+  ["Player One", "Ceres-M", 1284, 964, 3.75],
+  ["Player One", "Mars-C", 1944, 1096, 2.9],
+  ["Player One", "Mars-C II", 1936, 1100, 2.9],
+  ["Player One", "Mars-M", 1944, 1096, 2.9],
+  ["Player One", "Neptune-C", 3096, 2078, 2.4],
+  ["Player One", "Neptune-C II", 2712, 1538, 2.9],
+  ["Player One", "Neptune-M", 3096, 2078, 2.4],
+  ["Player One", "Saturn-C SQR", 3008, 3008, 3.76],
+  ["Player One", "Saturn-M SQR", 3008, 3008, 3.76],
+  ["Player One", "Sedna-M", 3096, 2078, 2.4],
+  ["Player One", "Uranus-C", 3856, 2180, 2.9],
+  ["Player One", "Xena-M", 1936, 1216, 5.86],
+  ["Point Grey", "Blackfly IMX249", 1920, 1080, 5.86],
+  ["Point Grey", "Chameleon Color 1/3\"", 1296, 964, 3.75],
+  ["Point Grey", "Chameleon3 IMX264", 2448, 2048, 3.45],
+  ["Point Grey", "Chameleon3 IMX265", 2048, 1536, 3.45],
+  ["Point Grey", "Grasshopper", 1920, 1440, 4.54],
+  ["QHY", "09000A", 3056, 3056, 12],
+  ["QHY", "10", 3900, 2616, 6.05],
+  ["QHY", "11", 4032, 2688, 9],
+  ["QHY", "12", 4610, 3080, 5.12],
+  ["QHY", "128C", 6036, 4028, 5.97],
+  ["QHY", "16200A", 4540, 3630, 6],
+  ["QHY", "163M/C", 4656, 3522, 3.8],
+  ["QHY", "16803A", 4096, 4096, 9],
+  ["QHY", "168C", 4952, 3288, 4.8],
+  ["QHY", "174M/C/GPS", 1920, 1200, 5.86],
+  ["QHY", "178M/C", 3072, 2048, 2.4],
+  ["QHY", "183M/C", 5544, 3694, 2.4],
+  ["QHY", "21", 1940, 1460, 4.5],
+  ["QHY", "22", 2758, 2208, 4.5],
+  ["QHY", "224C", 1280, 960, 3.75],
+  ["QHY", "23", 3388, 2712, 3.69],
+  ["QHY", "247C", 6024, 4024, 3.91],
+  ["QHY", "268C PH/EB/Pro", 6280, 4210, 3.76],
+  ["QHY", "27", 4964, 3332, 5.5],
+  ["QHY", "28", 4932, 3300, 7.4],
+  ["QHY", "29", 6644, 4452, 5.5],
+  ["QHY", "290M/C", 1920, 1080, 2.9],
+  ["QHY", "294M/C (Bin 1x1)", 8340, 5644, 2.32],
+  ["QHY", "294M/C Pro", 4164, 2796, 4.63],
+  ["QHY", "367C Pro", 7376, 4938, 4.88],
+  ["QHY", "410C", 6072, 4044, 5.94],
+  ["QHY", "411 PRO", 14208, 10656, 3.76],
+  ["QHY", "461", 11664, 8748, 3.76],
+  ["QHY", "5", 1280, 1024, 5.2],
+  ["QHY", "5-II-M", 1280, 1024, 5.6],
+  ["QHY", "5-III-174M/C", 1920, 1200, 5.86],
+  ["QHY", "5-III-178M/C", 3072, 2048, 2.4],
+  ["QHY", "5-III-185C", 1920, 1200, 3.75],
+  ["QHY", "5-III-224C", 1280, 960, 3.75],
+  ["QHY", "5-III-290M/C", 1920, 1080, 2.9],
+  ["QHY", "5-III-462C", 1920, 1080, 2.9],
+  ["QHY", "5-III-715C", 3840, 2192, 1.45],
+  ["QHY", "550M/C/P", 2464, 2056, 3.45],
+  ["QHY", "5L-II-M/C", 1280, 960, 3.75],
+  ["QHY", "5P-II-M/C", 2592, 1944, 2.2],
+  ["QHY", "5R-II-C", 720, 576, 5.6],
+  ["QHY", "6", 752, 582, 6.5],
+  ["QHY", "600M/C L/PH/Pro", 9576, 6388, 3.76],
+  ["QHY", "695A", 2758, 2208, 4.54],
+  ["QHY", "8", 3000, 2000, 7.8],
+  ["QHY", "814A", 3468, 2728, 3.69],
+  ["QHY", "8L/Pro", 3110, 2030, 7.8],
+  ["QHY", "9/9S", 3358, 2536, 5.4],
+  ["QHY", "90A", 3358, 2536, 5.4],
+  ["QHY", "IMG132E", 1329, 1049, 3.63],
+  ["QHY", "miniCAM5", 1280, 960, 3.75],
+  ["QSI", "532 wsg", 2184, 1472, 6.8],
+  ["QSI", "583", 3326, 2504, 5.4],
+  ["QSI", "6120", 4250, 2838, 3.1],
+  ["QSI", "616", 1536, 1024, 9],
+  ["QSI", "6162", 4499, 3599, 6],
+  ["QSI", "632", 2184, 1472, 6.8],
+  ["QSI", "660", 2758, 2208, 4.54],
+  ["QSI", "683", 3326, 2504, 5.4],
+  ["QSI", "690", 3388, 2712, 3.69],
+  ["Raspberry Pi", "Sony IMX219 PQ CMOS", 3280, 2464, 1.12],
+  ["Raspberry Pi", "version 1.3", 2592, 1944, 1.4],
+  ["SBIG", "ST 8300C", 3326, 2504, 5.4],
+  ["SBIG", "ST-1001E", 1024, 1024, 24],
+  ["SBIG", "ST-10XME", 2184, 1472, 6.8],
+  ["SBIG", "ST-2000XM", 1600, 1200, 7.4],
+  ["SBIG", "ST-237", 640, 480, 7.4],
+  ["SBIG", "ST-i", 648, 486, 7.4],
+  ["SBIG", "STF-8300", 3326, 2504, 5.4],
+  ["SBIG", "STF-8300M", 3326, 2504, 5.2],
+  ["SBIG", "STL-1001e", 1024, 1024, 24],
+  ["SBIG", "STX-16803", 4096, 4096, 9],
+  ["Seestar", "S30 Pro - Telephoto - Sony IMX585", 2160, 3840, 2.9],
+  ["Seestar", "S30 Pro - Widefield - Sony IMX586", 2160, 3840, 1.6],
+  ["Seestar", "S50 (IMX462)", 1080, 1920, 2.9],
+  ["Sony", "A100", 3872, 2592, 6.1],
+  ["Sony", "A580", 4912, 3264, 4.76],
+  ["Sony", "a6000", 6000, 4000, 3.88],
+  ["Sony", "A7CR", 9504, 6336, 3.76],
+  ["Sony", "A7R", 7360, 4912, 4.87],
+  ["Sony", "A7s", 4240, 2832, 8.4],
+  ["Sony", "Alpha 3000", 5456, 3632, 4.3],
+  ["Sony", "Alpha 7 III", 6000, 4000, 5.91],
+  ["Sony", "Alpha 7R III", 7952, 5304, 4.5],
+  ["Sony", "Alpha a55", 4912, 3264, 4.75],
+  ["Sony", "NEX 5N", 4592, 3056, 5],
+  ["Sony", "Playstation Eye", 640, 480, 6],
+  ["Starlight Xpress", "CoStar", 1304, 1024, 5.2],
+  ["Starlight Xpress", "H16", 2048, 2048, 7.4],
+  ["Starlight Xpress", "Lodestar", 752, 580, 8.2],
+  ["Starlight Xpress", "Lodestar C", 752, 580, 8.6],
+  ["Starlight Xpress", "Lodestar Pro Mono", 752, 580, 8.6],
+  ["Starlight Xpress", "Lodestar X2", 752, 580, 8.2],
+  ["Starlight Xpress", "Superstar", 1392, 1040, 4.65],
+  ["Starlight Xpress", "SX Trius CSX-249 CMOS", 1920, 1200, 6],
+  ["Starlight Xpress", "SX Trius CSX-290 CMOS", 1945, 1097, 2.9],
+  ["Starlight Xpress", "SX Trius CSX-304 CMOS", 4096, 3000, 3.45],
+  ["Starlight Xpress", "SXVR-H18", 3326, 2504, 5.4],
+  ["Starlight Xpress", "SXVR-H9", 1392, 1040, 6.45],
+  ["Starlight Xpress", "Trius PRO-834", 4240, 2824, 3.1],
+  ["Starlight Xpress", "Trius SX-16", 2048, 2048, 7.4],
+  ["Starlight Xpress", "Trius SX-25C", 3024, 2016, 7.8],
+  ["Starlight Xpress", "Trius SX-26C", 3900, 2616, 6.05],
+  ["Starlight Xpress", "Trius SX-46", 4540, 3640, 6],
+  ["Starlight Xpress", "Trius SX-56", 4096, 4096, 9],
+  ["Starlight Xpress", "Trius SX-9", 1392, 1040, 6.45],
+  ["Starlight Xpress", "Trius SX/PRO-35", 4032, 2688, 9],
+  ["Starlight Xpress", "Trius SX/PRO-36", 4904, 3280, 7.4],
+  ["Starlight Xpress", "Trius SX/PRO-674", 1940, 1460, 4.54],
+  ["Starlight Xpress", "Trius SX/PRO-694", 2750, 2200, 4.54],
+  ["Starlight Xpress", "Trius SX/PRO-814", 3380, 2704, 3.69],
+  ["Starlight Xpress", "Trius SX/PRO-825", 1392, 1040, 6.4],
+  ["Starlight Xpress", "Ultrastar", 1392, 1040, 6.45],
+  ["SVBONY", "SC305M", 1944, 1096, 2.9],
+  ["SVBONY", "SC311", 1920, 1080, 2.9],
+  ["SVBONY", "SV105C", 1920, 1080, 2.9],
+  ["SVBONY", "SV205C", 3264, 2160, 1.45],
+  ["SVBONY", "SV305C/Pro", 1920, 1080, 2.9],
+  ["SVBONY", "SV405CC", 4144, 2822, 4.63],
+  ["SVBONY", "SV505C", 2712, 1538, 2.9],
+  ["SVBONY", "SV605CC/MC", 3008, 3008, 3.76],
+  ["SVBONY", "SV705C", 3856, 2180, 2.9],
+  ["SVBONY", "SV905C", 1280, 960, 3.75],
+  ["Toucam Pro", "SC4", 659, 494, 9.9],
+  ["ToupTek", "571C Pro", 6224, 4168, 3.76],
+  ["ToupTek", "G3M664C", 2688, 1520, 2.9],
+  ["ToupTek", "GCMOS01200KMA Mono Imager/Guider", 1280, 960, 3.75],
+  ["ToupTek", "GCMOS01200KPA Colour Imager/Guider", 1280, 960, 3.75],
+  ["Unistellar", "Equinox 2", 2048, 1536, 2.9],
+  ["Unistellar", "eVscope 1", 1280, 960, 3.75],
+  ["Unistellar", "eVscope 2", 2048, 1536, 2.9],
+  ["Vaonis", "Vespera", 1920, 1080, 2.9],
+  ["ZWO", "ASI034MC", 728, 512, 5.6],
+  ["ZWO", "ASI071MC-Pro", 4944, 3284, 4.78],
+  ["ZWO", "ASI094MC-Pro", 7736, 4928, 4.88],
+  ["ZWO", "ASI120MC-S", 1280, 960, 3.75],
+  ["ZWO", "ASI120MM/MC/Mini", 1280, 960, 3.75],
+  ["ZWO", "ASI128MC-Pro", 6032, 4032, 5.97],
+  ["ZWO", "ASI1600", 4656, 3520, 3.8],
+  ["ZWO", "ASI1600MM/MC/GT", 4656, 3520, 3.8],
+  ["ZWO", "ASI174MM/MC/Mini", 1936, 1216, 5.86],
+  ["ZWO", "ASI178MM/MC", 3096, 2080, 2.4],
+  ["ZWO", "ASI183MM/MC/GT", 5496, 3672, 2.4],
+  ["ZWO", "ASI185MC", 1944, 1224, 3.75],
+  ["ZWO", "ASI220MM Mini", 1920, 1080, 4],
+  ["ZWO", "ASI224MC", 1304, 976, 3.75],
+  ["ZWO", "ASI2400MC-Pro", 6072, 4042, 5.94],
+  ["ZWO", "ASI2600MM/MC/AIR", 6248, 4176, 3.76],
+  ["ZWO", "ASI290MM/MC/Mini", 1936, 1096, 2.9],
+  ["ZWO", "ASI294MC Pro", 4144, 2822, 4.63],
+  ["ZWO", "ASI294MM Pro (Bin1 mode)", 8288, 5644, 2.31],
+  ["ZWO", "ASI294MM Pro (Bin2 mode)", 4144, 2822, 4.63],
+  ["ZWO", "ASI385MC", 1936, 1096, 3.75],
+  ["ZWO", "ASI432MM", 1608, 1104, 9],
+  ["ZWO", "ASI462MC", 1936, 1096, 2.9],
+  ["ZWO", "ASI482MC", 1920, 1080, 5.8],
+  ["ZWO", "ASI485MC", 3840, 2160, 2.9],
+  ["ZWO", "ASI533MM/MC", 3008, 3008, 3.76],
+  ["ZWO", "ASI585MC AIR (Guide)", 1920, 1080, 4],
+  ["ZWO", "ASI585MC AIR (Main)", 3840, 2160, 2.9],
+  ["ZWO", "ASI585MC/PRO", 3840, 2160, 2.9],
+  ["ZWO", "ASI6200MM/MC-Pro", 9576, 6388, 3.76],
+  ["ZWO", "ASI662MC/MM", 1920, 1080, 2.9],
+  ["ZWO", "ASI664MC", 2704, 1536, 2.9],
+  ["ZWO", "ASI676MC", 3552, 3552, 2],
+  ["ZWO", "ASI678MC/MM", 3840, 2160, 2],
+  ["ZWO", "ASI715MC", 3864, 2192, 1.45],
+  ["ZWO", "Seestar S30 (IMX662)", 1080, 1920, 2.9],
+];
+
+  function populateCameraSelect(select: HTMLSelectElement) {
+    const customOption = document.createElement('option');
+    customOption.value = 'custom';
+    customOption.setAttribute('data-tr', '{"attr":"text","en":"Custom","it":"Personalizzato"}');
+    customOption.textContent = currentLang() === 'en' ? 'Custom' : 'Personalizzato';
+    select.appendChild(customOption);
+
+    let currentGroup: HTMLOptGroupElement | null = null;
+    let currentBrand = '';
+    for (const [brand, model, w, h, px] of CAMERA_DB) {
+      if (brand !== currentBrand) {
+        currentBrand = brand;
+        currentGroup = document.createElement('optgroup');
+        currentGroup.label = brand;
+        select.appendChild(currentGroup);
+      }
+      const option = document.createElement('option');
+      const slug = (brand + '-' + model).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      option.value = slug;
+      option.dataset.w = String(w);
+      option.dataset.h = String(h);
+      option.dataset.px = String(px);
+      option.textContent = `${model} (${w}×${h}, ${px}µm)`;
+      currentGroup!.appendChild(option);
+    }
+  }
+
+  // Wraps a populated <select> in a searchable combobox: the native select stays in the
+  // DOM (hidden) as the source of truth so every existing change-listener keeps working
+  // unchanged — this only adds a text input + filtered dropdown on top of it.
+  function enhanceSearchableSelect(select: HTMLSelectElement) {
+    if (select.dataset.comboBound) return;
+    select.dataset.comboBound = '1';
+    select.classList.add('hidden');
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'relative';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.className =
+      'w-full rounded-lg border border-white/15 bg-surface-2/60 py-2 pl-9 pr-3 text-sm text-white placeholder-white/30 transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent';
+
+    const iconWrapper = document.createElement('div');
+    iconWrapper.className = 'pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/40';
+    iconWrapper.innerHTML =
+      '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" class="h-4 w-4"><circle cx="9" cy="9" r="6.2" /><path d="M18 18l-4.5-4.5" stroke-linecap="round" /></svg>';
+
+    const panel = document.createElement('div');
+    panel.className =
+      'absolute z-20 mt-1 hidden max-h-72 w-full overflow-y-auto rounded-lg border border-white/15 bg-surface-2 py-1 shadow-xl';
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(iconWrapper);
+    wrapper.appendChild(panel);
+    select.insertAdjacentElement('afterend', wrapper);
+
+    const labelFor = (option: HTMLOptionElement) => option.textContent || '';
+
+    const setLabelFromSelection = () => {
+      const opt = select.selectedOptions[0];
+      input.value = opt ? labelFor(opt) : '';
+    };
+
+    const closePanel = () => {
+      panel.classList.add('hidden');
+      panel.innerHTML = '';
+      setLabelFromSelection();
+    };
+
+    const selectOption = (option: HTMLOptionElement) => {
+      select.value = option.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      closePanel();
+    };
+
+    const tokens = (query: string) => query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+
+    const renderPanel = (query: string) => {
+      panel.innerHTML = '';
+      const q = query.trim().toLowerCase();
+      const qTokens = tokens(query);
+      const groups = Array.from(select.children) as HTMLElement[];
+      let anyMatch = false;
+
+      for (const node of groups) {
+        if (node.tagName === 'OPTION') {
+          const option = node as HTMLOptionElement;
+          if (option.value === 'custom') {
+            if (!q || labelFor(option).toLowerCase().includes(q)) {
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.textContent = labelFor(option);
+              btn.className = 'block w-full px-3 py-1.5 text-left text-sm text-white/70 hover:bg-accent/20 hover:text-white';
+              btn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                selectOption(option);
+              });
+              panel.appendChild(btn);
+              anyMatch = true;
+            }
+          }
+          continue;
+        }
+        if (node.tagName !== 'OPTGROUP') continue;
+        const group = node as HTMLOptGroupElement;
+        const options = Array.from(group.children) as HTMLOptionElement[];
+        // Match against "brand + model" combined, so queries spanning both (e.g. "nikon d850")
+        // work even though the brand only lives in the optgroup label, not the option text.
+        const matches = qTokens.length
+          ? options.filter((o) => {
+              const haystack = (group.label + ' ' + labelFor(o)).toLowerCase();
+              return qTokens.every((t) => haystack.includes(t));
+            })
+          : options;
+        if (!matches.length) continue;
+        anyMatch = true;
+
+        const groupLabel = document.createElement('div');
+        groupLabel.textContent = group.label;
+        groupLabel.className = 'px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wide text-white/40';
+        panel.appendChild(groupLabel);
+
+        for (const option of matches) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = labelFor(option);
+          btn.className = 'block w-full px-3 py-1.5 text-left text-sm text-white hover:bg-accent/20';
+          btn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            selectOption(option);
+          });
+          panel.appendChild(btn);
+        }
+      }
+
+      if (!anyMatch) {
+        const empty = document.createElement('div');
+        empty.className = 'px-3 py-2 text-sm text-white/40';
+        empty.textContent = currentLang() === 'en' ? 'No camera found' : 'Nessuna camera trovata';
+        panel.appendChild(empty);
+      }
+
+      panel.classList.remove('hidden');
+    };
+
+    input.addEventListener('focus', () => {
+      input.select();
+      renderPanel('');
+    });
+    input.addEventListener('input', () => renderPanel(input.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        input.blur();
+        closePanel();
+      }
+    });
+    input.addEventListener('blur', () => {
+      // Delay so a mousedown on a panel button can fire before the panel is torn down.
+      window.setTimeout(closePanel, 150);
+    });
+
+    setLabelFromSelection();
+    (select as any).__comboSync = setLabelFromSelection;
+  }
+
+  function setupCcdCalculator() {
+    const cameraPreset = document.querySelector<HTMLSelectElement>('#ccd-camera-preset');
+    const pixelSizeInput = document.querySelector<HTMLInputElement>('#ccd-pixel-size');
+    const focalLengthInput = document.querySelector<HTMLInputElement>('#ccd-focal-length');
+    const seeingInput = document.querySelector<HTMLInputElement>('#ccd-seeing');
+    const binningSelect = document.querySelector<HTMLSelectElement>('#ccd-binning');
+    const scaleOutput = document.querySelector<HTMLElement>('#ccd-scale-output');
+    const ratingOutput = document.querySelector<HTMLElement>('#ccd-rating-output');
+    const ratingDetail = document.querySelector<HTMLElement>('#ccd-rating-detail');
+    if (!cameraPreset || !pixelSizeInput || !focalLengthInput || !seeingInput || !binningSelect || !scaleOutput || !ratingOutput || !ratingDetail) return;
+    if (pixelSizeInput.dataset.bound) return;
+    pixelSizeInput.dataset.bound = '1';
+    populateCameraSelect(cameraPreset);
+    enhanceSearchableSelect(cameraPreset);
+
+    const RATINGS = {
+      oversampled: {
+        color: '#fb923c',
+        en: ['Oversampled', 'Pixel scale is much finer than the seeing allows — you are spreading light over more pixels than necessary, reducing sensitivity.'],
+        it: ['Oversampling', 'Il campionamento è molto più fine di quanto il seeing permetta: la luce viene distribuita su più pixel del necessario, riducendo la sensibilità.'],
+      },
+      ideal: {
+        color: '#4ade80',
+        en: ['Ideal', 'Excellent match between pixel scale and seeing — a good balance of resolution and sensitivity.'],
+        it: ['Ideale', 'Ottimo abbinamento tra campionamento e seeing: un buon equilibrio tra risoluzione e sensibilità.'],
+      },
+      adequate: {
+        color: '#f7a60a',
+        en: ['Adequate', 'Reasonable match between pixel scale and seeing, though not perfectly optimal.'],
+        it: ['Adeguato', 'Abbinamento ragionevole tra campionamento e seeing, anche se non perfettamente ottimale.'],
+      },
+      undersampled: {
+        color: '#f87171',
+        en: ['Undersampled', 'Pixel scale is coarser than the seeing — fine detail will be lost and stars may look blocky.'],
+        it: ['Undersampling', "Il campionamento è più grossolano del seeing: i dettagli fini andranno persi e le stelle potrebbero apparire squadrate."],
+      },
+    } as const;
+
+    const update = () => {
+      const pixelSize = parseFloat(pixelSizeInput.value);
+      const focalLength = parseFloat(focalLengthInput.value);
+      const seeing = parseFloat(seeingInput.value);
+      const binning = parseFloat(binningSelect.value) || 1;
+      if (!pixelSize || !focalLength || !seeing) {
+        scaleOutput.textContent = '—';
+        ratingOutput.textContent = '—';
+        ratingDetail.textContent = '—';
+        return;
+      }
+
+      const scale = (ARCSEC_PER_RAD * pixelSize * binning) / focalLength / 1000;
+      scaleOutput.textContent = `${scale.toFixed(2)} arcsec/px`;
+
+      let key: keyof typeof RATINGS;
+      if (scale < seeing / 3) key = 'oversampled';
+      else if (scale < seeing / 2) key = 'ideal';
+      else if (scale <= seeing) key = 'adequate';
+      else key = 'undersampled';
+
+      const lang = currentLang();
+      const [label, detail] = RATINGS[key][lang];
+      ratingOutput.textContent = label;
+      ratingOutput.style.color = RATINGS[key].color;
+      ratingDetail.textContent = detail;
+    };
+
+    cameraPreset.addEventListener('change', () => {
+      const opt = cameraPreset.selectedOptions[0];
+      if (!opt || opt.value === 'custom') return;
+      const px = opt.dataset.px;
+      if (px) pixelSizeInput.value = px;
+      update();
+    });
+
+    [pixelSizeInput, focalLengthInput, seeingInput].forEach((el) => el.addEventListener('input', update));
+    binningSelect.addEventListener('change', update);
+    update();
+
+    (window as any).__ccdCalcUpdate = update;
+  }
+
+  function setupFovCalculator() {
+    const preset = document.querySelector<HTMLSelectElement>('#fov-preset');
+    const focalLengthInput = document.querySelector<HTMLInputElement>('#fov-focal-length');
+    const pixelSizeInput = document.querySelector<HTMLInputElement>('#fov-pixel-size');
+    const resWInput = document.querySelector<HTMLInputElement>('#fov-res-w');
+    const resHInput = document.querySelector<HTMLInputElement>('#fov-res-h');
+    const sensorOutput = document.querySelector<HTMLElement>('#fov-sensor-output');
+    const scaleOutput = document.querySelector<HTMLElement>('#fov-scale-output');
+    const fovOutput = document.querySelector<HTMLElement>('#fov-fov-output');
+    const diagOutput = document.querySelector<HTMLElement>('#fov-diag-output');
+    if (!preset || !focalLengthInput || !pixelSizeInput || !resWInput || !resHInput || !sensorOutput || !scaleOutput || !fovOutput || !diagOutput) return;
+    if (preset.dataset.bound) return;
+    preset.dataset.bound = '1';
+    populateCameraSelect(preset);
+    enhanceSearchableSelect(preset);
+
+    const update = () => {
+      const focalLength = parseFloat(focalLengthInput.value);
+      const pixelSize = parseFloat(pixelSizeInput.value);
+      const resW = parseFloat(resWInput.value);
+      const resH = parseFloat(resHInput.value);
+      if (!focalLength || !pixelSize || !resW || !resH) {
+        sensorOutput.textContent = '—';
+        scaleOutput.textContent = '—';
+        fovOutput.textContent = '—';
+        diagOutput.textContent = '—';
+        return;
+      }
+
+      const sensorWmm = (resW * pixelSize) / 1000;
+      const sensorHmm = (resH * pixelSize) / 1000;
+      sensorOutput.textContent = `${sensorWmm.toFixed(1)} × ${sensorHmm.toFixed(1)} mm`;
+
+      const scale = (ARCSEC_PER_RAD * pixelSize) / focalLength / 1000;
+      scaleOutput.textContent = `${scale.toFixed(2)} arcsec/px`;
+
+      const fovWArcmin = (ARCMIN_PER_RAD * sensorWmm) / focalLength;
+      const fovHArcmin = (ARCMIN_PER_RAD * sensorHmm) / focalLength;
+      fovOutput.textContent = `${formatDegMin(fovWArcmin)} × ${formatDegMin(fovHArcmin)}`;
+
+      const diagMm = Math.sqrt(sensorWmm * sensorWmm + sensorHmm * sensorHmm);
+      const diagArcmin = (ARCMIN_PER_RAD * diagMm) / focalLength;
+      const lang = currentLang();
+      const label = lang === 'en' ? 'Diagonal FOV' : 'FOV diagonale';
+      diagOutput.textContent = `${label}: ${formatDegMin(diagArcmin)}`;
+    };
+
+    preset.addEventListener('change', () => {
+      const opt = preset.selectedOptions[0];
+      if (!opt || opt.value === 'custom') return;
+      const w = opt.dataset.w;
+      const h = opt.dataset.h;
+      const px = opt.dataset.px;
+      if (w) resWInput.value = w;
+      if (h) resHInput.value = h;
+      if (px) pixelSizeInput.value = px;
+      update();
+    });
+
+    [focalLengthInput, pixelSizeInput, resWInput, resHInput].forEach((el) => el.addEventListener('input', update));
+    update();
+
+    (window as any).__fovCalcUpdate = update;
+  }
+
+  function setupGuidescopeCalculator() {
+    const imgCameraPreset = document.querySelector<HTMLSelectElement>('#guide-img-camera-preset');
+    const imgFocalLengthInput = document.querySelector<HTMLInputElement>('#guide-img-focal-length');
+    const imgPixelSizeInput = document.querySelector<HTMLInputElement>('#guide-img-pixel-size');
+    const imgBinningSelect = document.querySelector<HTMLSelectElement>('#guide-img-binning');
+    const guideCameraPreset = document.querySelector<HTMLSelectElement>('#guide-cam-camera-preset');
+    const guideFocalLengthInput = document.querySelector<HTMLInputElement>('#guide-scope-focal-length');
+    const guidePixelSizeInput = document.querySelector<HTMLInputElement>('#guide-cam-pixel-size');
+    const guideBinningSelect = document.querySelector<HTMLSelectElement>('#guide-cam-binning');
+    const imgScaleOutput = document.querySelector<HTMLElement>('#guide-img-scale-output');
+    const guideScaleOutput = document.querySelector<HTMLElement>('#guide-guide-scale-output');
+    const ratioOutput = document.querySelector<HTMLElement>('#guide-ratio-output');
+    const ratingOutput = document.querySelector<HTMLElement>('#guide-rating-output');
+    const ratingDetail = document.querySelector<HTMLElement>('#guide-rating-detail');
+    if (
+      !imgCameraPreset || !imgFocalLengthInput || !imgPixelSizeInput || !imgBinningSelect ||
+      !guideCameraPreset || !guideFocalLengthInput || !guidePixelSizeInput || !guideBinningSelect ||
+      !imgScaleOutput || !guideScaleOutput || !ratioOutput || !ratingOutput || !ratingDetail
+    ) return;
+    if (imgFocalLengthInput.dataset.bound) return;
+    imgFocalLengthInput.dataset.bound = '1';
+    populateCameraSelect(imgCameraPreset);
+    populateCameraSelect(guideCameraPreset);
+    enhanceSearchableSelect(imgCameraPreset);
+    enhanceSearchableSelect(guideCameraPreset);
+
+    const RATINGS = {
+      excellent: {
+        color: '#4ade80',
+        en: ['Excellent', 'The guide camera resolves finer than the imaging setup — guiding corrections will be as precise as possible.'],
+        it: ['Eccellente', "La camera di guida campiona più fine dell'apparato di ripresa: le correzioni di guida saranno il più precise possibile."],
+      },
+      good: {
+        color: '#4ade80',
+        en: ['Good', 'A typical, well-balanced ratio between imaging and guiding resolution.'],
+        it: ['Buono', 'Un rapporto tipico e ben bilanciato tra la risoluzione di ripresa e quella di guida.'],
+      },
+      adequate: {
+        color: '#f7a60a',
+        en: ['Adequate', 'Workable, but the guide scope resolves noticeably coarser than the imaging setup — guiding may be less precise.'],
+        it: ['Adeguato', 'Funzionale, ma il telescopio guida campiona con una risoluzione sensibilmente più bassa rispetto a quella di ripresa: la guida potrebbe quindi risultare meno precisa.'],
+      },
+      poor: {
+        color: '#f87171',
+        en: ['Poor', 'The guide scope resolution is much coarser than the imaging setup — guiding errors smaller than a guide pixel will go undetected.'],
+        it: ['Scarso', 'La risoluzione del telescopio guida è molto più grossolana della ripresa: errori di guida più piccoli di un pixel di guida non verranno rilevati.'],
+      },
+    } as const;
+
+    const scaleOf = (pixelSize: number, focalLength: number, binning: number) =>
+      (ARCSEC_PER_RAD * pixelSize * binning) / focalLength / 1000;
+
+    const update = () => {
+      const imgFocalLength = parseFloat(imgFocalLengthInput.value);
+      const imgPixelSize = parseFloat(imgPixelSizeInput.value);
+      const imgBinning = parseFloat(imgBinningSelect.value) || 1;
+      const guideFocalLength = parseFloat(guideFocalLengthInput.value);
+      const guidePixelSize = parseFloat(guidePixelSizeInput.value);
+      const guideBinning = parseFloat(guideBinningSelect.value) || 1;
+
+      if (!imgFocalLength || !imgPixelSize || !guideFocalLength || !guidePixelSize) {
+        imgScaleOutput.textContent = '—';
+        guideScaleOutput.textContent = '—';
+        ratioOutput.textContent = '—';
+        ratingOutput.textContent = '—';
+        ratingDetail.textContent = '—';
+        return;
+      }
+
+      const imgScale = scaleOf(imgPixelSize, imgFocalLength, imgBinning);
+      const guideScale = scaleOf(guidePixelSize, guideFocalLength, guideBinning);
+      imgScaleOutput.textContent = `${imgScale.toFixed(2)} arcsec/px`;
+      guideScaleOutput.textContent = `${guideScale.toFixed(2)} arcsec/px`;
+
+      const ratio = guideScale / imgScale;
+      ratioOutput.textContent = `1:${ratio.toFixed(2)}`;
+
+      let key: keyof typeof RATINGS;
+      if (ratio < 1) key = 'excellent';
+      else if (ratio <= 4) key = 'good';
+      else if (ratio <= 6) key = 'adequate';
+      else key = 'poor';
+
+      const lang = currentLang();
+      const [label, detail] = RATINGS[key][lang];
+      ratingOutput.textContent = label;
+      ratingOutput.style.color = RATINGS[key].color;
+      ratingDetail.textContent = detail;
+    };
+
+    imgCameraPreset.addEventListener('change', () => {
+      const opt = imgCameraPreset.selectedOptions[0];
+      if (!opt || opt.value === 'custom') return;
+      const px = opt.dataset.px;
+      if (px) imgPixelSizeInput.value = px;
+      update();
+    });
+
+    guideCameraPreset.addEventListener('change', () => {
+      const opt = guideCameraPreset.selectedOptions[0];
+      if (!opt || opt.value === 'custom') return;
+      const px = opt.dataset.px;
+      if (px) guidePixelSizeInput.value = px;
+      update();
+    });
+
+    [imgFocalLengthInput, imgPixelSizeInput, guideFocalLengthInput, guidePixelSizeInput].forEach((el) =>
+      el.addEventListener('input', update)
+    );
+    [imgBinningSelect, guideBinningSelect].forEach((el) => el.addEventListener('change', update));
+    update();
+
+    (window as any).__guideCalcUpdate = update;
+  }
+
+  function setupFilterSizeCalculator() {
+    const cameraPreset = document.querySelector<HTMLSelectElement>('#filter-camera-preset');
+    const apertureInput = document.querySelector<HTMLInputElement>('#filter-aperture');
+    const focalLengthInput = document.querySelector<HTMLInputElement>('#filter-focal-length');
+    const gapInput = document.querySelector<HTMLInputElement>('#filter-gap');
+    const diagonalInput = document.querySelector<HTMLInputElement>('#filter-ccd-diagonal');
+    const sizeOutput = document.querySelector<HTMLElement>('#filter-size-output');
+    const standardOutput = document.querySelector<HTMLElement>('#filter-standard-output');
+    if (!cameraPreset || !apertureInput || !focalLengthInput || !gapInput || !diagonalInput || !sizeOutput || !standardOutput) return;
+    if (apertureInput.dataset.bound) return;
+    apertureInput.dataset.bound = '1';
+    populateCameraSelect(cameraPreset);
+    enhanceSearchableSelect(cameraPreset);
+
+    // Common commercially available filter sizes (mm): 1.25" unmounted, 31mm mounted,
+    // 36mm unmounted/T2, 2"/50.8mm mounted, 50mm unmounted, 65mm, 2" round for larger formats.
+    const STANDARD_SIZES = [31, 36, 50, 50.8, 65];
+
+    const update = () => {
+      const aperture = parseFloat(apertureInput.value);
+      const focalLength = parseFloat(focalLengthInput.value);
+      const gap = parseFloat(gapInput.value);
+      const diagonal = parseFloat(diagonalInput.value);
+      if (!aperture || !focalLength || !diagonal || gap < 0) {
+        sizeOutput.textContent = '—';
+        standardOutput.textContent = '—';
+        return;
+      }
+
+      const fieldAngle = diagonal / 2 / focalLength;
+      const fRatio = focalLength / aperture;
+      const filterSize = (focalLength - gap) * (fieldAngle / 0.5) + gap / fRatio;
+      sizeOutput.textContent = `${filterSize.toFixed(2)} mm`;
+
+      const nearest = STANDARD_SIZES.find((size) => size >= filterSize);
+      const lang = currentLang();
+      if (nearest) {
+        const label = lang === 'en' ? 'Nearest standard size' : 'Formato standard più vicino';
+        standardOutput.textContent = `${label}: ${nearest} mm`;
+      } else {
+        standardOutput.textContent =
+          lang === 'en'
+            ? 'Larger than common standard filter sizes — a custom/oversized filter may be needed.'
+            : 'Più grande dei formati standard comuni: potrebbe servire un filtro custom o sovradimensionato.';
+      }
+    };
+
+    cameraPreset.addEventListener('change', () => {
+      const opt = cameraPreset.selectedOptions[0];
+      if (!opt || opt.value === 'custom') return;
+      const w = parseFloat(opt.dataset.w || '0');
+      const h = parseFloat(opt.dataset.h || '0');
+      const px = parseFloat(opt.dataset.px || '0');
+      if (w && h && px) {
+        const sensorWmm = (w * px) / 1000;
+        const sensorHmm = (h * px) / 1000;
+        const diagMm = Math.sqrt(sensorWmm * sensorWmm + sensorHmm * sensorHmm);
+        diagonalInput.value = diagMm.toFixed(2);
+      }
+      update();
+    });
+
+    [apertureInput, focalLengthInput, gapInput, diagonalInput].forEach((el) => el.addEventListener('input', update));
+    update();
+
+    (window as any).__filterCalcUpdate = update;
+  }
+
+  function setup() {
+    setupCcdCalculator();
+    setupFovCalculator();
+    setupGuidescopeCalculator();
+    setupFilterSizeCalculator();
+  }
+
+  // Re-run rating/labels when the language toggle updates dynamic text.
+  document.addEventListener('astro:page-load', setup);
+  const langButtons = () => document.querySelectorAll<HTMLElement>('[data-lang-btn]');
+  langButtons().forEach((btn) =>
+    btn.addEventListener('click', () => {
+      (window as any).__ccdCalcUpdate?.();
+      (window as any).__fovCalcUpdate?.();
+      (window as any).__guideCalcUpdate?.();
+      (window as any).__filterCalcUpdate?.();
+      document.querySelectorAll<HTMLSelectElement>('select[data-combo-bound]').forEach((sel) => (sel as any).__comboSync?.());
+    })
+  );
+
+  setup();
+</script>
