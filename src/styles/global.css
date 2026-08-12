@@ -538,6 +538,43 @@
       transition: none;
     }
   }
+
+  /* Spins a card around its own vertical axis (like a page turning to face
+     you) before it settles flat — used for the calculator cards on the
+     astronomy-tools page. Needs its own perspective (rather than one shared
+     on a parent) so each card's rotation reads correctly regardless of
+     where it sits on the page. */
+  .reveal-3d-spin {
+    opacity: 0;
+    perspective: 1600px;
+  }
+
+  .reveal-3d-spin.is-visible {
+    animation: reveal-3d-spin-in 4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes reveal-3d-spin-in {
+    0% {
+      opacity: 0;
+      transform: perspective(1600px) translateX(calc(var(--spin-x, 0) * 1px)) rotateY(-520deg) scale(0.75);
+    }
+    55% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(1600px) translateX(0) rotateY(0deg) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-3d-spin {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
 }
 
 /* Slows the native View Transition morph of the shared portrait
