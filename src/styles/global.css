@@ -478,19 +478,63 @@
 
   .reveal-fade {
     opacity: 0;
-    transition: opacity 4s ease-out;
+    transform: translate(0, 0);
+    transition:
+      opacity 3s ease-out,
+      transform 3s ease-out;
     transition-delay: var(--reveal-delay, 0ms);
   }
 
   .reveal-fade.is-visible {
     opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* Diagonal/vertical fade-in variants: offset far enough that the card's
+     own (transformed) bounding box would otherwise cross the
+     IntersectionObserver's viewport threshold mid-animation and cause it
+     to flicker/re-trigger — so these are NOT self-observed. Instead their
+     visibility is driven by the stable, untransformed `.reveal-fade-group`
+     wrapper (see ScrollReveal.astro), whose own box never moves. */
+  .reveal-fade-up,
+  .reveal-fade-up-left,
+  .reveal-fade-up-right {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+      opacity 3s ease-out,
+      transform 3s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal-fade-up {
+    transform: translateY(10rem);
+  }
+
+  .reveal-fade-up-left {
+    transform: translate(-14rem, 10rem);
+  }
+
+  .reveal-fade-up-right {
+    transform: translate(14rem, 10rem);
+  }
+
+  .reveal-fade-group.is-visible .reveal-fade-up,
+  .reveal-fade-group.is-visible .reveal-fade-up-left,
+  .reveal-fade-group.is-visible .reveal-fade-up-right {
+    opacity: 1;
+    transform: translate(0, 0);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal-blur,
-    .reveal-fade {
+    .reveal-fade,
+    .reveal-fade-up,
+    .reveal-fade-up-left,
+    .reveal-fade-up-right {
       opacity: 1;
       filter: none;
+      transform: none;
       transition: none;
     }
   }

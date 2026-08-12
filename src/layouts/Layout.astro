@@ -110,36 +110,21 @@ const isHome = Astro.url.pathname === withBase('/');
       window.addEventListener('pageshow', resetHomeScroll);
       document.addEventListener('astro:after-swap', resetHomeScroll);
 
-      // Resetting on 'astro:after-swap' alone is too late: the outgoing page
-      // (e.g. a long "courses" page scrolled down) still has its own scrollY
-      // when the view-transition snapshot is taken, and since the home page
-      // renders a sticky footer right after <main>, that leftover scrollY
-      // lands squarely in the footer's territory — so the footer is what the
-      // transition shows before the after-swap reset snaps it back up. Scroll
-      // the *current* (outgoing) page to the top as soon as navigation to "/"
-      // is requested, before the transition/snapshot ever starts, so there's
-      // no leftover offset left to flash.
-      //
-      // Tried generalizing this to every destination (not just home), on the
-      // theory that lining up the outgoing snapshot's scroll position with
-      // the incoming page's (both at the top) would stop the crossfade from
-      // reading as "the page scrolls up, then changes" (see decisioni.md,
-      // 2026-08-12). Measured with Playwright frame-by-frame, including
-      // against a production `astro build` + `astro preview` — not just
-      // `astro dev` — to rule out dev-only overhead: there's a real,
-      // non-trivial gap between 'astro:after-preparation' (right after the
-      // fetch resolves) and the transition actually starting, so the
-      // generalized version just *relocated* the visible pre-scroll instead
-      // of removing it — the outgoing page still snaps to the top and sits
-      // there, still on the old URL, before anything crossfades. Reverted;
-      // kept home-only, where it was already working.
-      if (!window.__homeScrollFix) {
-        window.__homeScrollFix = true;
-        document.addEventListener('astro:before-preparation', (event) => {
-          if (event.to?.pathname === homePath) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        });
-      }
-
+      // There used to also be an 'astro:before-preparation' handler here that
+      // pre-scrolled the *outgoing* page to the top as soon as a navigation
+      // to "/" was requested — added back when <main> still crossfaded
+      // between pages, to stop the old page's leftover scrollY (e.g. deep
+      // down a long "courses" page) from flashing the home page's sticky
+      // footer during the transition. Since <main> now uses
+      // transition:animate="none" (see below; decisioni.md, 2026-08-12),
+      // there's no crossfade snapshot left for that leftover scrollY to leak
+      // into, so the pre-scroll had become pure overhead — and worse, a bug
+      // in its own right: it's a real scrollTo on the still-visible outgoing
+      // page, landing ~50-100ms before the swap, which reads as "scrolls to
+      // the top, then changes page" (reported on the video-utility "Torna
+      // alla Home" button after scrolling deep down the page). Removed;
+      // resetHomeScroll() on 'astro:after-swap' alone is enough now that the
+      // swap itself is an instant cut.
       // "Torna a ..." links point at another page's #section (e.g.
       // /video-utility/#tools). Astro's router can't scroll to a fragment as
       // part of its own SPA-style swap, so for any `to.hash` it falls back to

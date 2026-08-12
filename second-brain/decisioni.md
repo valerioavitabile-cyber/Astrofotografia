@@ -462,6 +462,20 @@ Prima ho provato un secondo approccio: far scrollare in cima anche la pagina IN 
 
 Capito che qualunque crossfade **simultaneo** fra due snapshot con scroll diverso (vecchia pagina a meta', nuova pagina in cima) puo' sempre, in teoria, leggersi come uno scroll, indipendentemente da quanto si accorcia la durata — e' solo questione di quanto e' probabile percepirlo. L'unica garanzia assoluta e' eliminare il crossfade: `transition:animate="none"` su `<main>` in [Layout.astro](../src/layouts/Layout.astro) al posto di `fade(...)`. Verificato con Playwright (frame a 60fps, build di produzione): il cambio pagina e' un taglio netto istantaneo, nessun fotogramma intermedio mostra le due pagine sovrapposte.
 
+## 2026-08-12 (continua) — Il pre-scroll "outgoing page to top" per la home era rimasto, ed era diventato lui stesso il bug
+
+Aggiunto un pulsante "Torna alla Home" in fondo a `video-utility/index.astro` (sotto le card "Strumenti e guide", stesso `btn-accent` con freccia di `courses/index.astro`). L'utente ha segnalato lo stesso sintomo di sempre — "scrolla in cima e poi si apre la home" — ma stavolta cliccando da uno scroll profondo (le card sono in fondo a una pagina lunga).
+
+Diagnosi con Playwright (log di `scrollY` per ogni evento del router, `astro:before-preparation`/`after-preparation`/`before-swap`/`after-swap`, campionato anche via `requestAnimationFrame`): lo scrollY della pagina di partenza restava a 606px fino a `before-swap` **tranne** che per un vecchio handler `astro:before-preparation` (aggiunto ai tempi del crossfade, vedi voce precedente) che per qualunque navigazione verso `/` forzava `window.scrollTo(0, 0, {behavior:'instant'})` sulla pagina ancora visibile, ancora sul vecchio URL — un vero scroll reale, non un artefatto di misura, ~50-100ms prima dello swap.
+
+Quell'handler serviva a evitare che lo snapshot crossfade mostrasse il footer della home (renderizzato subito dopo `<main>`) mentre la vecchia pagina era ancora scrollata in basso. Ma da quando `<main>` usa `transition:animate="none"` (voce precedente), non c'e' piu' nessuno snapshot/crossfade in cui quel leftover scroll possa "trapelare" — quindi il pre-scroll non serviva piu' a nulla se non a essere lui stesso, ora, l'unico movimento visibile prima del cambio pagina.
+
+**Fix:** rimosso l'handler `astro:before-preparation` in [Layout.astro](../src/layouts/Layout.astro); resta solo `resetHomeScroll()` su `astro:after-swap`/`load`/`pageshow`, sufficiente perche' lo swap e' gia' un taglio istantaneo. Verificato con Playwright su due pagine scrollate in profondita' (video-utility a 606px, courses a 169px): `scrollY` resta invariato fino a `before-swap` e passa a 0 nello stesso istante in cui l'URL cambia in `after-swap` — nessun fotogramma intermedio con lo scroll-up sulla vecchia pagina.
+
+**Perche':** stesso motivo di sempre — l'utente vuole che "torna alla home" sia un taglio netto, non un movimento percepibile prima del cambio.
+
+**Come si applica:** se in futuro riappare un flash del footer della home durante la navigazione (improbabile finche' `transition:animate="none"` resta su `<main>`), il primo sospetto e' che qualcosa abbia reintrodotto un'animazione/crossfade su quel wrapper — non reintrodurre il pre-scroll su `before-preparation` senza prima verificare se serve ancora, e' quello il tipo di fix che sembra innocuo ma e' proprio quello che ha causato questo bug.
+
 **Perché:** l'utente ha chiesto esplicitamente se si potesse evitare "proprio la cosa" — non solo attenuarla. Un taglio netto (come un sito tradizionale non-SPA) è l'unico modo per esserne certi al 100%.
 
 **Come si applica:** il sito ora cambia pagina con un taglio istantaneo, senza alcuna dissolvenza. Se in futuro si rivuole un effetto di transizione estetico, va accettato il compromesso: qualunque fade/crossfade fra pagine con posizioni di scroll diverse porta con sé un margine (per quanto piccolo con una durata molto breve, es. 150ms) di essere percepito come uno scroll. Rimosso anche l'import `fade` da `astro:transitions` in `Layout.astro`, non più usato.

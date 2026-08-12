@@ -9,6 +9,15 @@
     (entries) => {
       for (const entry of entries) {
         entry.target.classList.toggle('is-visible', entry.isIntersecting);
+        // .reveal-fade-group drives a large-distance staggered entrance
+        // (video-utility tools cards) — replaying it on every re-entry
+        // means it can also re-trigger mid-scroll near the threshold
+        // boundary, which reads as a jerky flicker. Firing once and
+        // detaching avoids that without affecting the toggle-and-replay
+        // behavior other reveal classes rely on.
+        if (entry.isIntersecting && entry.target.classList.contains('reveal-fade-group')) {
+          observer.unobserve(entry.target);
+        }
       }
     },
     { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
@@ -17,7 +26,7 @@
   const observe = () => {
     document
       .querySelectorAll<HTMLElement>(
-        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .barn-door-reveal',
+        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .reveal-fade-group, .barn-door-reveal',
       )
       .forEach((el) => observer.observe(el));
   };
