@@ -114,7 +114,29 @@
     root.style.setProperty('--hero-x1', '25px');
     root.style.setProperty('--hero-y1', '22px');
     root.style.setProperty('--hero-scale1', scale1.toFixed(4));
-    clone.classList.add('is-ready');
+  };
+
+  // Plays the blur-in entrance for the title clone. Split out from
+  // measureHeroClone (which also re-runs on resize/font-load to keep the
+  // morph geometry accurate) so those recalculations never replay the
+  // entrance — only an actual page load/navigation does. Resets first so
+  // the blurred/invisible starting state is in place before .is-ready is
+  // re-added. The short setTimeout (on top of the double rAF paint flush)
+  // clears the router's own brief default crossfade on navigation — adding
+  // .is-ready immediately on astro:page-load starts our 1.1s transition
+  // while that crossfade snapshot is still being captured, which can bake
+  // the animation's very first (invisible) frame into the snapshot and
+  // make the title look like it never faded in at all.
+  const revealHeroClone = () => {
+    const clone = document.querySelector<HTMLElement>('.hero-clone');
+    if (!clone) return;
+    clone.classList.remove('is-ready');
+    void clone.offsetWidth;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => clone.classList.add('is-ready'), 80);
+      });
+    });
   };
 
   const onHeroResize = () => {
@@ -126,6 +148,7 @@
   const setupHeroProgress = () => {
     if (reduceMotion || !document.getElementById('hero')) return;
     measureHeroClone();
+    revealHeroClone();
     // Start exactly at the current scroll position (no animated entrance on
     // load/navigation) and only ease subsequent movement from there.
     heroCurrent = getHeroTarget();

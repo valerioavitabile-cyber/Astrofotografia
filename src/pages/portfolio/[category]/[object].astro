@@ -28,6 +28,9 @@ const contentItHtml = await marked.parse(bodyIt.trim());
 const contentEnHtml = await marked.parse(bodyEn.trim());
 const cat = categories[entry.id.split('/')[0] as keyof typeof categories];
 const objectSlug = entry.id.split('/').pop() as string;
+// Alternates the 3D spin-reveal direction per object so neighboring pages
+// don't all spin the same way (purely cosmetic, no data behind it).
+const spinX = objectSlug.charCodeAt(0) % 2 === 0 ? 420 : -420;
 const acquisition = (astrobinData as Record<string, (typeof astrobinData)[string]>)[objectSlug];
 
 function formatDuration(totalSeconds: number) {
@@ -120,12 +123,15 @@ const fullRes = await getImage({
   descriptionIt={`${entry.data.titleIt} — astrofotografia di Valerio Avitabile.`}
 >
   <section class="mx-auto max-w-4xl px-6 pt-40 pb-16">
-    <h1 class="text-3xl font-semibold sm:text-4xl">
+    <h1 class="reveal-left text-3xl font-semibold sm:text-4xl">
       <span data-lang-en>{entry.data.title}</span>
       <span data-lang-it>{entry.data.titleIt}</span>
     </h1>
 
-    <div class="mt-8 overflow-hidden rounded-2xl border border-white/10">
+    <div
+      class="mt-8 overflow-hidden rounded-2xl border border-white/10 reveal-3d-spin"
+      style={`--reveal-delay: 0ms; --spin-x: ${spinX}`}
+    >
       <Lightbox
         client:load
         src={optimized.src}
@@ -136,13 +142,13 @@ const fullRes = await getImage({
       />
     </div>
 
-    <div class="prose-astro mt-10 max-w-none">
+    <div class="reveal-right prose-astro mt-10 max-w-none" style="--reveal-delay: 120ms">
       <div data-lang-en set:html={contentEnHtml} />
       <div data-lang-it set:html={contentItHtml} />
     </div>
 
     {acquisition && (
-      <div class="console-panel mt-10">
+      <div class="reveal-blur console-panel mt-10">
         <div class="console-topbar">
           <span class="console-title">
             <span data-lang-en>Equipment &amp; Acquisition Log</span>
@@ -392,6 +398,31 @@ const fullRes = await getImage({
       transparent 1px,
       transparent 3px
     );
+  }
+
+  /* The generic .reveal-blur (1.25rem blur, 3s) is tuned for large hero
+     visuals; on a dense text table the heavy blur makes the browser
+     re-rasterize the monospace glyphs every frame, which reads as a
+     shimmer/glitch on the letters. A lighter, shorter blur avoids that
+     while keeping the same "blur in" feel. The scanline overlay is also
+     held back until the reveal finishes so it isn't compositing with the
+     animated blur on top of the text. */
+  .console-panel.reveal-blur {
+    filter: blur(0.35rem);
+    transition-duration: 0.6s;
+  }
+
+  .console-panel.reveal-blur.is-visible {
+    filter: blur(0);
+  }
+
+  .console-panel::before {
+    opacity: 0;
+    transition: opacity 0.3s ease 0.3s;
+  }
+
+  .console-panel.is-visible::before {
+    opacity: 1;
   }
 
   .console-panel > * {
