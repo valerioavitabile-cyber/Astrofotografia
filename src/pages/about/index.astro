@@ -8,6 +8,8 @@ import portrait from '../../assets/about/portrait.jpg';
 import nasaApod from '../../assets/about/nasa-apod-300x127-300x127.jpg';
 import optolongAward from '../../assets/about/optolong.jpg';
 import astrobinAwards from '../../assets/about/astrobin-awards-badge.png';
+import astrobinStats from '../../assets/about/astrobin-stats.png';
+import astrobinStatsEn from '../../assets/about/astrobin-stats-en.png';
 import { withBase } from '../../utils/url';
 
 const entry = await getEntry('about', 'bio');
@@ -50,17 +52,200 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
         <span data-lang-en>Recognitions</span>
         <span data-lang-it>Riconoscimenti</span>
       </p>
-      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
-        <div class="aspect-[300/127] overflow-hidden rounded-2xl ring-1 ring-white/10">
-          <Image src={nasaApod} alt="NASA Astronomy Picture of the Day" class="h-full w-full object-cover" />
-        </div>
-        <div class="aspect-[900/383] overflow-hidden rounded-2xl ring-1 ring-white/10">
-          <Image src={optolongAward} alt="Optolong Deep-Sky Astrophotography Competition 2021 prize-winner" class="h-full w-full object-cover" />
-        </div>
-        <div class="aspect-[900/383] overflow-hidden rounded-2xl ring-1 ring-white/10">
-          <Image src={astrobinAwards} alt="AstroBin Awards" class="h-full w-full object-cover" />
-        </div>
+      <div class="iris-gallery mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
+        <a
+          href="https://apod.nasa.gov/apod/ap211105.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="iris-card media-card aspect-[300/127]"
+        >
+          <span class="iris-stage relative block h-full w-full">
+            <span class="iris-reveal block h-full w-full">
+              <Image src={nasaApod} alt="NASA Astronomy Picture of the Day" class="h-full w-full object-cover" />
+            </span>
+          </span>
+        </a>
+        <a
+          href="https://optolong.com/cms/document/detail/id/165.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="iris-card media-card aspect-[900/383]"
+        >
+          <span class="iris-stage relative block h-full w-full">
+            <span class="iris-reveal block h-full w-full">
+              <Image src={optolongAward} alt="Optolong Deep-Sky Astrophotography Competition 2021 prize-winner" class="h-full w-full object-cover" />
+            </span>
+          </span>
+        </a>
+        <button
+          type="button"
+          id="astrobin-awards-trigger"
+          data-stats-src={astrobinStats.src}
+          data-stats-src-en={astrobinStatsEn.src}
+          aria-label="AstroBin Awards"
+          data-tr={JSON.stringify({ attr: 'aria-label', it: 'Statistiche AstroBin', en: 'AstroBin stats' })}
+          class="iris-card media-card aspect-[900/383] cursor-pointer"
+        >
+          <span class="iris-stage relative block h-full w-full">
+            <span class="iris-reveal block h-full w-full">
+              <Image src={astrobinAwards} alt="AstroBin Awards" class="h-full w-full object-cover" />
+            </span>
+          </span>
+        </button>
       </div>
     </div>
+
+    <div class="mt-16 flex justify-center">
+      <a href={withBase('/')} class="btn-accent justify-center min-w-[190px]" data-astro-reload>
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-lang-en>Back to Home</span>
+        <span data-lang-it>Torna alla Home</span>
+      </a>
+    </div>
   </section>
+
+  <script>
+    // Modale fade-in per la card AstroBin Awards: stesso schema apri/chiudi
+    // del modale video (LiteYouTube.astro) — overlay creato via JS e
+    // appeso in coda a <body> cosi finisce sempre sopra header/lang-switcher
+    // a prescindere dallo z-index dichiarato staticamente (niente morph a
+    // view transition qui, e' solo un'immagine statica: basta un fade).
+    const setupAstrobinStatsModal = () => {
+      const trigger = document.getElementById('astrobin-awards-trigger');
+      if (!trigger || trigger.dataset.bound) return;
+      trigger.dataset.bound = '1';
+
+      trigger.addEventListener('click', () => {
+        // Lingua attiva al momento del click (stessa convenzione di
+        // LiteYouTube.astro), non quella con cui la pagina e' stata
+        // renderizzata lato server.
+        const lang = document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'it';
+        const src = lang === 'en' ? trigger.dataset.statsSrcEn : trigger.dataset.statsSrc;
+        if (!src) return;
+
+        const overlay = document.createElement('div');
+        overlay.className =
+          'fixed inset-0 z-[999] flex items-center justify-center bg-black/90 p-4 opacity-0 transition-opacity duration-300 sm:p-8';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative w-full max-w-4xl';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.setAttribute('aria-label', 'Close');
+        closeBtn.className =
+          'absolute -top-10 right-0 text-3xl leading-none text-white/80 transition hover:text-white sm:-top-12';
+        closeBtn.textContent = '×';
+
+        const frame = document.createElement('div');
+        frame.className = 'relative overflow-hidden rounded-2xl border border-white/10 bg-surface';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = lang === 'en' ? 'AstroBin statistics' : 'Statistiche AstroBin';
+        img.className = 'h-full w-full object-contain';
+        frame.append(img);
+
+        // Il titolo "La mia attivita su AstroBin" e' inciso nel PNG (non
+        // testo HTML): l'unico modo di renderlo cliccabile e' un link
+        // trasparente posizionato sopra, a percentuale della sua bbox
+        // reale nell'immagine (2176x1348) cosi resta allineato a qualsiasi
+        // larghezza renderizzata (l'img scala a w-full, height auto).
+        const titleLink = document.createElement('a');
+        titleLink.href = 'https://www.astrobin.com/users/valerio76/';
+        titleLink.target = '_blank';
+        titleLink.rel = 'noopener noreferrer';
+        titleLink.setAttribute('aria-label', 'AstroBin profile: valerio76');
+        titleLink.className = 'group absolute cursor-pointer overflow-hidden';
+        const bboxLeft = 4;
+        const bboxTop = 9.5;
+        const bboxWidth = 41;
+        const bboxHeight = 8.5;
+        titleLink.style.left = `${bboxLeft}%`;
+        titleLink.style.top = `${bboxTop}%`;
+        titleLink.style.width = `${bboxWidth}%`;
+        titleLink.style.height = `${bboxHeight}%`;
+
+        // Il titolo e' testo bianco inciso nel PNG: non e' ricolorabile via
+        // CSS diretto. mask-image con mask-mode:luminance lascerebbe
+        // trapelare anche lo sfondo scuro del riquadro (non e' nero puro),
+        // disegnando un rettangolo pallido intorno al testo — non
+        // accettabile ("solo la scritta, niente sfondo"). Si ritaglia quindi
+        // la bbox del titolo su un canvas offscreen alla risoluzione
+        // originale e si applica una soglia sulla luminanza pixel per
+        // pixel: sopra soglia -> alpha piena (e' il testo), sotto -> alpha
+        // zero (sfondo, del tutto trasparente). Il PNG risultante, usato
+        // come mask-image in alpha mode (default), sagoma la tinta accent
+        // esattamente sulle lettere.
+        const tint = document.createElement('span');
+        tint.className =
+          'pointer-events-none absolute inset-0 bg-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100';
+        titleLink.append(tint);
+
+        const buildTitleMask = () => {
+          const sx = Math.round((bboxLeft / 100) * img.naturalWidth);
+          const sy = Math.round((bboxTop / 100) * img.naturalHeight);
+          const sw = Math.round((bboxWidth / 100) * img.naturalWidth);
+          const sh = Math.round((bboxHeight / 100) * img.naturalHeight);
+          const canvas = document.createElement('canvas');
+          canvas.width = sw;
+          canvas.height = sh;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+          const data = ctx.getImageData(0, 0, sw, sh);
+          const LOW = 90;
+          const HIGH = 150;
+          for (let i = 0; i < data.data.length; i += 4) {
+            const luminance = 0.299 * data.data[i] + 0.587 * data.data[i + 1] + 0.114 * data.data[i + 2];
+            const alpha = Math.max(0, Math.min(1, (luminance - LOW) / (HIGH - LOW)));
+            data.data[i + 3] = Math.round(alpha * 255);
+          }
+          ctx.putImageData(data, 0, 0);
+          const dataUrl = canvas.toDataURL('image/png');
+          tint.style.maskImage = `url("${dataUrl}")`;
+          tint.style.webkitMaskImage = `url("${dataUrl}")`;
+          tint.style.maskSize = '100% 100%';
+          tint.style.webkitMaskSize = '100% 100%';
+          tint.style.maskRepeat = 'no-repeat';
+          tint.style.webkitMaskRepeat = 'no-repeat';
+        };
+
+        if (img.complete && img.naturalWidth) {
+          buildTitleMask();
+        } else {
+          img.addEventListener('load', buildTitleMask, { once: true });
+        }
+
+        frame.append(titleLink);
+
+        wrapper.append(closeBtn, frame);
+        overlay.append(wrapper);
+        document.body.append(overlay);
+        document.body.classList.add('overflow-hidden');
+        requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
+
+        const close = () => {
+          overlay.classList.add('opacity-0');
+          document.body.classList.remove('overflow-hidden');
+          document.removeEventListener('keydown', onKeydown);
+          window.setTimeout(() => overlay.remove(), 300);
+        };
+
+        const onKeydown = (e: KeyboardEvent) => {
+          if (e.key === 'Escape') close();
+        };
+
+        closeBtn.addEventListener('click', close);
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) close();
+        });
+        document.addEventListener('keydown', onKeydown);
+      });
+    };
+
+    document.addEventListener('astro:page-load', setupAstrobinStatsModal);
+  </script>
 </Layout>
