@@ -12,6 +12,28 @@ import astrobinStats from '../../assets/about/astrobin-stats.png';
 import astrobinStatsEn from '../../assets/about/astrobin-stats-en.png';
 import { withBase } from '../../utils/url';
 
+// Bounding box (px, riferiti alla risoluzione nativa 2176x1348 del PNG,
+// identica in entrambe le lingue) di ogni numero mostrato nello screenshot
+// AstroBin, individuata a livello di pixel con una soglia di luminanza
+// (script scratch, non nel repo) invece che a occhio, per evitare di
+// disallineare l'overlay animato dal numero reale sotto.
+const NUMBER_OVERLAYS = [
+  { key: 'images', value: 89, x: 379, y: 529, w: 72, h: 55, color: 'white' },
+  { key: 'followers', value: 373, x: 1035, y: 537, w: 106, h: 46, color: 'white' },
+  { key: 'following', value: 1086, x: 1690, y: 528, w: 144, h: 46, color: 'white' },
+  { key: 'totalIntegrationHours', value: 1136, x: 348, y: 798, w: 134, h: 52, color: 'accent' },
+  { key: 'averageHoursPerImage', value: '12.9', x: 1030, y: 807, w: 117, h: 43, color: 'white' },
+  { key: 'awardedImages', value: 16, x: 1680, y: 798, w: 66, h: 46, color: 'accent' },
+  { key: 'imageOfTheDay', value: 1, x: 306, y: 1120, w: 24, h: 30, color: 'white' },
+  { key: 'topPick', value: 10, x: 977, y: 1120, w: 53, h: 30, color: 'white' },
+  { key: 'topPickNomination', value: 5, x: 1647, y: 1120, w: 26, h: 38, color: 'white' },
+];
+const STATS_IMAGE_NATURAL_WIDTH = 2176;
+const STATS_IMAGE_NATURAL_HEIGHT = 1348;
+// Sfondo carta campionato a pixel dal PNG (#26262e): copre la cifra
+// originale prima di disegnarci sopra il numero animato.
+const STATS_CARD_BG = '#26262e';
+
 const entry = await getEntry('about', 'bio');
 const [bodyIt, bodyEn] = entry?.body?.split(/\n\n---\n\n/) ?? ['', ''];
 const contentItHtml = (await marked.parse(bodyIt.trim())).replaceAll('href="/courses/"', `href="${withBase('/courses/')}"`);
@@ -106,12 +128,109 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
     </div>
   </section>
 
-  <script>
+  <script define:vars={{ NUMBER_OVERLAYS, STATS_IMAGE_NATURAL_WIDTH, STATS_IMAGE_NATURAL_HEIGHT, STATS_CARD_BG }}>
     // Modale fade-in per la card AstroBin Awards: stesso schema apri/chiudi
     // del modale video (LiteYouTube.astro) — overlay creato via JS e
     // appeso in coda a <body> cosi finisce sempre sopra header/lang-switcher
-    // a prescindere dallo z-index dichiarato staticamente (niente morph a
-    // view transition qui, e' solo un'immagine statica: basta un fade).
+    // a prescindere dallo z-index dichiarato staticamente. Il modale mostra
+    // lo screenshot AstroBin reale (identico all'originale, IT/EN): sopra
+    // ogni numero viene disegnato un rettangolo dello stesso colore di
+    // sfondo della card (nasconde la cifra del PNG) con sopra il numero
+    // vero come testo animato a rullo (odometro), posizionato in percentuale
+    // sulla bbox pixel-precisa individuata nello screenshot originale
+    // (vedi NUMBER_OVERLAYS in frontmatter). Il resto dell'immagine (titolo,
+    // icone dei badge, etichette, percentuali) resta lo screenshot originale,
+    // invariato.
+    const buildOdometer = (el, digitEm) => {
+      const target = el.dataset.odometer ?? '';
+      el.textContent = '';
+      el.classList.add('odometer');
+      const strips = [];
+
+      for (const ch of target) {
+        if (/[0-9]/.test(ch)) {
+          const reel = document.createElement('span');
+          reel.className = 'odometer-digit';
+          if (digitEm) reel.style.width = `${digitEm}em`;
+          const strip = document.createElement('span');
+          strip.className = 'odometer-digit-strip';
+          for (let i = 0; i <= 9; i += 1) {
+            const digitEl = document.createElement('span');
+            digitEl.className = 'odometer-digit-cell';
+            digitEl.textContent = String(i);
+            strip.append(digitEl);
+          }
+          reel.append(strip);
+          el.append(reel);
+          strips.push({ strip, digit: Number(ch) });
+        } else {
+          const staticEl = document.createElement('span');
+          staticEl.className = 'odometer-static';
+          staticEl.textContent = ch;
+          el.append(staticEl);
+        }
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          strips.forEach(({ strip, digit }, i) => {
+            strip.style.transitionDelay = `${i * 60}ms`;
+            strip.style.transform = `translateY(-${digit * 10}%)`;
+          });
+        });
+      });
+    };
+
+    // Un rullo per cifra ha una larghezza propria (0.62em, vedi CSS), quindi
+    // un numero a N cifre e' largo N*0.62em: il rettangolo di copertura deve
+    // essere posizionato/dimensionato di conseguenza, non semplicemente
+    // sovrapposto alla bbox del testo originale (che e' piu' stretta di un
+    // font monospaziato).
+    const DIGIT_EM = 0.62;
+
+    const layoutNumberOverlays = (frame, img) => {
+      const scale = img.clientWidth / STATS_IMAGE_NATURAL_WIDTH;
+      frame.querySelectorAll('.stats-number-overlay').forEach((wrap) => {
+        const spec = NUMBER_OVERLAYS.find((s) => s.key === wrap.dataset.key);
+        if (!spec) return;
+        const fontSizePx = (spec.h * scale) / 0.72;
+        const digitCount = String(spec.value).replace(/[^0-9]/g, '').length || 1;
+        const numberWidthPx = digitCount * DIGIT_EM * fontSizePx;
+        const centerXPx = (spec.x + spec.w / 2) * scale;
+        const centerYPx = (spec.y + spec.h / 2) * scale;
+        const padPx = fontSizePx * 0.18;
+
+        wrap.style.left = `${centerXPx - numberWidthPx / 2 - padPx}px`;
+        wrap.style.top = `${centerYPx - fontSizePx / 2 - padPx * 0.6}px`;
+        wrap.style.width = `${numberWidthPx + padPx * 2}px`;
+        wrap.style.height = `${fontSizePx + padPx * 1.2}px`;
+
+        const valueEl = wrap.querySelector('.stats-number-value');
+        if (valueEl) valueEl.style.fontSize = `${fontSizePx}px`;
+      });
+    };
+
+    const buildNumberOverlays = (frame, img) => {
+      frame.querySelectorAll('.stats-number-overlay').forEach((el) => el.remove());
+
+      for (const spec of NUMBER_OVERLAYS) {
+        const wrap = document.createElement('div');
+        wrap.className = 'stats-number-overlay absolute flex items-center justify-center rounded-[3px]';
+        wrap.dataset.key = spec.key;
+        wrap.style.background = STATS_CARD_BG;
+
+        const valueEl = document.createElement('span');
+        valueEl.className = `stats-number-value font-bold leading-none ${spec.color === 'accent' ? 'text-accent' : 'text-white'}`;
+        valueEl.dataset.odometer = String(spec.value);
+        wrap.append(valueEl);
+        frame.append(wrap);
+
+        buildOdometer(valueEl, DIGIT_EM);
+      }
+
+      layoutNumberOverlays(frame, img);
+    };
+
     const setupAstrobinStatsModal = () => {
       const trigger = document.getElementById('astrobin-awards-trigger');
       if (!trigger || trigger.dataset.bound) return;
@@ -213,11 +332,19 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
           tint.style.webkitMaskRepeat = 'no-repeat';
         };
 
-        if (img.complete && img.naturalWidth) {
+        const onImageReady = () => {
           buildTitleMask();
+          buildNumberOverlays(frame, img);
+        };
+
+        if (img.complete && img.naturalWidth) {
+          onImageReady();
         } else {
-          img.addEventListener('load', buildTitleMask, { once: true });
+          img.addEventListener('load', onImageReady, { once: true });
         }
+
+        const onResize = () => layoutNumberOverlays(frame, img);
+        window.addEventListener('resize', onResize);
 
         frame.append(titleLink);
 
@@ -231,10 +358,11 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
           overlay.classList.add('opacity-0');
           document.body.classList.remove('overflow-hidden');
           document.removeEventListener('keydown', onKeydown);
+          window.removeEventListener('resize', onResize);
           window.setTimeout(() => overlay.remove(), 300);
         };
 
-        const onKeydown = (e: KeyboardEvent) => {
+        const onKeydown = (e) => {
           if (e.key === 'Escape') close();
         };
 
@@ -248,4 +376,41 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
 
     document.addEventListener('astro:page-load', setupAstrobinStatsModal);
   </script>
+
+  <style is:global>
+    .odometer {
+      display: inline-flex;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .odometer-digit {
+      position: relative;
+      display: inline-block;
+      height: 1em;
+      width: 0.62em;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .odometer-digit-strip {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1000%;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(0);
+      transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .odometer-digit-cell {
+      height: 10%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .odometer-static {
+      display: inline-block;
+    }
+  </style>
 </Layout>
