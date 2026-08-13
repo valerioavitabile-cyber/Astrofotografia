@@ -104,5 +104,5 @@ export const mainNav = [
   { label: 'Courses', labelIt: 'Corsi', href: '/courses/' },
   { label: 'Video & Utility', labelIt: 'Video & Utility', href: '/video-utility/' },
   { label: 'About', labelIt: 'Chi sono', href: '/about/' },
-  { label: 'Contact', labelIt: 'Contatti', href: '/contact/' },
+  { label: 'Contact', labelIt: 'Contatti', href: '/#site-footer' },
 ];

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { withBase } from '../../utils/url';
+import { socials } from '../../data/socials';
 
 const topics = [
   {
@@ -54,8 +55,8 @@ const topics = [
         <div class="prose-astro mt-4">
           <div data-lang-en>
             <p>
-              I have transformed my passion for processing into a clear and effective teaching method. In my
-              <strong>online courses</strong>, I will teach you my complete workflow for transforming a simple
+              I have transformed my passion for processing into a clear and effective teaching method. In my 
+               online courses, I will teach you my complete workflow for transforming a simple
               RAW file into a spectacular astronomical photograph.
             </p>
             <p>
@@ -64,15 +65,12 @@ const topics = [
               Camera Raw. This course is designed for both beginners and those who want to discover alternative
               techniques.
             </p>
-            <p>
-              <a href={withBase('/contact/')} class="font-semibold">Click here</a> to contact me through your preferred
-              channels and get more information.
-            </p>
+            <p>Contact me for more information.</p>
           </div>
           <div data-lang-it>
             <p>
               Ho trasformato la mia passione per l'elaborazione in un metodo di insegnamento chiaro ed
-              efficace. Nei miei <strong>corsi online</strong>, ti insegnerò il mio flusso di lavoro completo
+              efficace. Nei miei corsi online, ti insegnerò il mio flusso di lavoro completo
               per trasformare un semplice file RAW in una spettacolare fotografia astronomica.
             </p>
             <p>
@@ -81,11 +79,48 @@ const topics = [
               Photoshop e Camera Raw. Questo corso è pensato sia per i principianti sia per chi vuole scoprire
               tecniche alternative.
             </p>
-            <p>
-              <a href={withBase('/contact/')} class="font-semibold">Clicca qui</a> per contattarmi attraverso il tuo
-              canale preferito e ricevere maggiori informazioni.
-            </p>
+            <p>Contattami per maggiori informazioni.</p>
           </div>
+        </div>
+
+        <div
+          class="mt-4 flex flex-wrap gap-4"
+          role="list"
+          aria-label="Follow on social media"
+          data-tr={JSON.stringify({ attr: 'aria-label', en: 'Follow on social media', it: 'Seguimi sui social' })}
+        >
+          {
+            socials.map((s) => (
+              <a
+                href={s.href}
+                target={s.external ? '_blank' : undefined}
+                rel={s.external ? 'noopener' : undefined}
+                aria-label={s.label}
+                title={s.label}
+                class="footer-icon"
+                style={`--icon-hover: ${s.color}`}
+              >
+                {s.label === 'Instagram' ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4.2" />
+                    <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
+                  </svg>
+                ) : (
+                  <svg
+                    viewBox={s.viewBox}
+                    fill={s.stroke ? 'none' : 'currentColor'}
+                    stroke={s.stroke ? 'currentColor' : undefined}
+                    stroke-width={s.stroke ? '1.8' : undefined}
+                    stroke-linecap={s.stroke ? 'round' : undefined}
+                    stroke-linejoin={s.stroke ? 'round' : undefined}
+                  >
+                    <path d={s.icon} />
+                  </svg>
+                )}
+              </a>
+            ))
+          }
         </div>
       </div>
 

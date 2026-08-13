@@ -112,6 +112,33 @@ const isHome = Astro.url.pathname === withBase('/');
       window.addEventListener('pageshow', resetHomeScroll);
       document.addEventListener('astro:after-swap', resetHomeScroll);
 
+      // A link click to the *same* URL the browser is already on (e.g. the
+      // footer's "Torna alla Home", clicked while already on "/") makes
+      // Chrome silently restore the scroll offset the page had right before
+      // that navigation — animated by the browser itself, independently of
+      // history.scrollRestoration (which only governs back/forward) and of
+      // our own JS (which can't run early enough to stop an animation the
+      // browser starts internally, before or alongside painting). It plays
+      // out over the page's whole load time (measured: ~800ms, easing from
+      // 0 up toward the old offset), so a single resetHomeScroll() on
+      // 'load'/'pageshow' lands in the middle of that animation at an
+      // unpredictable frame — which is exactly what read as "sometimes
+      // lands with some random leftover scroll" (reported on the footer's
+      // back-to-home button specifically, since it's the only one that's a
+      // same-URL navigation; every other "back to home" link goes from a
+      // *different* page, which the browser has no old offset to restore).
+      // Repeatedly pinning to 0 every animation frame, instead of a few
+      // discrete resets, fights that animation on every frame it takes
+      // instead of just interrupting it once mid-flight.
+      if (window.location.pathname === homePath) {
+        const pinStart = performance.now();
+        const pinHomeScroll = () => {
+          resetHomeScroll();
+          if (performance.now() - pinStart < 1500) requestAnimationFrame(pinHomeScroll);
+        };
+        requestAnimationFrame(pinHomeScroll);
+      }
+
       // There used to also be an 'astro:before-preparation' handler here that
       // pre-scrolled the *outgoing* page to the top as soon as a navigation
       // to "/" was requested — added back when <main> still crossfaded
@@ -142,6 +169,41 @@ const isHome = Astro.url.pathname === withBase('/');
       // there's no animation to get interrupted) lands exactly on the
       // section every time. The hash is restored in the URL afterwards so
       // the address bar/bookmark still reflect it.
+      // Forces the footer's fade+blur-in reveal (see Footer.astro's
+      // `.sticky-footer`/`.is-visible`) to actually replay when jumping to
+      // it directly via a "Contatti"-style link. Left to itself, the
+      // footer's IntersectionObserver marks it `is-visible` the moment it's
+      // set up on page load — because it's `position: sticky; bottom: 0`,
+      // its bounding box already sits at the viewport's bottom edge from
+      // the very first paint (just visually hidden behind the opaque
+      // `<main>` curtain sliding over it), so IntersectionObserver reports
+      // it as "intersecting" immediately, well before any real scrolling
+      // happens. By the time a same-page click jumps straight to it, the
+      // reveal has already fully resolved to opaque/sharp with nothing left
+      // to animate — the click just felt like a hard cut. Stripping
+      // `is-visible` right before the jump and re-adding it a frame later
+      // (after `offsetWidth` forces the hidden frame to actually paint)
+      // replays the transition on demand instead of relying on it having
+      // already fired at some meaningless earlier moment.
+      function replayFooterReveal() {
+        const footer = document.getElementById('site-footer');
+        if (!footer) return;
+        // Removing the class alone would still animate — from whatever
+        // opacity/blur it already had (usually fully visible, per the note
+        // above) back down toward hidden — which is itself a transition,
+        // so re-adding the class a frame later just reverses that partway
+        // through, reading as a quick flicker/dip instead of a clean fade
+        // in from nothing. Suspending the transition for the instant the
+        // hidden state is applied (then re-enabling it before the class
+        // goes back on) forces a hard, invisible jump to hidden first, so
+        // what plays afterward is a genuine fade+blur-in from zero.
+        footer.style.transition = 'none';
+        footer.classList.remove('is-visible');
+        void footer.offsetWidth;
+        footer.style.transition = '';
+        requestAnimationFrame(() => footer.classList.add('is-visible'));
+      }
+
       if (!window.__hashScrollFix) {
         window.__hashScrollFix = true;
         let pendingHash = '';
@@ -158,7 +220,67 @@ const isHome = Astro.url.pathname === withBase('/');
           const target = document.querySelector(hash);
           if (!target) return;
           history.replaceState(history.state, '', location.pathname + location.search + hash);
-          target.scrollIntoView({ behavior: 'instant', block: 'start' });
+          // #site-footer is `position: sticky` to its own scroll container,
+          // not a normal in-flow element — scrollIntoView() computes its
+          // target offset from getBoundingClientRect(), which for a sticky
+          // element mid-viewport-pin returns wherever it's currently stuck
+          // rather than its natural document position, so it lands far short
+          // of the page bottom. Scrolling the page to its max scroll extent
+          // is the only way to actually reveal it.
+          if (hash === '#site-footer') {
+            replayFooterReveal();
+            window.scrollTo({ top: document.documentElement.scrollHeight, left: 0, behavior: 'instant' });
+          } else {
+            target.scrollIntoView({ behavior: 'instant', block: 'start' });
+          }
+        });
+      }
+
+      // The fix above only fires on an actual page transition
+      // ('astro:before-preparation' / 'astro:after-swap'), but a click on
+      // "Contatti" while already sitting on the home page is a same-URL,
+      // hash-only navigation — Astro's router doesn't treat that as a
+      // transition at all, so those events never fire and the click falls
+      // through to the browser's native anchor-jump, which undershoots for
+      // the same sticky-footer reason described above (and, unlike a real
+      // transition, there's no swap to wait for — so it's not slow, it just
+      // silently lands in the wrong place). Handling the click directly
+      // here, independent of the transition lifecycle, is what makes the
+      // jump immediate and correct regardless of what the entrance
+      // animations on the page are doing.
+      if (!window.__siteFooterClickFix) {
+        window.__siteFooterClickFix = true;
+        document.addEventListener('click', (event) => {
+          const link = event.target.closest?.('a[href*="#site-footer"]');
+          if (!link) return;
+          const url = new URL(link.href, location.href);
+          if (url.pathname !== location.pathname) return;
+          event.preventDefault();
+          history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+          replayFooterReveal();
+          window.scrollTo({ top: document.documentElement.scrollHeight, left: 0, behavior: 'instant' });
+        });
+      }
+
+      // Drives Footer.astro's `html[data-nav-swap] .sticky-footer` guard
+      // (forces the footer hidden mid-swap so it can't flash through before
+      // the incoming page settles). Deliberately our own attribute instead
+      // of Astro's own `data-astro-transition`: that one is only removed
+      // once `ViewTransition.finished` resolves, measured at ~2.5-3s after
+      // landing on the page (real Chromium) — leaving the footer forced
+      // invisible that whole time on any cross-page arrival at
+      // "#site-footer" (reported: About → "Contatti" felt like it "took
+      // forever" to fade in). 'astro:page-load' fires within a frame or two
+      // of the actual DOM swap, so clearing on it instead removes that
+      // multi-second dead wait without losing the original protection.
+      if (!window.__navSwapGuard) {
+        window.__navSwapGuard = true;
+        const html = document.documentElement;
+        document.addEventListener('astro:before-preparation', () => {
+          html.setAttribute('data-nav-swap', '');
+        });
+        document.addEventListener('astro:page-load', () => {
+          html.removeAttribute('data-nav-swap');
         });
       }
 
