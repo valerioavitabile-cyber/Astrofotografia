@@ -5,6 +5,9 @@ import { getEntry } from 'astro:content';
 import { slide } from 'astro:transitions';
 import { marked } from 'marked';
 import portrait from '../../assets/about/portrait.jpg';
+import nasaApod from '../../assets/about/nasa-apod-300x127-300x127.jpg';
+import optolongAward from '../../assets/about/optolong.jpg';
+import astrobinAwards from '../../assets/about/astrobin-awards-badge.png';
 import { withBase } from '../../utils/url';
 
 const entry = await getEntry('about', 'bio');
@@ -38,6 +41,24 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
         <div class="prose-astro mt-4">
           <div data-lang-en set:html={contentEnHtml} />
           <div data-lang-it set:html={contentItHtml} />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 border-t border-white/10 pt-10 sm:mt-20 sm:pt-12">
+      <p class="eyebrow text-center">
+        <span data-lang-en>Recognitions</span>
+        <span data-lang-it>Riconoscimenti</span>
+      </p>
+      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:items-start">
+        <div class="aspect-[300/127] overflow-hidden rounded-2xl ring-1 ring-white/10">
+          <Image src={nasaApod} alt="NASA Astronomy Picture of the Day" class="h-full w-full object-cover" />
+        </div>
+        <div class="aspect-[900/383] overflow-hidden rounded-2xl ring-1 ring-white/10">
+          <Image src={optolongAward} alt="Optolong Deep-Sky Astrophotography Competition 2021 prize-winner" class="h-full w-full object-cover" />
+        </div>
+        <div class="aspect-[900/383] overflow-hidden rounded-2xl ring-1 ring-white/10">
+          <Image src={astrobinAwards} alt="AstroBin Awards" class="h-full w-full object-cover" />
         </div>
       </div>
     </div>
