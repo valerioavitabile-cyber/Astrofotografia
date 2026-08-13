@@ -22,15 +22,15 @@ function astrobinSync() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://valerioavitabile-cyber.github.io',
-  base: '/Astrofotografia',
+  site: 'https://valerioavitabile-astrophotography.it',
+  base: '/',
   vite: {
     plugins: [tailwindcss()]
   },
 
   redirects: {
-    '/videos/': '/Astrofotografia/video-utility/#video',
-    '/utility/': '/Astrofotografia/video-utility/#tools',
+    '/videos/': '/video-utility/#video',
+    '/utility/': '/video-utility/#tools',
   },
 
   integrations: [react(), astrobinSync()]
