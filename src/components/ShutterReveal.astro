@@ -1,0 +1,22 @@
+---
+// Shutter curtains reveal: covers the slotted media with vertical strips
+// that slide away alternately (odd strips up, even down) once the shared
+// ScrollReveal.astro observer adds .is-visible — same toggle-on-intersect
+// pattern as .barn-door-reveal, just with more, thinner panels.
+interface Props {
+  columns?: number;
+  delay?: number;
+  stagger?: number;
+  class?: string;
+}
+
+const { columns = 8, delay = 0.15, stagger = 0.06, class: className = '' } = Astro.props;
+const strips = Array.from({ length: columns }, (_, i) => (delay + i * stagger).toFixed(2));
+---
+
+<div class={`shutter-reveal ${className}`}>
+  <slot />
+  <div class="shutter-strips" aria-hidden="true">
+    {strips.map((d) => <div class="shutter-strip" style={`transition-delay: ${d}s`} />)}
+  </div>
+</div>

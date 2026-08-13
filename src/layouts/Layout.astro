@@ -183,6 +183,50 @@ const isHome = Astro.url.pathname === withBase('/');
       }
     </script>
     <script is:inline>
+      // .img-zoom photos (tutorial/article images): zoom only engages after
+      // a click (not on hover), toggling .is-zoomed (see global.css). While
+      // zoomed, tracking the pointer and moving transform-origin to match
+      // lets the zoomed-in view pan to wherever the cursor is, so every part
+      // of the photo (including corners) becomes reachable instead of always
+      // cropping around a fixed center. Clicking the photo again, clicking
+      // elsewhere, or pressing Escape zooms back out. Delegated on
+      // `document` so it keeps working after Astro's client-side
+      // navigations swap in new .img-zoom elements, without needing to
+      // re-run setup on every page load.
+      if (!window.__imgZoomPan) {
+        window.__imgZoomPan = true;
+
+        function panTo(wrap, clientX, clientY) {
+          const img = wrap.querySelector('img');
+          if (!img) return;
+          const rect = wrap.getBoundingClientRect();
+          const x = ((clientX - rect.left) / rect.width) * 100;
+          const y = ((clientY - rect.top) / rect.height) * 100;
+          img.style.transformOrigin = `${Math.max(0, Math.min(100, x))}% ${Math.max(0, Math.min(100, y))}%`;
+        }
+
+        document.addEventListener('click', (event) => {
+          const wrap = event.target.closest?.('.img-zoom');
+          const current = document.querySelector('.img-zoom.is-zoomed');
+          if (current && current !== wrap) current.classList.remove('is-zoomed');
+          if (!wrap) return;
+          const nowZoomed = wrap.classList.toggle('is-zoomed');
+          if (nowZoomed) panTo(wrap, event.clientX, event.clientY);
+        });
+
+        document.addEventListener('pointermove', (event) => {
+          const wrap = event.target.closest?.('.img-zoom.is-zoomed');
+          if (!wrap) return;
+          panTo(wrap, event.clientX, event.clientY);
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key !== 'Escape') return;
+          document.querySelector('.img-zoom.is-zoomed')?.classList.remove('is-zoomed');
+        });
+      }
+    </script>
+    <script is:inline>
       // Altervista (shared hosting) drops a random handful of image requests
       // under concurrent load (net::ERR_HTTP2_PROTOCOL_ERROR /
       // ERR_CONNECTION_RESET, observed directly on the live site, not a bug

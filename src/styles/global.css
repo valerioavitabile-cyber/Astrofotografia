@@ -220,6 +220,44 @@
     }
   }
 
+  /* Shutter curtains reveal: vertical strips cover the media and slide away
+     in alternating bands (odd strips up, even strips down), each with its
+     own transition-delay set inline by ShutterReveal.astro for the stagger. */
+  .shutter-reveal {
+    position: relative;
+  }
+
+  .shutter-strips {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    pointer-events: none;
+  }
+
+  .shutter-strip {
+    flex: 1 0 0;
+    height: 100%;
+    background: var(--color-ink);
+    transform: translateY(0);
+    transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .shutter-reveal.is-visible .shutter-strip:nth-child(odd) {
+    transform: translateY(-100%);
+  }
+
+  .shutter-reveal.is-visible .shutter-strip:nth-child(even) {
+    transform: translateY(100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shutter-strip {
+      transition: none;
+      transform: translateY(-100%);
+    }
+  }
+
   /* Mosaic reveal: a grid of tiles covers the media and peels away tile
      by tile (random per-tile delay set via JS) before playback starts. */
   .mosaic-reveal {
@@ -366,6 +404,30 @@
   .portrait-unzoom {
     transform: scale(1) !important;
     transition: transform 1.2s ease-out !important;
+  }
+
+  /* Article/tutorial photos: zoom-in on hover to reveal detail, clipped by
+     the rounded border so the image never spills past it. transform-origin
+     is kept as an inline style set by Layout.astro's pointermove tracker, so
+     the zoomed view pans to follow the cursor instead of always cropping
+     around the center (which would hide the photo's corners/edges). Zoom
+     only engages after a click (.is-zoomed, toggled in Layout.astro) rather
+     than on hover, so simply passing the mouse over the photo doesn't
+     trigger it. */
+  .img-zoom {
+    @apply cursor-zoom-in overflow-hidden rounded-xl border border-white/10;
+  }
+
+  .img-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .img-zoom.is-zoomed {
+    @apply cursor-zoom-out;
+  }
+
+  .img-zoom.is-zoomed img {
+    @apply scale-[1.6];
   }
 
   /* No hover zoom on <video>: scaling a *playing* video with CSS transform

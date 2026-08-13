@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ShutterReveal from '../../components/ShutterReveal.astro';
 import { withBase } from '../../utils/url';
 import { Image } from 'astro:assets';
 import s01 from '../../assets/articles/tutorial/step-01.jpg';
@@ -30,102 +31,75 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
   descriptionIt="Come eseguire un allineamento polare usando lo strumento Polar Alignment sul SynScan Hand Controller per montature SkyWatcher."
 >
   <article class="mx-auto max-w-3xl px-6 py-16">
-    <a href={withBase('/video-utility/#tools')} class="text-sm text-white/50 hover:text-accent">
-      <span data-lang-en>&larr; Back to Video &amp; Utility</span>
-      <span data-lang-it>&larr; Torna a Video &amp; Utility</span>
-    </a>
-    <h1 class="mt-6 text-3xl font-semibold sm:text-4xl">
+    <h1 class="mt-6 whitespace-nowrap text-3xl font-semibold sm:text-4xl">
       <span data-lang-en>Polar Alignment with Synscan Skywatcher</span>
       <span data-lang-it>Allineamento Polare con Synscan Skywatcher</span>
     </h1>
 
-    <div class="prose-astro mt-10">
+    <div class="prose-astro reveal-left mt-10">
       <div data-lang-en>
         <p>
-          In this tutorial, I will explain how to perform a proper polar alignment using the "Polar Alignment"
-          tool on the SynScan Hand Controller for SkyWatcher mounts.
+          Astrophotography requires aligning the equatorial mount with the Celestial North Pole to compensate
+          for the Earth's rotation. When Polaris is not directly visible, alignment can be performed using the
+          built-in "Polar Alignment" function available on the SynScan Hand Controller for SkyWatcher mounts
+          (firmware v3.35 or later).
         </p>
         <p>
-          When we do astrophotography, we need an equatorial mount to track the Earth's rotation. To achieve
-          this, it is necessary to "align" our mount with the Celestial North Pole, using Polaris as a
-          reference. This is done by adjusting the polar scope included with most equatorial mounts.
+          Compared to classic drift-measurement methods (such as the Bigourdan method), the controller-assisted
+          procedure reduces polar alignment time while still delivering the precision required for
+          astrophotographic tracking.
         </p>
-        <p>
-          However, during this process, some initial issues might arise: what if you don't have a clear view of
-          the north or can't see Polaris? How would you align your mount? Well, don't throw your equipment off
-          the balcony! Follow this simple procedure to perform a polar alignment using the Polar Alignment tool
-          on the SynScan Hand Controller for SkyWatcher mounts.
-        </p>
-        <p><u>Let's Begin:</u></p>
-        <p>
-          There are several ways to work around this issue. One of the most well-known and effective is the
-          <strong>Bigourdan method</strong>. This method uses drift analysis to achieve very precise alignment,
-          but the downside is its convoluted, lengthy, and complicated process. Instead, we want to achieve
-          quick results without overcomplicating things. Therefore, we'll turn to technology and use a tool
-          available on many equatorial mounts: the <strong>Polar Alignment</strong> tool.
-        </p>
-        <p>
-          Specifically, I will demonstrate the Polar Alignment tool included in the SynScan Hand Controller for
-          SkyWatcher mounts. Unfortunately, this tool is not available in all versions of the Hand Controller
-          (if I'm not mistaken, it's available from version 3.35 onward), so please check your version when
-          turning on the controller before proceeding.
-        </p>
-        <p>Let's get straight to the steps:</p>
-        <p>
-          1. First, roughly position your mount facing north, perhaps using a compass for assistance.<br />
-          2. Next, turn on the mount and enter all the required data (coordinates, date, time, altitude, etc.).<br />
-          3. Start by performing a star alignment: remember that to use the Polar Alignment tool, you need to
-          perform at least a 2- or 3-star alignment.
-        </p>
+        <p><strong class="text-accent">Procedure</strong></p>
+        <ul class="not-prose mt-3 grid gap-2">
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Roughly point the mount north using a compass.</span>
+          </li>
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Power on the mount and enter the configuration data (geographic coordinates, date, local time and altitude).</span>
+          </li>
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Perform the initial 2- or 3-star alignment (a prerequisite for enabling the "Polar Alignment" function).</span>
+          </li>
+        </ul>
       </div>
       <div data-lang-it>
         <p>
-          In questo tutorial spiegherò come eseguire un corretto allineamento polare usando lo strumento
-          "Polar Alignment" sul SynScan Hand Controller per montature SkyWatcher.
+          L'astrofotografia richiede l'allineamento della montatura equatoriale con il Polo Nord Celeste per
+          compensare la rotazione terrestre. In assenza di visibilità diretta della stella Polaris, è
+          possibile eseguire l'allineamento tramite la funzione integrata "Polar Alignment" disponibile
+          sulla pulsantiera SynScan per montature SkyWatcher (firmware v3.35 o superiore).
         </p>
         <p>
-          Quando facciamo astrofotografia, abbiamo bisogno di una montatura equatoriale per inseguire la
-          rotazione terrestre. Per farlo, è necessario "allineare" la nostra montatura con il Polo Nord
-          Celeste, usando Polaris come riferimento. Questo si fa regolando il cercatore polare incluso nella
-          maggior parte delle montature equatoriali.
+          Rispetto ai metodi classici di misurazione della deriva (come il metodo Bigourdan), la procedura
+          assistita da controller riduce i tempi di stazionamento garantendo la precisione richiesta
+          dall'inseguimento fotografico.
         </p>
-        <p>
-          Tuttavia, durante questo processo possono presentarsi alcuni problemi iniziali: cosa succede se non
-          hai una vista libera verso nord o non riesci a vedere Polaris? Come allineeresti la tua montatura?
-          Beh, non buttare la tua attrezzatura giù dal balcone! Segui questa semplice procedura per eseguire
-          un allineamento polare usando lo strumento Polar Alignment sul SynScan Hand Controller per
-          montature SkyWatcher.
-        </p>
-        <p><u>Iniziamo:</u></p>
-        <p>
-          Ci sono diversi modi per aggirare questo problema. Uno dei più noti ed efficaci è il
-          <strong>metodo Bigourdan</strong>. Questo metodo usa l'analisi del drift per ottenere un
-          allineamento molto preciso, ma lo svantaggio è il suo processo contorto, lungo e complicato.
-          Invece, vogliamo ottenere risultati rapidi senza complicare troppo le cose. Perciò, ci
-          affideremo alla tecnologia e useremo uno strumento disponibile su molte montature equatoriali: lo
-          strumento <strong>Polar Alignment</strong>.
-        </p>
-        <p>
-          Nello specifico, mostrerò lo strumento Polar Alignment incluso nel SynScan Hand Controller per
-          montature SkyWatcher. Purtroppo, questo strumento non è disponibile in tutte le versioni dell'Hand
-          Controller (se non sbaglio, è disponibile dalla versione 3.35 in poi), quindi controlla la tua
-          versione all'accensione del controller prima di procedere.
-        </p>
-        <p>Andiamo subito ai passaggi:</p>
-        <p>
-          1. Per prima cosa, posiziona approssimativamente la montatura rivolta verso nord, magari
-          aiutandoti con una bussola.<br />
-          2. Successivamente, accendi la montatura e inserisci tutti i dati richiesti (coordinate, data, ora,
-          altitudine, ecc.).<br />
-          3. Inizia eseguendo un allineamento stellare: ricorda che per usare lo strumento Polar Alignment
-          devi eseguire almeno un allineamento a 2 o 3 stelle.
-        </p>
+        <p><strong class="text-accent">Procedura</strong></p>
+        <ul class="not-prose mt-3 grid gap-2">
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Orientare la montatura approssimativamente verso nord tramite bussola.</span>
+          </li>
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Accendere la montatura e inserire i dati di configurazione (coordinate geografiche, data, ora locale e altitudine).</span>
+          </li>
+          <li class="flex gap-3 text-white/80">
+            <span class="text-accent">■</span>
+            <span>Eseguire la procedura di allineamento iniziale a 2 o 3 stelle (requisito propedeutico per abilitare la funzione "Polar Alignment").</span>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <Image quality={90} src={s01} alt="Polar alignment step 1" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s01} alt="Polar alignment step 1" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <div data-lang-en>
         <p>
           We will select the stars suggested by the Hand Controller based on our field of view. At this point,
@@ -163,9 +137,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </div>
     </div>
 
-    <Image quality={90} src={s02} alt="Polar alignment step 2" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s02} alt="Polar alignment step 2" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <p data-lang-en>
         Activate your reticle (the red crosshair next to the Zoom function), and now use the arrow keys on your
         controller to move the selected star until it is perfectly centered in the crosshair. Once aligned,
@@ -178,9 +154,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s03} alt="Polar alignment step 3" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s03} alt="Polar alignment step 3" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <p data-lang-en>
         Repeat the same procedure with the second star. Once this alignment is complete, the mount will
         provide, via the Hand Controller, some values indicating the polar error in degrees, minutes, and
@@ -195,9 +173,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s04} alt="Polar alignment step 4" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s04} alt="Polar alignment step 4" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <div data-lang-en>
         <p>
           Let's read the values: it tells us that we have an error of 2 minutes and 59 seconds in Elevation and
@@ -222,9 +202,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </div>
     </div>
 
-    <Image quality={90} src={s05} alt="Polar alignment step 5" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s05} alt="Polar alignment step 5" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <p data-lang-en>
         Press <strong>ENTER</strong>, and it will prompt us to choose a star on which it will apply the
         corrections we provide by adjusting Azimuth and Elevation. In our case, we will select
@@ -236,9 +218,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s06} alt="Polar alignment step 6" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s06} alt="Polar alignment step 6" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <p data-lang-en>
         Using the arrows on the Hand Controller, we will bring it back to the center of the SharpCap crosshair.
       </p>
@@ -247,9 +231,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s07} alt="Polar alignment step 7" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s07} alt="Polar alignment step 7" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <p data-lang-en>
         Now, by pressing <strong>ENTER</strong>, the Polar Alignment tool will shift our star by an amount equal
         to the Elevation error calculated after the 2/3-star alignment—in our case, <strong>2 minutes and 59
@@ -262,14 +248,18 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s08} alt="Polar alignment step 8" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s08} alt="Polar alignment step 8" class="w-full" />
+    </ShutterReveal>
 
-    <p class="prose-astro mt-8" data-lang-en>On the SharpCap crosshair, we will see this situation (refer to the figure).</p>
-    <p class="prose-astro mt-8" data-lang-it>Sul mirino di SharpCap vedremo questa situazione (fai riferimento alla figura).</p>
+    <p class="prose-astro reveal-left mt-8" data-lang-en>On the SharpCap crosshair, we will see this situation (refer to the figure).</p>
+    <p class="prose-astro reveal-left mt-8" data-lang-it>Sul mirino di SharpCap vedremo questa situazione (fai riferimento alla figura).</p>
 
-    <Image quality={90} src={s09} alt="Polar alignment step 9" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s09} alt="Polar alignment step 9" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <p data-lang-en>
         As you can see, the star has been shifted. Now, by adjusting <strong>ONLY</strong> the Elevation
         adjustment screws (refer to the figure), we will aim to bring the star back to the center of the
@@ -282,12 +272,16 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-      <Image quality={90} src={s10} alt="Elevation adjustment screws" class="w-full rounded-xl border border-white/10" />
-      <Image quality={90} src={s11} alt="Polar alignment step 11" class="w-full rounded-xl border border-white/10" />
+    <div class="mt-8 flex flex-col gap-4">
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s10} alt="Elevation adjustment screws" class="w-full" />
+      </ShutterReveal>
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s11} alt="Polar alignment step 11" class="w-full" />
+      </ShutterReveal>
     </div>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <p data-lang-en>
         Don't worry if we can't bring it precisely to the center. Remember, we are correcting only one axis
         at a time, so the important thing is to get as close to the center as possible. Once completed, the
@@ -302,9 +296,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </p>
     </div>
 
-    <Image quality={90} src={s12} alt="Polar alignment step 12" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s12} alt="Polar alignment step 12" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <div data-lang-en>
         <p>
           The Polar Alignment tool will shift our star by an amount equal to the Azimuth error calculated after
@@ -341,9 +337,11 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </div>
     </div>
 
-    <Image quality={90} src={s13} alt="Azimuth adjustment screws" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s13} alt="Azimuth adjustment screws" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <div data-lang-en>
         <p>
           Again, we aim to bring the star as close as possible to the center of the crosshair. Once Azimuth has
@@ -380,40 +378,50 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </div>
     </div>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-      <Image quality={90} src={s14} alt="Park scope" class="w-full rounded-xl border border-white/10" />
-      <Image quality={90} src={s15} alt="Park scope confirmation" class="w-full rounded-xl border border-white/10" />
+    <div class="mt-8 flex flex-col gap-4">
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s14} alt="Park scope" class="w-full" />
+      </ShutterReveal>
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s15} alt="Park scope confirmation" class="w-full" />
+      </ShutterReveal>
     </div>
 
-    <p class="prose-astro mt-8" data-lang-en>
+    <p class="prose-astro reveal-right mt-8" data-lang-en>
       Turn off and restart the mount. The Hand Controller will ask if we want to restore the previous
       <strong>Park</strong> data. We will select <strong>Yes</strong>, recalling the configuration and simply
       confirming the date and time.
     </p>
-    <p class="prose-astro mt-8" data-lang-it>
+    <p class="prose-astro reveal-right mt-8" data-lang-it>
       Spegni e riavvia la montatura. L'Hand Controller chiederà se vogliamo ripristinare i precedenti dati di
       <strong>Park</strong>. Selezioneremo <strong>Sì</strong>, richiamando la configurazione e confermando
       semplicemente data e ora.
     </p>
 
-    <Image quality={90} src={s16} alt="Restore park data" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s16} alt="Restore park data" class="w-full" />
+    </ShutterReveal>
 
-    <p class="prose-astro mt-8" data-lang-en>
+    <p class="prose-astro reveal-left mt-8" data-lang-en>
       Once the data has been restored, use the selection arrows to scroll through the menu and choose
       <strong>"Setup"</strong>. In the <strong>Setup</strong> menu, look for the option
       <strong>"Alignment"</strong>.
     </p>
-    <p class="prose-astro mt-8" data-lang-it>
+    <p class="prose-astro reveal-left mt-8" data-lang-it>
       Una volta ripristinati i dati, usa le frecce di selezione per scorrere il menu e scegliere
       <strong>"Setup"</strong>. Nel menu <strong>Setup</strong>, cerca l'opzione <strong>"Alignment"</strong>.
     </p>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-      <Image quality={90} src={s17} alt="Setup menu" class="w-full rounded-xl border border-white/10" />
-      <Image quality={90} src={s18} alt="Alignment option" class="w-full rounded-xl border border-white/10" />
+    <div class="mt-8 flex flex-col gap-4">
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s17} alt="Setup menu" class="w-full" />
+      </ShutterReveal>
+      <ShutterReveal class="img-zoom">
+        <Image quality={90} src={s18} alt="Alignment option" class="w-full" />
+      </ShutterReveal>
     </div>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-right mt-8">
       <div data-lang-en>
         <p>
           <strong>Verification of Polar Alignment Error Correction</strong><br />
@@ -434,67 +442,49 @@ import s19 from '../../assets/articles/tutorial/step-19.jpg';
       </div>
     </div>
 
-    <Image quality={90} src={s19} alt="Final polar alignment error values" class="mt-8 w-full rounded-xl border border-white/10" />
+    <ShutterReveal class="img-zoom mt-8">
+      <Image quality={90} src={s19} alt="Final polar alignment error values" class="w-full" />
+    </ShutterReveal>
 
-    <div class="prose-astro mt-8">
+    <div class="prose-astro reveal-left mt-8">
       <div data-lang-en>
         <p>
-          As you can see, we achieved an excellent result given the initial conditions, and we managed to do so
-          in just one pass. That said, if the result is not satisfactory, the entire procedure can be repeated
-          multiple times to achieve better accuracy.
+          The method described allows adequate stationing for single exposures up to 10 minutes of integration
+          with active guiding, with contained deviations. The residual error depends on mechanical backlash or
+          structural flexures, but the effectiveness of the procedure is verified under real-world conditions
+          over extended periods.
         </p>
         <p>
-          With values like these, I can take <strong>600-second guided exposures</strong> with image deviation
-          below 5%. Of course, mechanical errors or other variables may come into play, but overall, I've been
-          using this system from my balcony with good results for about <strong>two and a half years</strong>.
-        </p>
-        <p>
-          This tutorial comes from my personal experience as a beginner who needed to align to the polar axis
-          without being able to see it and with limited guidance available online. Nowadays, there are many
-          programs available, both free and paid, for polar alignment. Therefore, I recommend my method
-          especially to beginners who are entering the world of astrophotography for the first time.
-        </p>
-        <p>
-          This approach may be simpler for those who want to start aligning to the pole in an assisted way
-          without relying on software. It's particularly useful for those photographing with a DSLR camera
-          without using a PC or automated systems like <strong>ASIair</strong>, <strong>Stellarmate</strong>,
-          and similar tools.
-        </p>
-        <p>
-          Remember, if something goes wrong, don't blame me! 😄<br />
-          <strong>Clear skies!</strong> 🌌
+          This technique addresses the need to perform polar alignment without visibility of the Celestial
+          North Pole and without resorting to complex setups. While dedicated software exists, control via the
+          hand controller represents a self-sufficient operational solution, suited for those who don't use a
+          PC in the field or stand-alone control modules (e.g. ASIAIR, StellarMate, etc.).
         </p>
       </div>
       <div data-lang-it>
         <p>
-          Come puoi vedere, abbiamo ottenuto un risultato eccellente date le condizioni iniziali, e siamo
-          riusciti a farlo in un solo passaggio. Detto questo, se il risultato non è soddisfacente, l'intera
-          procedura può essere ripetuta più volte per ottenere una precisione migliore.
+          Il metodo descritto permette di ottenere stazionamenti adeguati a posa singola fino a 10 minuti di
+          integrazione con guida attiva, con scostamenti contenuti. L'errore residuo dipende da giochi
+          meccanici o flessioni strutturali, ma l'efficacia della procedura è verificata in condizioni reali
+          d'uso su periodi prolungati.
         </p>
         <p>
-          Con valori come questi, riesco a fare <strong>esposizioni guidate di 600 secondi</strong> con una
-          deviazione dell'immagine inferiore al 5%. Naturalmente possono entrare in gioco errori meccanici o
-          altre variabili, ma nel complesso uso questo sistema dal mio balcone con buoni risultati da circa
-          <strong>due anni e mezzo</strong>.
-        </p>
-        <p>
-          Questo tutorial nasce dalla mia esperienza personale di principiante che aveva bisogno di
-          allinearsi all'asse polare senza poterlo vedere e con poche guide disponibili online. Oggi esistono
-          molti programmi, gratuiti e a pagamento, per l'allineamento polare. Per questo motivo consiglio il
-          mio metodo soprattutto ai principianti che si affacciano per la prima volta al mondo
-          dell'astrofotografia.
-        </p>
-        <p>
-          Questo approccio può essere più semplice per chi vuole iniziare ad allinearsi al polo in modo
-          assistito senza affidarsi a software. È particolarmente utile per chi fotografa con una reflex
-          senza usare un PC o sistemi automatizzati come <strong>ASIair</strong>, <strong>Stellarmate</strong>
-          e strumenti simili.
-        </p>
-        <p>
-          Ricorda, se qualcosa va storto, non è colpa mia! 😄<br />
-          <strong>Cieli sereni!</strong> 🌌
+          La tecnica risponde all'esigenza di effettuare l'allineamento polare senza visibilità del Polo Nord
+          Celeste e senza ricorrere a configurazioni complesse. Sebbene esistano software dedicati, il
+          controllo tramite pulsantiera rappresenta una soluzione operativa autosufficiente, indicata per chi
+          non impiega PC sul campo o moduli di controllo stand-alone (es. ASIAIR, StellarMate, ecc).
         </p>
       </div>
+    </div>
+
+    <div class="mt-14 flex justify-center">
+      <a href={withBase('/video-utility/')} class="btn-accent justify-center min-w-[190px]">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-lang-en>Back to Video &amp; Utility</span>
+        <span data-lang-it>Torna a Video &amp; Utility</span>
+      </a>
     </div>
   </article>
 </Layout>
