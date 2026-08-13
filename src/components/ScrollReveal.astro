@@ -2,20 +2,16 @@
 ---
 
 <script>
-  // Toggles rather than one-shot reveals: scrolling a section back out of
-  // view (either direction) resets it, so it replays every time it
-  // re-enters the viewport instead of staying revealed forever.
+  // One-shot reveals: every text/photo reveal animation plays once, the
+  // first time it enters the viewport, and then stays put — scrolling back
+  // up (or down past it again) never replays it. Only a hard refresh or an
+  // actual page navigation (which tears down and re-runs this script via
+  // astro:page-load) resets it.
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
-        entry.target.classList.toggle('is-visible', entry.isIntersecting);
-        // .reveal-fade-group drives a large-distance staggered entrance
-        // (video-utility tools cards) — replaying it on every re-entry
-        // means it can also re-trigger mid-scroll near the threshold
-        // boundary, which reads as a jerky flicker. Firing once and
-        // detaching avoids that without affecting the toggle-and-replay
-        // behavior other reveal classes rely on.
-        if (entry.isIntersecting && entry.target.classList.contains('reveal-fade-group')) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
         }
       }
@@ -200,30 +196,20 @@
         video?.play().catch(() => {});
       };
 
-      const hide = () => {
-        container.classList.remove('is-visible');
-        randomizeDelays();
-        if (video) {
-          video.pause();
-          video.currentTime = 0;
-        }
-      };
-
       if (reduceMotion) {
         reveal();
         return;
       }
 
-      // Re-triggers on every entry: scrolling the section out of view (in
-      // either direction) resets the tiles so it replays from scratch
-      // the next time it scrolls back into the viewport.
+      // One-shot: the tile peel plays the first time the card enters the
+      // viewport, then the observer detaches — scrolling it out and back in
+      // never re-covers the tiles or restarts the video.
       const mosaicObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
               reveal();
-            } else {
-              hide();
+              mosaicObserver.disconnect();
             }
           }
         },
@@ -278,21 +264,15 @@
         irisTimers.set(gallery, timers);
       };
 
-      const hide = () => {
-        clearTimers();
-        stages.forEach((stage) => {
-          stage.classList.remove('is-visible');
-          stage.closest<HTMLElement>('.iris-card')?.classList.remove('is-framed');
-        });
-      };
-
+      // One-shot: the iris bloom plays the first time the gallery enters
+      // the viewport, then the observer detaches — scrolling it out and
+      // back in never re-covers the photos.
       const irisObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
               reveal();
-            } else {
-              hide();
+              irisObserver.disconnect();
             }
           }
         },
@@ -394,7 +374,12 @@
           () => gallery.classList.add('is-settled'),
           DURATION + cards.length * STAGGER,
         );
+        hasUnfurled = true;
       };
+
+      // One-shot: once unfurled, scrolling the gallery out of view and back
+      // must not re-pile and replay it.
+      let hasUnfurled = false;
 
       // Cards start at opacity:0 (see global.css) and only turn visible
       // once .is-placed lands alongside the pile transform, so nothing is
@@ -427,6 +412,10 @@
       const stackObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
+            if (hasUnfurled) {
+              stackObserver.disconnect();
+              continue;
+            }
             if (entry.isIntersecting) {
               armed = true;
               lastScrollY = window.scrollY;

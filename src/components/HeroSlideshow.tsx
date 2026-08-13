@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Slide = { src: string; alt: string };
 
@@ -24,8 +24,6 @@ function pickRandom(pool: Slide[], count: number): Slide[] {
 export default function HeroSlideshow({ pool }: { pool: Slide[] }) {
   const [slides] = useState(() => pickRandom(pool, SLIDE_COUNT));
   const [index, setIndex] = useState(0);
-  const [playKey, setPlayKey] = useState(0);
-  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (slides.length < 2) return;
@@ -35,43 +33,11 @@ export default function HeroSlideshow({ pool }: { pool: Slide[] }) {
     return () => clearInterval(id);
   }, [slides.length]);
 
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-    // IntersectionObserver fires its callback once immediately on
-    // `observe()` with whatever the current intersection state already is
-    // — and the hero fills the viewport at load, so that first, synthetic
-    // callback reports isIntersecting=true right away. Reacting to it
-    // bumped playKey on every single page load (not just on a genuine
-    // re-entry after scrolling away), remounting the slides div and
-    // replaying the 1.6s hero-blur-in animation a second time right after
-    // the first one — on a cold/slow session there's enough of a gap
-    // between the two for it to read as the image reloading and jumping
-    // mid-animation instead of one clean reveal. Skipping this first,
-    // always-synchronous-with-mount callback and only reacting to later
-    // ones (real viewport re-entries) removes the spurious replay.
-    let firstCallback = true;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (firstCallback) {
-          firstCallback = false;
-          return;
-        }
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setPlayKey((k) => k + 1);
-          }
-        }
-      },
-      { threshold: 0.6 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div className="absolute inset-0" ref={rootRef}>
-      <div key={playKey} className="absolute inset-0 hero-blur-in">
+    <div className="absolute inset-0">
+      {/* One-shot: plays once on mount (page load/navigation) and never
+          replays on scroll — no re-entry observer bumping a remount key. */}
+      <div className="absolute inset-0 hero-blur-in">
         {slides.map((slide, i) => (
           <img
             // Keyed by position, not by src: on hydration the client's

@@ -358,12 +358,8 @@ const topics = [
           });
         };
 
-        const hide = () => {
-          clearTimers();
-          title.classList.remove('is-visible');
-          items.forEach((el) => el.classList.remove('is-visible'));
-        };
-
+        // One-shot: plays the first time the title enters the viewport,
+        // then detaches — scrolling back up never re-hides or replays it.
         const observer = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
@@ -371,8 +367,7 @@ const topics = [
                 clearTimers();
                 title.classList.add('is-visible');
                 timers.push(window.setTimeout(showColumns, TITLE_DURATION));
-              } else {
-                hide();
+                observer.disconnect();
               }
             }
           },
