@@ -1,0 +1,127 @@
+---
+import { withBase } from '../utils/url';
+---
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
+  <p class="cookie-text">
+    <span data-lang-en>
+      We use essential cookies only. <a href={withBase('/privacy/')}>Learn more</a>
+    </span>
+    <span data-lang-it>
+      Usiamo solo cookie essenziali. <a href={withBase('/privacy/')}>Scopri di più</a>
+    </span>
+  </p>
+  <button type="button" class="cookie-accept" data-cookie-accept>
+    <span data-lang-en>Accept</span>
+    <span data-lang-it>Accetto</span>
+  </button>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: auto;
+    z-index: 1002;
+    width: max-content;
+    max-width: calc(100vw - 1.5rem);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--color-surface-2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    padding: 0.45rem 0.5rem 0.45rem 0.85rem;
+
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .cookie-banner.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cookie-banner[hidden] {
+    display: none;
+  }
+
+  .cookie-text {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .cookie-text a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cookie-accept {
+    flex: 0 0 auto;
+    border: none;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: var(--color-ink);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+  }
+
+  .cookie-accept:hover,
+  .cookie-accept:focus-visible {
+    filter: brightness(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'cookie-notice-ack';
+
+  function init() {
+    const banner = document.getElementById('cookie-banner');
+    if (!banner || banner.dataset.bound) return;
+    banner.dataset.bound = 'true';
+
+    let acknowledged = false;
+    try {
+      acknowledged = localStorage.getItem(STORAGE_KEY) === '1';
+    } catch {
+      // localStorage unavailable (privacy mode, etc.) — show the banner every visit.
+    }
+
+    if (acknowledged) return;
+
+    banner.hidden = false;
+    requestAnimationFrame(() => banner.classList.add('is-visible'));
+
+    banner.querySelector('[data-cookie-accept]')?.addEventListener('click', () => {
+      try {
+        localStorage.setItem(STORAGE_KEY, '1');
+      } catch {
+        // ignore — banner will just reappear next visit
+      }
+      banner.classList.remove('is-visible');
+      setTimeout(() => {
+        banner.hidden = true;
+      }, 300);
+    });
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

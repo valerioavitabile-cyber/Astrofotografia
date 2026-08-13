@@ -639,29 +639,6 @@
   }
 }
 
-/* Slows the native View Transition morph of the shared portrait
-   (transition:name="about-portrait", set in index.astro/about/index.astro)
-   so its move/resize between home and bio takes as long as the bio text's
-   slide-in, instead of the browser's much snappier default. */
-::view-transition-group(about-portrait) {
-  animation-duration: 2.6s;
-  animation-timing-function: ease-out;
-}
-
-::view-transition-old(about-portrait),
-::view-transition-new(about-portrait) {
-  animation-duration: 2.6s;
-  animation-timing-function: ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(about-portrait),
-  ::view-transition-old(about-portrait),
-  ::view-transition-new(about-portrait) {
-    animation-duration: 0.01ms !important;
-  }
-}
-
 /* Morph card -> modale dei video YouTube (LiteYouTube.astro): stesso
    meccanismo di about-portrait ma per una view transition JS same-document
    (document.startViewTransition), non per la navigazione cross-page di

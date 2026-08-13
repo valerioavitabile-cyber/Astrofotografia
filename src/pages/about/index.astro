@@ -48,13 +48,12 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
 >
   <section class="mx-auto max-w-6xl px-6 pt-32 pb-20">
     <div class="grid gap-12 md:grid-cols-2 md:items-center">
-      <div class="media-card aspect-[4/5] w-full max-w-md">
+      <div class="relative block aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl ring-1 ring-white/10">
         <Image
           quality={90}
           src={portrait}
           alt="Valerio Avitabile"
-          class="h-full rounded-2xl"
-          transition:name="about-portrait"
+          class="h-full w-full rounded-2xl object-cover portrait-blur-in"
         />
       </div>
       <div transition:animate={slide({ duration: '2.6s' })}>
@@ -376,6 +375,32 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
 
     document.addEventListener('astro:page-load', setupAstrobinStatsModal);
   </script>
+
+  <style>
+    /* Sola animazione voluta per la foto: appare da sfocata a nitida.
+       Nessun'altra animazione (hover zoom, morph di pagina, ecc.) deve
+       toccare questa immagine. */
+    .portrait-blur-in {
+      animation: portrait-blur-in 1.2s ease-out both;
+    }
+
+    @keyframes portrait-blur-in {
+      from {
+        filter: blur(20px);
+        opacity: 0;
+      }
+      to {
+        filter: blur(0);
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portrait-blur-in {
+        animation: none;
+      }
+    }
+  </style>
 
   <style is:global>
     .odometer {
