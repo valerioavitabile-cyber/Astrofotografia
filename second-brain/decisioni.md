@@ -168,6 +168,23 @@ Eseguito subito `node scripts/fetch-astrobin.mjs --slug andromeda --force` per l
 
 **Aggiornamento 2026-08-09 — campi aggiuntivi:** l'utente ha chiesto anche luogo di ripresa, data, scala di Bortle, emisfero, coordinate celesti, campionamento, raggio del campo, strumentazione di guida, accessori, software (tutti presenti nello stesso endpoint AstroBin, solo non ancora estratti/mostrati). Aggiunto a `simplify()` in `fetch-astrobin.mjs`: `guidingTelescopes`/`guidingCameras` (da `guidingTelescopes2`/`guidingCameras2`), `locations` (da `locationObjects`: city/state/country/lat-lon con `latSide` N/S), `solution` (da `raw.solution`: `ra`/`dec` in gradi, `pixscale` arcsec/px, `radiusDeg`). In `[object].astro`: helper `formatRA`/`formatDec` (conversione gradi → hh:mm:ss / ±dd°mm′ss″), `formatLocation` (via `Intl.DisplayNames` per il nome nazione bilingue, niente hardcoding), `mostCommonBortle` (moda tra le sessioni di acquisizione, dato che il Bortle è per-sessione non per-immagine). Emisfero derivato da `latSide` della location (non dal segno della declinazione): rappresenta l'emisfero terrestre del sito di ripresa, non quello celeste dell'oggetto. Location/emisfero non vengono mostrati se assenti su AstroBin per quella foto (es. `cone` non ha location impostata) — nessun campo vuoto in UI. Verificato visivamente con screenshot Playwright sia su una foto con location (`rosettahoo`) sia su una senza (`cone`).
 
+## 2026-08-13 — Sito collegato a dominio personalizzato `valerioavitabile-astrophotography.it` su GitHub Pages
+
+Il sito era pubblicato su `valerioavitabile-cyber.github.io/Astrofotografia` (project page, con `base: '/Astrofotografia'`). L'utente ha registrato il dominio `valerioavitabile-astrophotography.it` (DNS gestito su Kaliweb) e ha chiesto di collegarlo.
+
+Cambiato:
+- `astro.config.mjs`: `site` da `https://valerioavitabile-cyber.github.io` a `https://valerioavitabile-astrophotography.it`; `base` da `/Astrofotografia` a `/` (dominio apex, non più project page sotto sottocartella); redirect (`/videos/`, `/utility/`) aggiornati di conseguenza senza il prefisso `/Astrofotografia`.
+- Creato `public/CNAME` con il dominio, richiesto da GitHub Pages per il custom domain (finisce in `dist/CNAME` col build).
+- Nessuna modifica a `src/utils/url.ts` (`withBase`) necessaria: legge `BASE_URL` a runtime, quindi si adatta da solo al nuovo `base: '/'`.
+
+Lato DNS (Kaliweb, fuori dal repo): 4 record A sull'apex (`185.199.108.153`, `.109.153`, `.110.153`, `.111.153`) + CNAME `www` → `valerioavitabile-cyber.github.io`. Primo tentativo dell'utente aveva sbagliato: i record A aggiuntivi erano finiti su sottodomini incrementali (`1.`, `2.`, `3.valerioavitabile-astrophotography.it`) invece che tutti sullo stesso host apex — corretto rifacendoli con lo stesso "Nome" del primo record.
+
+Anche dopo il fix DNS, GitHub Pages è rimasto per un po' con "Enforce HTTPS" non disponibile (prima "certificato non ancora emesso", poi "dominio non configurato per HTTPS" — probabilmente cache del check precedente ai record sbagliati). Sbloccato rimuovendo il custom domain dai Settings → Pages del repo e reinserendolo (forza GitHub a rifare da zero verifica DNS + richiesta certificato Let's Encrypt); dopo qualche minuto "DNS check successful" + HTTPS disponibile.
+
+**Perché:** l'utente vuole il sito raggiungibile dal proprio dominio invece che dal sottopercorso GitHub Pages di default.
+
+**Come si applica:** il sito ora vive all'apex (`base: '/'`), non più sotto `/Astrofotografia` — se in futuro si aggiunge un altro deploy di test su `github.io/Astrofotografia`, servirebbe un `astro.config.mjs` diverso (base tornerebbe `/Astrofotografia` lì). Se in futuro "Enforce HTTPS" si blocca di nuovo dopo un cambio DNS, il fix è sempre "rimuovi e reinserisci il custom domain nei Settings → Pages" per forzare un check pulito, non serve toccare altro lato DNS se i record sono già corretti. `www.` risultava ancora non servito in HTTPS subito dopo lo sblocco dell'apex — verificare se si stabilizza da solo nelle ore successive.
+
 ## 2026-08-09 — Installata skill esterna "UI/UX Pro Max" per Claude Code
 
 L'utente ha chiesto di installare la skill al link `https://ui-ux-pro-max-skill.nextlevelbuilder.io/`, poi (dopo che ho segnalato di non poter installare da URL esterni arbitrari non verificati) indicato il repository sorgente su GitHub: `github.com/nextlevelbuilder/ui-ux-pro-max-skill`. Verificato prima di eseguire: pacchetto npm reale e pubblico (`ui-ux-pro-max-cli`, MIT license, maintainer NextLevelBuilder/mrgoonie), non un dominio Anthropic — installazione confermata esplicitamente dall'utente prima di eseguire `npx` (che scarica ed esegue codice di terze parti).

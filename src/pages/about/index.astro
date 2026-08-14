@@ -48,7 +48,7 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
 >
   <section class="mx-auto max-w-6xl px-6 pt-32 pb-20">
     <div class="grid gap-12 md:grid-cols-2 md:items-center">
-      <div class="relative block aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl ring-1 ring-white/10">
+      <div class="portrait-frame relative block aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl">
         <Image
           quality={90}
           src={portrait}
@@ -398,6 +398,40 @@ const contentEnHtml = (await marked.parse(bodyEn.trim())).replaceAll('href="/cou
     @media (prefers-reduced-motion: reduce) {
       .portrait-blur-in {
         animation: none;
+      }
+    }
+
+    /* The rounded-2xl ring frame used to sit on the container as a static
+       Tailwind ring-1 class, visible from the very first frame — a fully
+       formed "cornice" outlining an image that was still blurred to nothing.
+       Moving it to a pseudo-element that fades in on the same schedule as
+       .portrait-blur-in (rather than a ring on the container itself, which
+       would also have faded the photo underneath it) makes the frame arrive
+       together with the photo instead of announcing it ahead of time. */
+    .portrait-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      opacity: 0;
+      animation: portrait-frame-in 1.2s ease-out both;
+      pointer-events: none;
+    }
+
+    @keyframes portrait-frame-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portrait-frame::after {
+        animation: none;
+        opacity: 1;
       }
     }
   </style>

@@ -22,7 +22,7 @@
   const observe = () => {
     document
       .querySelectorAll<HTMLElement>(
-        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .reveal-fade-group, .barn-door-reveal, .shutter-reveal, .reveal-3d-spin',
+        '.reveal, .reveal-left:not(.reveal-hero):not([data-course-title]):not([data-video-caption]), .reveal-right:not(.reveal-hero):not([data-video-caption]), .reveal-blur, .reveal-fade, .reveal-fade-group, .reveal-3d-spin',
       )
       .forEach((el) => observer.observe(el));
   };
@@ -179,6 +179,9 @@
       randomizeDelays();
 
       const video = container.querySelector<HTMLVideoElement>('[data-mosaic-video]');
+      // Matches .mosaic-tile's own transition duration in global.css — the
+      // last tile to start (at maxDelay) finishes peeling this long after.
+      const tileTransitionMs = 2400;
 
       const reveal = () => {
         container.classList.add('is-visible');
@@ -194,6 +197,11 @@
         // the clip have already played out by the time the video is
         // uncovered, and viewers see real footage instead of a black flash.
         video?.play().catch(() => {});
+        // The ring "frame" (.media-card.mosaic-reveal.is-framed in
+        // global.css) only fades in once every tile has actually finished
+        // peeling away, not the instant the first ones start — otherwise it
+        // reads as a cornice sitting around a still-mostly-tiled card.
+        window.setTimeout(() => container.classList.add('is-framed'), maxDelay + tileTransitionMs);
       };
 
       if (reduceMotion) {
@@ -220,6 +228,93 @@
     });
   };
 
+  // Barn door reveal: the ring "frame" (.media-card.barn-door-reveal.is-framed
+  // in global.css) must not appear until the doors have actually finished
+  // swinging open — gating it on .is-visible instead (which lands the instant
+  // the doors start moving) painted a visible ring/cornice around the card
+  // while the panels were still covering most of the photo. Mirrors the iris
+  // gallery's is-visible (start) / is-framed (finish) split below.
+  const barnDoorObservers = new WeakMap<HTMLElement, IntersectionObserver>();
+
+  const setupBarnDoor = () => {
+    document.querySelectorAll<HTMLElement>('.barn-door-reveal').forEach((container) => {
+      barnDoorObservers.get(container)?.disconnect();
+
+      if (reduceMotion) {
+        container.classList.add('is-visible', 'is-framed');
+        return;
+      }
+
+      const reveal = () => {
+        container.classList.add('is-visible');
+        const door = container.querySelector<HTMLElement>('.barn-door-left');
+        door?.addEventListener(
+          'transitionend',
+          (e) => {
+            if (e.propertyName === 'transform') container.classList.add('is-framed');
+          },
+          { once: true },
+        );
+      };
+
+      const barnDoorObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              reveal();
+              barnDoorObserver.disconnect();
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+      );
+      barnDoorObserver.observe(container);
+      barnDoorObservers.set(container, barnDoorObserver);
+    });
+  };
+
+  // Shutter curtains reveal: same is-framed gating as barn doors above, for
+  // the .img-zoom border (global.css) so it doesn't outline the card while
+  // the strips are still covering the photo.
+  const shutterObservers = new WeakMap<HTMLElement, IntersectionObserver>();
+
+  const setupShutter = () => {
+    document.querySelectorAll<HTMLElement>('.shutter-reveal').forEach((container) => {
+      shutterObservers.get(container)?.disconnect();
+
+      if (reduceMotion) {
+        container.classList.add('is-visible', 'is-framed');
+        return;
+      }
+
+      const reveal = () => {
+        container.classList.add('is-visible');
+        const strip = container.querySelector<HTMLElement>('.shutter-strip');
+        strip?.addEventListener(
+          'transitionend',
+          (e) => {
+            if (e.propertyName === 'transform') container.classList.add('is-framed');
+          },
+          { once: true },
+        );
+      };
+
+      const shutterObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              reveal();
+              shutterObserver.disconnect();
+            }
+          }
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
+      );
+      shutterObserver.observe(container);
+      shutterObservers.set(container, shutterObserver);
+    });
+  };
+
   // Iris reveal: opens the gallery's images one at a time (rather than all
   // together) by staggering when .is-visible lands on each .iris-stage.
   const irisObservers = new WeakMap<HTMLElement, IntersectionObserver>();
@@ -233,7 +328,7 @@
       if (reduceMotion) {
         stages.forEach((stage) => {
           stage.classList.add('is-visible');
-          stage.closest<HTMLElement>('.iris-card')?.classList.add('is-framed');
+          stage.closest<HTMLElement>('.iris-card')?.classList.add('is-framed', 'is-visible');
         });
         return;
       }
@@ -248,10 +343,14 @@
         const timers = stages.map((stage, i) =>
           window.setTimeout(() => {
             stage.classList.add('is-visible');
+            const card = stage.closest<HTMLElement>('.iris-card');
+            // Drives the caption's fade-in (see .iris-caption in global.css)
+            // and is set on the card itself, not just the stage, since the
+            // caption sits outside .iris-stage as a sibling.
+            card?.classList.add('is-visible');
             // The frame only fades in once the iris has actually finished
             // blooming out, not while it's still opening.
             const photo = stage.querySelector<HTMLElement>('.iris-reveal');
-            const card = stage.closest<HTMLElement>('.iris-card');
             photo?.addEventListener(
               'transitionend',
               (e) => {
@@ -446,6 +545,8 @@
   const setup = () => {
     observe();
     setupHeroProgress();
+    setupBarnDoor();
+    setupShutter();
     setupMosaic();
     setupIris();
     setupStack();

@@ -4,7 +4,7 @@ export const socials = [
   {
     label: 'Email',
     href: `mailto:${site.email}`,
-    color: '#fbbf24',
+    color: '#C2C1A5',
     external: false,
     icon: 'M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm.5 1L12 13l8.5-7',
     viewBox: '0 0 24 24',
