@@ -720,14 +720,15 @@
   }
 
   /* Fade + rise + settle reveal for the astronomy-tools calculator cards and
-     the portfolio object photo. Used to be a >360deg rotateY "page turning"
-     spin with its own perspective, but that turned into a cross-browser
-     rabbit hole (Safari/iOS rendering glitches, then a real bug where
-     backface-visibility:hidden made the card vanish for part of the spin)
-     without ever fully paying off visually. A plain opacity+transform
+     the portfolio object photo — the default/fallback for every platform.
+     Used to be a >360deg rotateY "page turning" spin with its own
+     perspective everywhere, but that reproduced a real GPU-compositing bug
+     on Apple hardware across every browser tested there (Safari, Chrome,
+     Brave alike — a macOS/iOS platform issue, not a browser-engine one), so
+     it's now scoped to non-Apple platforms only below via
+     `html:not([data-platform='apple'])`. This plain opacity+transform
      transition is the same mechanism already proven reliable everywhere
-     else on the site (.reveal, .reveal-fade, etc.) — trading a bit of flair
-     for something that just works everywhere. */
+     else on the site (.reveal, .reveal-fade, etc.). */
   .reveal-3d-spin {
     opacity: 0;
     transform: translateY(2rem) scale(0.96);
@@ -747,6 +748,43 @@
       opacity: 1;
       transform: none;
       transition: none;
+    }
+  }
+
+  /* Non-Apple only (`data-platform="apple"` is set on <html> by a blocking
+     inline script in Layout.astro, before paint): swap the plain fade above
+     for the full 3D "page turning" spin. transition: none here so the fade
+     transition doesn't fight the animation for the same opacity/transform
+     properties. */
+  html:not([data-platform='apple']) .reveal-3d-spin {
+    perspective: 1600px;
+    transition: none;
+  }
+
+  html:not([data-platform='apple']) .reveal-3d-spin.is-visible {
+    animation: reveal-3d-spin-in 4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes reveal-3d-spin-in {
+    0% {
+      opacity: 0;
+      transform: perspective(1600px) rotateY(-520deg) scale(0.75);
+    }
+    55% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: perspective(1600px) rotateY(0deg) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-platform='apple']) .reveal-3d-spin {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 }

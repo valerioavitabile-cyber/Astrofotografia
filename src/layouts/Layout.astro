@@ -48,6 +48,26 @@ const isHome = Astro.url.pathname === withBase('/');
         } catch (e) {}
       })();
     </script>
+    <script is:inline>
+      // Flags Apple platforms (Mac/iPhone/iPad/iPod, any browser — Safari,
+      // Chrome, Brave all reproduced the same bug on Apple hardware, so this
+      // is a platform check, not a browser-engine one) before paint, so
+      // global.css can route .reveal-3d-spin to the plain fade there and the
+      // full 3D "page turning" spin everywhere else. navigator.platform is
+      // deprecated but still universally supported and is all that's needed
+      // here — worst case a future browser drops it and everyone just gets
+      // the safe fade fallback. iPadOS 13+ reports platform "MacIntel" like a
+      // real Mac (no separate iPad case needed), older iPadOS/iPhone/iPod
+      // report themselves in the UA string.
+      (function () {
+        try {
+          var ua = navigator.userAgent || '';
+          var platform = navigator.platform || '';
+          var isApple = /Mac/.test(platform) || /iPhone|iPad|iPod/.test(ua);
+          if (isApple) document.documentElement.setAttribute('data-platform', 'apple');
+        } catch (e) {}
+      })();
+    </script>
     <title data-tr={JSON.stringify({ attr: 'text', en: pageTitle, it: pageTitleIt })}>{pageTitleIt}</title>
     <meta
       name="description"
