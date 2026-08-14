@@ -3,35 +3,41 @@ import Layout from '../../layouts/Layout.astro';
 import { withBase } from '../../utils/url';
 import { socials } from '../../data/socials';
 
-const topics = [
+// Ordinati nella sequenza numerica desiderata (1-8): colonna sinistra
+// (1-4) seguita dalla colonna destra (5-8) su desktop, e la stessa
+// sequenza 1->8 quando la lista si impila in singola colonna su mobile.
+const topicsLeft = [
   {
     en: 'Image stacking, calibration with dark, flat, darkflat',
     it: 'Stacking delle immagini, calibrazione con dark, flat, darkflat',
-  },
-  {
-    en: 'Stretching and non-linear phase',
-    it: 'Stretching e fase non lineare',
   },
   {
     en: 'Creation and calibration of RGB channels',
     it: 'Creazione e calibrazione dei canali RGB',
   },
   {
-    en: 'Curves, contrasts, saturation, blending modes',
-    it: 'Curve, contrasti, saturazione, blending mode',
-  },
-  {
     en: 'Gradient removal, photometric color calibration, starless image',
     it: 'Rimozione dei gradienti, calibrazione fotometrica del colore',
+  },
+  {
+    en: 'Starless image, deconvolution and linear denoising',
+    it: 'Immagine starless, deconvoluzione e denoising in fase lineare',
+  },
+];
+
+const topicsRight = [
+  {
+    en: 'Stretching and non-linear phase',
+    it: 'Stretching e fase non lineare',
+  },
+  {
+    en: 'Curves, contrasts, saturation, blending modes',
+    it: 'Curve, contrasti, saturazione, blending mode',
   },
   {
     en: 'Fine details, star color calibration, final image',
     it: 'Dettagli fini, calibrazione del colore delle stelle, immagine finale',
   },
-  {
-    en: 'Starless image, deconvolution and linear denoising',
-    it: 'Immagine starless, deconvoluzione e denoising in fase lineare',
-  },  
   {
     en: 'Questions, reflections, release of the video lesson',
     it: 'Domande, riflessioni, consegna della video lezione',
@@ -305,15 +311,26 @@ const topics = [
         <span data-lang-en>We'll learn how to transform a RAW file into an extraordinary vision of the universe.</span>
         <span data-lang-it>Impareremo a trasformare un file RAW in una straordinaria visione dell'universo.</span>
       </h2>
-      <ul class="mt-5 grid gap-2 sm:grid-cols-2">
-        {topics.map((t, i) => (
-          <li class="flex gap-3 text-white/80">
-            <span class="text-accent">■</span>
-            <span class="topic-fade" data-col={i % 2} data-lang-en>{t.en}</span>
-            <span class="topic-fade" data-col={i % 2} data-lang-it>{t.it}</span>
-          </li>
-        ))}
-      </ul>
+      <div class="mt-5 flex flex-col gap-2 sm:grid sm:grid-cols-2 sm:gap-2">
+        <ul class="flex flex-col gap-2">
+          {topicsLeft.map((t) => (
+            <li class="flex gap-3 text-white/80">
+              <span class="text-accent">■</span>
+              <span class="topic-fade" data-lang-en>{t.en}</span>
+              <span class="topic-fade" data-lang-it>{t.it}</span>
+            </li>
+          ))}
+        </ul>
+        <ul class="flex flex-col gap-2">
+          {topicsRight.map((t) => (
+            <li class="flex gap-3 text-white/80">
+              <span class="text-accent">■</span>
+              <span class="topic-fade" data-lang-en>{t.en}</span>
+              <span class="topic-fade" data-lang-it>{t.it}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
 
     <div class="mt-8 flex justify-center">
@@ -367,8 +384,14 @@ const topics = [
         const STAGGER = 250;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const leftItems = items.filter((el) => el.dataset.col === '0');
-        const rightItems = items.filter((el) => el.dataset.col === '1');
+        // Gli elementi sono già nel markup nell'ordine sequenziale 1->8
+        // (colonna sinistra poi destra): basta dividerli a metà per
+        // ottenere le due colonne, così la sequenza resta corretta sia
+        // sulla griglia a due colonne del desktop sia sull'impilamento a
+        // colonna singola del mobile.
+        const half = Math.ceil(items.length / 2);
+        const leftItems = items.slice(0, half);
+        const rightItems = items.slice(half);
         // Colonna dx parte una pausa (STAGGER) dopo l'ultima voce della sx.
         const rightStart = leftItems.length * STAGGER + STAGGER;
 
