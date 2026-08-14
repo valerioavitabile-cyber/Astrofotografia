@@ -76,13 +76,13 @@ const year = new Date().getFullYear();
       style="filter: invert(1); opacity: 0.9; transform: translateX(6rem);"
     />
 
-    <a href={withBase('/')} class="btn-accent mt-10 justify-center min-w-[190px]" data-astro-reload>
+    <button type="button" id="footer-back-top" class="btn-accent mt-10 justify-center min-w-[190px]">
       <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M11 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M12 19V5M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
-      <span data-lang-en>Back to Home</span>
-      <span data-lang-it>Torna alla Home</span>
-    </a>
+      <span data-lang-en>Back to top</span>
+      <span data-lang-it>Torna su</span>
+    </button>
   </div>
 
   <div class="footer-bottom mx-auto w-full max-w-6xl">
@@ -234,6 +234,15 @@ const year = new Date().getFullYear();
     footerObserver.observe(footer);
   };
 
+  const setupBackToTop = () => {
+    const button = document.getElementById('footer-back-top');
+    button?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    });
+  };
+
   setupStickyFooter();
+  setupBackToTop();
   document.addEventListener('astro:page-load', setupStickyFooter);
+  document.addEventListener('astro:page-load', setupBackToTop);
 </script>
