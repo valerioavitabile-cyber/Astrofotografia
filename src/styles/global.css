@@ -719,50 +719,34 @@
     }
   }
 
-  /* Spins a card around its own vertical axis (like a page turning to face
-     you) before it settles flat — used for the calculator cards on the
-     astronomy-tools page. Needs its own perspective (rather than one shared
-     on a parent) so each card's rotation reads correctly regardless of
-     where it sits on the page. */
+  /* Fade + rise + settle reveal for the astronomy-tools calculator cards and
+     the portfolio object photo. Used to be a >360deg rotateY "page turning"
+     spin with its own perspective, but that turned into a cross-browser
+     rabbit hole (Safari/iOS rendering glitches, then a real bug where
+     backface-visibility:hidden made the card vanish for part of the spin)
+     without ever fully paying off visually. A plain opacity+transform
+     transition is the same mechanism already proven reliable everywhere
+     else on the site (.reveal, .reveal-fade, etc.) — trading a bit of flair
+     for something that just works everywhere. */
   .reveal-3d-spin {
     opacity: 0;
-    perspective: 1600px;
-    /* backface-visibility: hidden was tried here to fix a Safari rendering
-       glitch, but it backfired badly — with a >360deg rotateY the element
-       faces away from the viewer twice per spin (each time it crosses the
-       90-270deg range), so hiding the backface made the whole card vanish
-       for a visible chunk of the animation instead of showing the (mirrored)
-       "page turning" look it's meant to have. Left at the default (visible)
-       on purpose. will-change still pre-promotes the element to its own
-       compositor layer so Safari doesn't defer that promotion until
-       mid-animation. */
-    will-change: opacity, transform;
+    transform: translateY(2rem) scale(0.96);
+    transition:
+      opacity 0.9s ease-out,
+      transform 0.9s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
   }
 
   .reveal-3d-spin.is-visible {
-    animation: reveal-3d-spin-in 4s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: var(--reveal-delay, 0ms);
-  }
-
-  @keyframes reveal-3d-spin-in {
-    0% {
-      opacity: 0;
-      transform: perspective(1600px) translateX(calc(var(--spin-x, 0) * 1px)) rotateY(-520deg) scale(0.75);
-    }
-    55% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: perspective(1600px) translateX(0) rotateY(0deg) scale(1);
-    }
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal-3d-spin {
       opacity: 1;
       transform: none;
-      animation: none;
+      transition: none;
     }
   }
 }
