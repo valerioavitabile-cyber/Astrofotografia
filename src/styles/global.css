@@ -55,6 +55,7 @@
   .reveal {
     opacity: 0;
     transform: translateY(1.5rem);
+    will-change: opacity, transform;
     transition:
       opacity 0.7s ease-out,
       transform 0.7s ease-out;
@@ -69,6 +70,7 @@
   .reveal-left,
   .reveal-right {
     opacity: 0;
+    will-change: opacity, transform;
     transition:
       opacity 2s ease-out,
       transform 2s ease-out;
@@ -267,6 +269,7 @@
     height: 100%;
     background: var(--color-ink);
     transform: translateY(0);
+    will-change: transform;
     transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
   }
 
@@ -329,6 +332,7 @@
     background: var(--color-ink);
     opacity: 1;
     transform: scale(1);
+    will-change: opacity, transform;
     transition:
       opacity 2.4s ease-out,
       transform 2.4s ease-out;
@@ -388,6 +392,7 @@
     background: var(--color-ink);
     clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
     transform: translateX(0%);
+    will-change: transform;
     transition: transform 2s cubic-bezier(0.76, 0, 0.24, 1);
     pointer-events: none;
   }
@@ -638,6 +643,7 @@
   .reveal-blur {
     opacity: 0;
     filter: blur(1.25rem);
+    will-change: opacity, filter;
     transition:
       opacity 3s ease-out,
       filter 3s ease-out;
@@ -652,6 +658,7 @@
   .reveal-fade {
     opacity: 0;
     transform: translate(0, 0);
+    will-change: opacity, transform;
     transition:
       opacity 3s ease-out,
       transform 3s ease-out;
@@ -720,6 +727,16 @@
   .reveal-3d-spin {
     opacity: 0;
     perspective: 1600px;
+    /* backface-visibility: hidden was tried here to fix a Safari rendering
+       glitch, but it backfired badly — with a >360deg rotateY the element
+       faces away from the viewer twice per spin (each time it crosses the
+       90-270deg range), so hiding the backface made the whole card vanish
+       for a visible chunk of the animation instead of showing the (mirrored)
+       "page turning" look it's meant to have. Left at the default (visible)
+       on purpose. will-change still pre-promotes the element to its own
+       compositor layer so Safari doesn't defer that promotion until
+       mid-animation. */
+    will-change: opacity, transform;
   }
 
   .reveal-3d-spin.is-visible {

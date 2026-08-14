@@ -7,12 +7,29 @@
   // up (or down past it again) never replays it. Only a hard refresh or an
   // actual page navigation (which tears down and re-runs this script via
   // astro:page-load) resets it.
+  // iOS/Safari note: adding the `is-visible` class synchronously inside the
+  // IntersectionObserver callback can land in the same style-recalc frame as
+  // the intersection itself on iOS Safari, which then coalesces the "from"
+  // and "to" states and skips the transition entirely — the element just
+  // snaps to its final state (or, if it never gets to run at all, stays
+  // stuck invisible). Deferring the class add by two animation frames (same
+  // pattern as revealHeroClone below) guarantees Safari has already painted
+  // the untransitioned starting state before the transition-triggering class
+  // lands, so it reliably animates instead of jumping or freezing.
+  const revealTarget = (el: Element) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.classList.add('is-visible');
+      });
+    });
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
+          revealTarget(entry.target);
         }
       }
     },
@@ -184,7 +201,7 @@
       const tileTransitionMs = 2400;
 
       const reveal = () => {
-        container.classList.add('is-visible');
+        revealTarget(container);
         // A container reused after being detached from the document (e.g.
         // navigating away and back) can leave the video's decode buffer
         // discarded even though currentTime/readyState still look sane, so
@@ -246,7 +263,7 @@
       }
 
       const reveal = () => {
-        container.classList.add('is-visible');
+        revealTarget(container);
         const door = container.querySelector<HTMLElement>('.barn-door-left');
         door?.addEventListener(
           'transitionend',
@@ -288,7 +305,7 @@
       }
 
       const reveal = () => {
-        container.classList.add('is-visible');
+        revealTarget(container);
         const strip = container.querySelector<HTMLElement>('.shutter-strip');
         strip?.addEventListener(
           'transitionend',
@@ -370,13 +387,13 @@
           const colInRow = positions.filter((p, j) => rows[j] === rows[i] && p.left < positions[i].left).length;
           const delay = rows[i] * ROW_STAGGER + colInRow * COL_STAGGER;
           return window.setTimeout(() => {
-            stage.classList.add('is-visible');
+            revealTarget(stage);
             const card = stage.closest<HTMLElement>('.curtain-card');
             // Drives the caption's fade-in (see .curtain-caption in
             // global.css) and is set on the card itself, not just the
             // stage, since the caption sits outside .curtain-stage as a
             // sibling.
-            card?.classList.add('is-visible');
+            if (card) revealTarget(card);
             // The frame only fades in once the curtain has actually
             // finished sliding off, not while it's still covering the photo.
             const panel = stage.querySelector<HTMLElement>('.curtain-panel');
