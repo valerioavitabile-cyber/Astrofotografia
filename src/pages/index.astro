@@ -75,29 +75,28 @@ const portfolioGrid = await Promise.all(
     </div>
   </section>
 
-  <section class="iris-gallery grid grid-cols-2 gap-4 px-6 pb-6 sm:grid-cols-4 sm:gap-6 sm:pb-10">
+  <section class="curtain-gallery grid grid-cols-2 gap-4 px-6 pb-6 sm:grid-cols-4 sm:gap-6 sm:pb-10">
     {portfolioGrid.map(({ cat, variants }) => (
       <a
         href={withBase(`/portfolio/${cat.slug}/`)}
-        class="iris-card media-card group block"
+        class="curtain-card media-card group block"
       >
-        <span class="iris-stage relative block aspect-[16/9]">
+        <span class="curtain-stage relative block aspect-[16/9]">
           {variants.length > 0 && (
-            <span class="iris-reveal block h-full w-full">
-              <img
-                src={variants[0]}
-                data-cover-variants={variants.length > 1 ? JSON.stringify(variants) : undefined}
-                alt={cat.title}
-                width={480}
-                height={480}
-                loading="lazy"
-                class="h-full w-full object-cover"
-              />
-            </span>
+            <img
+              src={variants[0]}
+              data-cover-variants={variants.length > 1 ? JSON.stringify(variants) : undefined}
+              alt={cat.title}
+              width={480}
+              height={480}
+              loading="lazy"
+              class="h-full w-full object-cover"
+            />
           )}
+          <span class="curtain-panel" aria-hidden="true" />
         </span>
-        <div class="iris-caption pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-        <div class="iris-caption absolute inset-x-0 bottom-0 z-10 p-5">
+        <div class="curtain-caption pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+        <div class="curtain-caption absolute inset-x-0 bottom-0 z-10 p-5">
           <p class="text-lg font-semibold text-white">
             <span data-lang-en>{cat.title}</span>
             <span data-lang-it>{cat.titleIt}</span>

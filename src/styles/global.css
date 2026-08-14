@@ -228,7 +228,7 @@
      finished swinging open (.is-framed, set by ScrollReveal.astro on the
      doors' transitionend) — not the instant they start moving (.is-visible),
      which left a ring visibly outlining the card while the panels still
-     covered most of the photo (same technique as .iris-card below). */
+     covered most of the photo (same technique as .curtain-card below). */
   .media-card.barn-door-reveal {
     --tw-ring-color: transparent;
   }
@@ -349,7 +349,7 @@
      finished peeling away (.is-framed, set by ScrollReveal.astro's mosaic
      reveal() on a timer matching the tiles' own delay+transition), instead
      of sitting there visible the instant the first tiles start (.is-visible)
-     while the media is still mostly covered (same technique as .iris-card
+     while the media is still mostly covered (same technique as .curtain-card
      below). */
   .media-card.mosaic-reveal {
     --tw-ring-color: transparent;
@@ -366,83 +366,89 @@
   }
 
 
-  /* Iris reveal: the photo itself starts clipped down to a small circle
-     (an orange glow standing in for the "dot", via drop-shadow rather than
-     a separate flat overlay) and that circle blooms outward until the full
-     rectangular frame is revealed. JS staggers .is-visible across a
-     .iris-gallery's cards so they open one at a time instead of all at
-     once, and toggles it on scroll like the other reveal-* effects so it
-     replays on re-entry (both directions, since the observer fires again
-     whenever the card re-enters the viewport). The card itself is left
-     fully transparent (no background-color of its own) — everywhere the
-     circle hasn't bloomed to yet is just the real page background showing
-     through, not a separately painted rectangle that can end up a shade
-     off and read as a visible box. */
-  .iris-reveal {
-    display: block;
-    clip-path: circle(0% at 50% 50%);
-    filter: drop-shadow(0 0 22px var(--color-accent));
-    transition: clip-path 3.4s cubic-bezier(0.22, 1, 0.36, 1), filter 3.4s ease-out;
+  /* Curtain wipe reveal: an angled panel painted the same color as the page
+     background (var(--color-ink), same technique as the barn-door/shutter/
+     mosaic panels above — so it reads as the page itself rather than a
+     colored box) starts covering the photo edge-to-edge and slides off
+     diagonally to the right, uncovering it left-to-right like a stage
+     curtain opening (replaces the previous iris/circle-bloom reveal). JS
+     staggers .is-visible across a .curtain-gallery's cards so they open one
+     at a time instead of all at once, and toggles it on scroll like the
+     other reveal-* effects so it replays on re-entry (both directions,
+     since the observer fires again whenever the card re-enters the
+     viewport). */
+  .curtain-stage {
+    overflow: hidden;
   }
 
-  .iris-stage.is-visible .iris-reveal {
-    clip-path: circle(75% at 50% 50%);
-    filter: drop-shadow(0 0 0 transparent);
+  .curtain-panel {
+    position: absolute;
+    inset: -15% -30%;
+    z-index: 10;
+    background: var(--color-ink);
+    clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
+    transform: translateX(0%);
+    transition: transform 2s cubic-bezier(0.76, 0, 0.24, 1);
+    pointer-events: none;
+  }
+
+  .curtain-stage.is-visible .curtain-panel {
+    transform: translateX(140%);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .iris-reveal {
+    .curtain-panel {
       transition: none;
-      clip-path: circle(75% at 50% 50%);
-      filter: none;
+      transform: translateX(140%);
     }
   }
 
-  /* The card's ring "frame" only fades in once the iris finishes opening
-     (JS adds .is-framed on the clip-path transitionend), rather than
-     sitting there the whole time the photo is still blooming out. Hiding
-     it via the ring's own color (instead of box-shadow: none) keeps it
-     riding the existing transition-shadow on .media-card, so it still
+  /* The card's ring "frame" only fades in once the curtain has actually
+     finished sliding off (JS adds .is-framed on the panel's transitionend),
+     rather than sitting there the whole time the photo is still covered.
+     Hiding it via the ring's own color (instead of box-shadow: none) keeps
+     it riding the existing transition-shadow on .media-card, so it still
      fades smoothly, and leaves the hover ring-accent behavior untouched.
-     Compounded with .media-card (instead of .iris-card alone) so this wins
-     the cascade tie against .media-card's own ring-white/10 — same
+     Compounded with .media-card (instead of .curtain-card alone) so this
+     wins the cascade tie against .media-card's own ring-white/10 — same
      specificity, single-class selectors resolve by source order, and
      .media-card is declared later in this file, which was silently
      overriding the transparent override and leaving the ring visible the
-     entire time the photo was still blooming out. */
-  .media-card.iris-card {
+     entire time the photo was still covered. */
+  .media-card.curtain-card {
     --tw-ring-color: transparent;
   }
 
-  .media-card.iris-card.is-framed {
+  .media-card.curtain-card.is-framed {
     --tw-ring-color: rgb(255 255 255 / 0.1);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .media-card.iris-card {
+    .media-card.curtain-card {
       --tw-ring-color: rgb(255 255 255 / 0.1);
     }
   }
 
   /* The caption gradient (bg-gradient-to-t from-black/80 …) covers the
      card's full inset-0, not just the caption text — so fading it in over
-     the same 3.4s as .iris-reveal's clip-path (the previous approach) kept
-     it partially opaque for that entire span, painting a faint dark
-     rectangle over the still-mostly-clipped photo that read as a visible
-     box against the page background. Gating on .is-framed instead (same
-     trigger as the ring below) holds it at opacity 0 until the iris has
-     actually finished blooming, then fades it in quickly on its own. */
-  .iris-caption {
+     the same 2s as .curtain-panel's slide (the previous iris approach hit
+     the same issue with its own clip-path timing) kept it partially opaque
+     for that entire span, painting a faint dark rectangle over the
+     still-covered photo that read as a visible box against the page
+     background. Gating on .is-framed instead (same trigger as the ring
+     above) holds it at opacity 0 until the curtain has actually finished
+     sliding off, then fades it in quickly on its own. */
+  .curtain-caption {
     opacity: 0;
     transition: opacity 0.6s ease-out;
   }
 
-  .iris-card.is-framed .iris-caption {
+  .curtain-card.is-framed .curtain-caption {
     opacity: 1;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .iris-caption {
+    .curtain-caption {
       opacity: 1;
       transition: none;
     }

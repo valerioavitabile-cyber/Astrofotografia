@@ -315,70 +315,99 @@
     });
   };
 
-  // Iris reveal: opens the gallery's images one at a time (rather than all
-  // together) by staggering when .is-visible lands on each .iris-stage.
-  const irisObservers = new WeakMap<HTMLElement, IntersectionObserver>();
-  const irisTimers = new WeakMap<HTMLElement, number[]>();
+  // Curtain wipe reveal: opens the gallery's images one at a time (rather
+  // than all together) by staggering when .is-visible lands on each
+  // .curtain-stage, sliding its .curtain-panel off to uncover the photo.
+  const curtainObservers = new WeakMap<HTMLElement, IntersectionObserver>();
+  const curtainTimers = new WeakMap<HTMLElement, number[]>();
 
-  const setupIris = () => {
-    document.querySelectorAll<HTMLElement>('.iris-gallery').forEach((gallery) => {
-      irisObservers.get(gallery)?.disconnect();
-      const stages = Array.from(gallery.querySelectorAll<HTMLElement>('.iris-stage'));
+  const setupCurtain = () => {
+    document.querySelectorAll<HTMLElement>('.curtain-gallery').forEach((gallery) => {
+      curtainObservers.get(gallery)?.disconnect();
+      const stages = Array.from(gallery.querySelectorAll<HTMLElement>('.curtain-stage'));
 
       if (reduceMotion) {
         stages.forEach((stage) => {
           stage.classList.add('is-visible');
-          stage.closest<HTMLElement>('.iris-card')?.classList.add('is-framed', 'is-visible');
+          stage.closest<HTMLElement>('.curtain-card')?.classList.add('is-framed', 'is-visible');
         });
         return;
       }
 
       const clearTimers = () => {
-        irisTimers.get(gallery)?.forEach((id) => window.clearTimeout(id));
-        irisTimers.set(gallery, []);
+        curtainTimers.get(gallery)?.forEach((id) => window.clearTimeout(id));
+        curtainTimers.set(gallery, []);
       };
+
+      // Row-synced stagger: cards that sit side by side in the same visual
+      // row wipe together, and only the row itself cascades top to bottom —
+      // reads as one harmonious wave through the grid instead of a long
+      // strict per-card sequence. Grouped by measured position (not a
+      // hardcoded column count) so it adapts automatically to the grid's
+      // own breakpoints (grid-cols-2 on mobile, grid-cols-4 from sm up).
+      const ROW_STAGGER = 260;
+      const COL_STAGGER = 90;
+      const ROW_TOLERANCE = 12;
 
       const reveal = () => {
         clearTimers();
-        const timers = stages.map((stage, i) =>
-          window.setTimeout(() => {
+        const galleryRect = gallery.getBoundingClientRect();
+        const positions = stages.map((stage) => {
+          const r = stage.getBoundingClientRect();
+          return { top: r.top - galleryRect.top, left: r.left - galleryRect.left };
+        });
+        const rowTops: number[] = [];
+        const rows = positions.map(({ top }) => {
+          let idx = rowTops.findIndex((t) => Math.abs(t - top) < ROW_TOLERANCE);
+          if (idx === -1) {
+            rowTops.push(top);
+            idx = rowTops.length - 1;
+          }
+          return idx;
+        });
+
+        const timers = stages.map((stage, i) => {
+          const colInRow = positions.filter((p, j) => rows[j] === rows[i] && p.left < positions[i].left).length;
+          const delay = rows[i] * ROW_STAGGER + colInRow * COL_STAGGER;
+          return window.setTimeout(() => {
             stage.classList.add('is-visible');
-            const card = stage.closest<HTMLElement>('.iris-card');
-            // Drives the caption's fade-in (see .iris-caption in global.css)
-            // and is set on the card itself, not just the stage, since the
-            // caption sits outside .iris-stage as a sibling.
+            const card = stage.closest<HTMLElement>('.curtain-card');
+            // Drives the caption's fade-in (see .curtain-caption in
+            // global.css) and is set on the card itself, not just the
+            // stage, since the caption sits outside .curtain-stage as a
+            // sibling.
             card?.classList.add('is-visible');
-            // The frame only fades in once the iris has actually finished
-            // blooming out, not while it's still opening.
-            const photo = stage.querySelector<HTMLElement>('.iris-reveal');
-            photo?.addEventListener(
+            // The frame only fades in once the curtain has actually
+            // finished sliding off, not while it's still covering the photo.
+            const panel = stage.querySelector<HTMLElement>('.curtain-panel');
+            panel?.addEventListener(
               'transitionend',
               (e) => {
-                if (e.propertyName === 'clip-path') card?.classList.add('is-framed');
+                if (e.propertyName === 'transform') card?.classList.add('is-framed');
               },
               { once: true },
             );
-          }, i * 250),
-        );
-        irisTimers.set(gallery, timers);
+          }, delay);
+        });
+        curtainTimers.set(gallery, timers);
       };
 
-      // One-shot: the iris bloom plays the first time the gallery enters
+      // One-shot: the curtain wipe plays the first time the gallery enters
       // the viewport, then the observer detaches — scrolling it out and
       // back in never re-covers the photos.
-      const irisObserver = new IntersectionObserver(
+      const curtainObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
               reveal();
-              irisObserver.disconnect();
+              curtainObserver.disconnect();
             }
           }
         },
         { rootMargin: '0px 0px -10% 0px', threshold: 0.15 },
       );
-      irisObserver.observe(gallery);
-      irisObservers.set(gallery, irisObserver);
+      curtainObserver.observe(gallery);
+      curtainObservers.set(gallery, curtainObserver);
     });
   };
 
@@ -548,7 +577,7 @@
     setupBarnDoor();
     setupShutter();
     setupMosaic();
-    setupIris();
+    setupCurtain();
     setupStack();
     if (document.querySelector('.reveal-hero:not(.is-visible)')) {
       window.addEventListener('scroll', revealHero, { passive: true });
